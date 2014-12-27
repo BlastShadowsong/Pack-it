@@ -48,6 +48,8 @@ gem 'slim-rails'
 # bootstrap assets and layout, github: 'seyhunak/twitter-bootstrap-rails'
 gem 'twitter-bootstrap-rails'
 
+# ORM for mongodb, github: 'mongoid/mongoid'
+gem 'mongoid'
 # enum support for both active record and mongoid, github: 'brainspec/enumerize'
 gem 'enumerize'
 
@@ -59,11 +61,8 @@ gem 'cancancan'
 
 # admin interface, github: 'sferik/rails_admin'
 gem 'rails_admin'
-
-# ORM for mongodb, github: 'mongoid/mongoid'
-gem 'mongoid'
 # for auditing, github: 'rs-pro/mongoid-audit'
-gem 'mongoid-audit'
+# gem 'mongoid-audit'
 # background jobs, github: 'mperham/sidekiq'
 gem 'sidekiq'
 # scheduling jobs, github: 'tobiassvn/sidetiq'
