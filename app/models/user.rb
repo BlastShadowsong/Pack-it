@@ -3,9 +3,7 @@ class User
   store_in database: 'membership'
 
   include Mongoid::Timestamps
-
-  include Trackable
-
+  # include Trackable
   extend Enumerize
 
   field :role
@@ -63,18 +61,18 @@ class User
     id.to_s
   end
 
-  rails_admin do
-    list do
-      exclude_fields :creator, :updater
-    end
-    edit do
-      exclude_fields :creator, :updater
-    end
-    show do
-      exclude_fields :creator, :updater
-    end
-    export do
-      exclude_fields :creator, :updater
-    end
-  end
+  # rails_admin do
+  #   list do
+  #     exclude_fields :creator, :updater
+  #   end
+  #   edit do
+  #     exclude_fields :creator, :updater
+  #   end
+  #   show do
+  #     exclude_fields :creator, :updater
+  #   end
+  #   export do
+  #     exclude_fields :creator, :updater
+  #   end
+  # end
 end
