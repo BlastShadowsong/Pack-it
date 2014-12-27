@@ -20,11 +20,11 @@ html lang="en"
 
 
   body
-    .navbar.navbar-default.navbar-fixed-top
+    nav.navbar.navbar-default.navbar-fixed-top role="navigation"
       .container-fluid
         .navbar-header
           button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse"
-            .sr-only Nav
+            .sr-only= t('app.nav')
             span.icon-bar
             span.icon-bar
             span.icon-bar
@@ -45,5 +45,6 @@ html lang="en"
           = bootstrap_flash
           = yield
 
-      footer
+    footer
+      .container.text-muted
         p &copy; #{DateTime.now.year} #{t('app.company')}

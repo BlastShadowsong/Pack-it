@@ -15,9 +15,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     authenticate :user do
-      resources :analyzing_agents, only: [:index, :create, :show, :update, :destroy] do
-        resources :analyzing_runs, only: [:index, :create, :show, :update, :destroy]
-      end
+
     end
   end
   
