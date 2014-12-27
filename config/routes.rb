@@ -1,4 +1,26 @@
 Rails.application.routes.draw do
+
+  devise_for :users
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+
+  authenticate :user, lambda { |u| u.role.admin? } do
+    mount Sidekiq::Web => '/jobs', as: 'sidekiq'
+  end
+
+  RailsAdmin.config.navigation_static_links = {
+    'Background jobs' => Rails.application.routes.url_helpers.sidekiq_path
+  }
+
+  root 'home#index'
+
+  namespace :api do
+    authenticate :user do
+      resources :analyzing_agents, only: [:index, :create, :show, :update, :destroy] do
+        resources :analyzing_runs, only: [:index, :create, :show, :update, :destroy]
+      end
+    end
+  end
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

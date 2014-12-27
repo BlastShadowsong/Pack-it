@@ -1,0 +1,17 @@
+zh-CN:
+  mongoid:
+    models:
+      user: "用户"
+    attributes:
+      user:
+        email: "邮箱"
+        password: "密码"
+        remember_me: "记住我"
+        role: "角色"
+        remember_created_at: "记住时间"
+        sign_in_count: "登录次数"
+        current_sign_in_at: "当前登录"
+        last_sign_in_at: "最后登录"
+        current_sign_in_ip: "当前IP"
+        last_sign_in_ip: "最后IP"
+        reset_password_sent_at: "重置密码"

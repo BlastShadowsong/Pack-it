@@ -62,7 +62,8 @@ gem 'rails_admin'
 
 # ORM for mongodb, github: 'mongoid/mongoid'
 gem 'mongoid'
-
+# for auditing, github: 'rs-pro/mongoid-audit'
+gem 'mongoid-audit'
 # background jobs, github: 'mperham/sidekiq'
 gem 'sidekiq'
 # scheduling jobs, github: 'tobiassvn/sidetiq'
