@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  use_doorkeeper
   devise_for :users
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
@@ -8,14 +9,19 @@ Rails.application.routes.draw do
   end
 
   RailsAdmin.config.navigation_static_links = {
-    'Background jobs' => Rails.application.routes.url_helpers.sidekiq_path
+    'Background Jobs' => Rails.application.routes.url_helpers.sidekiq_path,
+    'OAuth Applications' => Rails.application.routes.url_helpers.oauth_applications_path,
+    'OAuth Authorized Applications' => Rails.application.routes.url_helpers.oauth_authorized_applications_path
+
   }
 
   root 'home#index'
 
   namespace :api do
-    authenticate :user do
-
+    namespace :v1 do
+      resources :profiles
+      resources :users
+      get '/me' => "credentials#me"
     end
   end
   

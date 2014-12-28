@@ -21,7 +21,7 @@ html lang="en"
 
   body
     nav.navbar.navbar-default.navbar-fixed-top role="navigation"
-      .container-fluid
+      .container
         .navbar-header
           button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse"
             .sr-only= t('app.nav')
@@ -33,17 +33,9 @@ html lang="en"
           ul.nav.navbar-nav.pull-right
             = render 'layouts/navigation_links'
 
-    .container-fluid
-
-      .row-fluid
-        .col-sm-3
-          .well.sidebar-nav
-            ul.nav.nav-list
-              li.nav-header = t('app.sidebar')
-              = render 'layouts/sidebar_links'
-        .col-sm-9
-          = bootstrap_flash
-          = yield
+    .container
+      = bootstrap_flash
+      = yield
 
     footer
       .container.text-muted

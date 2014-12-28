@@ -58,6 +58,8 @@ gem 'devise'
 gem 'devise-bootstrap-views'
 # authorization, github: 'CanCanCommunity/cancancan'
 gem 'cancancan'
+# oauth provider, github: 'doorkeeper-gem/doorkeeper'
+gem 'doorkeeper'
 
 # admin interface, github: 'sferik/rails_admin'
 gem 'rails_admin'
