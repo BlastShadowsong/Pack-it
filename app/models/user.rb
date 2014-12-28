@@ -3,7 +3,7 @@ class User
   store_in database: 'membership'
 
   include Mongoid::Timestamps
-  # include Trackable
+  include Trackable
   extend Enumerize
 
   field :role
