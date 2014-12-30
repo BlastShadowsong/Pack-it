@@ -3,7 +3,6 @@ class BusinessComplex
 
   include Mongoid::Timestamps
   include Trackable
-  include RailsAdminConfig
 
   field :name, type: String
   field :logo, type: String
@@ -14,4 +13,5 @@ class BusinessComplex
   accepts_nested_attributes_for :outdoor_position, :address
 
   has_many :locators
+  has_many :shops
 end
