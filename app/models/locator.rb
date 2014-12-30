@@ -6,8 +6,8 @@ class Locator
   field :name, type: String
   # field :floor, type: Integer
 
-  embeds_one :position, as: :locatable
-  accepts_nested_attributes_for :position
+  embeds_one :outdoor_position, as: :locatable
+  accepts_nested_attributes_for :outdoor_position
 
   belongs_to :business_complex
 end
