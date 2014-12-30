@@ -7,7 +7,7 @@ class Api::V1::ProfilesController < Api::V1::ApiController
   respond_to :json
 
   def index
-    # respond_with Profile.recent
+    respond_with current_resource_owner.profiles
   end
 
   def create
