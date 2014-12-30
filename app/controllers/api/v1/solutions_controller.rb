@@ -1,8 +1,6 @@
 class Api::V1::SolutionsController < Api::V1::ApiController
   before_action :set_quest, only: [:index, :create]
 
-  respond_to :json
-
   def index
     # TODO: @sy.li, need sorted items
     @solutions = @quest.solutions

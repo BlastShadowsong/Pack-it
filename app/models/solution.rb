@@ -2,7 +2,7 @@ class Solution
   include Mongoid::Document
   include Mongoid::Timestamps
   include Trackable
-  include RailsAdminConfig
+
   extend Enumerize
 
   field :status

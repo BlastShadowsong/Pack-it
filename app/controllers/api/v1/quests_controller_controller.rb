@@ -1,8 +1,6 @@
 class Api::V1::QuestsControllerController < Api::V1::ApiController
   before_action :set_quest, only: [:show, :update]
 
-  respond_to :json
-
   def index
     # TODO: @sy.li, need define a scope query of Quest to get unsolved latest items
     @quests = Quest.all
