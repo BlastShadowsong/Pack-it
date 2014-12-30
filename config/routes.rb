@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :profiles
       resources :users
+      resources :quest
+      resources :solve
       get '/me' => "credentials#me"
     end
   end
