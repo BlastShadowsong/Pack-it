@@ -4,7 +4,7 @@ class User
 
   include Mongoid::Timestamps
   include Trackable
-  include RailsAdminConfig
+
   extend Enumerize
 
   field :role
