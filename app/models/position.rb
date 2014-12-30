@@ -1,6 +1,5 @@
 class Position
   include Mongoid::Document
-  include Mongoid::Timestamps::Created
 
   field :latitude, type: Float
   field :longitude, type: Float
