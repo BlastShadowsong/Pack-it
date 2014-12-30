@@ -22,6 +22,6 @@ class Api::V1::SolutionsController < Api::V1::ApiController
   end
 
   def set_quest
-    @quest = Quest.find(params[:id])
+    @quest = Quest.find(params[:quest_id])
   end
 end

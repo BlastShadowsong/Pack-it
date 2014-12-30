@@ -1,13 +1,9 @@
 class Api::V1::ProfilesController < Api::V1::ApiController
-  before_action -> { doorkeeper_authorize! :public }, only: [:index, :show]
-  before_action -> { doorkeeper_authorize! :admin, :write }, only: [:create, :update, :destroy]
-
-  before_action :set_profile, only: [:show, :update, :destroy]
-
-  respond_to :json
+  before_action :set_user
+  before_action :set_profile, only: [:show, :update]
 
   def index
-    @profiles = current_resource_owner.profiles
+    @profiles = @user.profiles
     respond_with Hash[@profiles.map { |el| [el.class.name, el] }]
   end
 
@@ -16,7 +12,7 @@ class Api::V1::ProfilesController < Api::V1::ApiController
   end
 
   def create
-    @profile = current_resource_owner.profiles.build(profile_params)
+    @profile = @user.profiles.build(profile_params)
     @profile.save!
     respond_with 'api_v1', @profile
   end
@@ -32,6 +28,10 @@ class Api::V1::ProfilesController < Api::V1::ApiController
   end
 
   def set_profile
-    @profile = current_resource_owner.profiles.where(_type: params[:id]).first
+    @profile = @user.profiles.where(_type: params[:id]).first
+  end
+
+  def set_user
+    @user = params[:user_id].present? ? User.find(params[:user_id]) : current_resource_owner
   end
 end

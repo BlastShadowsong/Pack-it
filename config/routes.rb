@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :profiles
-      resources :users
+      resources :users do
+        resources :profiles
+      end
       resources :quests do
         resources :solutions
       end

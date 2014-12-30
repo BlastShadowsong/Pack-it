@@ -1,17 +1,24 @@
 class Api::V1::UsersController < Api::V1::ApiController
-  before_action -> { doorkeeper_authorize! :public }, only: :index
-  before_action only: [:create, :update, :destroy] do
-    doorkeeper_authorize! :admin, :write
-  end
-
-  respond_to :json
+  before_action :set_user, only: [:show]
 
   def index
     respond_with User.all
   end
 
-  def create
-    respond_with 'api_v1', User.create!(params[:user])
+  def show
+    respond_with @user
   end
 
+  def create
+    respond_with 'api_v1', User.create!(user_params)
+  end
+
+  private
+  def user_params
+    params.require(:user).permit!
+  end
+
+  def set_user
+    @user = User.find(params[:id])
+  end
 end
