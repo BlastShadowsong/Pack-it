@@ -1,5 +1,5 @@
 class Api::V1::QuestsController < Api::V1::ApiController
-  before_action :set_quest, only: [:show, :update]
+  before_action :set_quest, only: [:show, :destroy]
 
   def index
     # dynamic query for where(), e.g. /quests?quest[status]=unsolved
@@ -17,9 +17,10 @@ class Api::V1::QuestsController < Api::V1::ApiController
     respond_with 'api_v1', @quest
   end
 
-  def update
-    @quest.update!(quest_params)
-    # TODO: @sy.li, need fire a event for quest solved, then profile would be updated by event handler, OR simply by callback
+  def destroy
+    # TODO: @sy.li, need fire a event for quest solved or closed, then profile would be updated by event handler, OR simply by callback
+    # close the quest
+    # @quest.close
     respond_with 'api_v1', @quest
   end
 
