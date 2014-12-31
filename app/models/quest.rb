@@ -6,18 +6,25 @@ class Quest
   extend Enumerize
 
   field :kind
-  # TODO: @sy.li, define the enum
-  enumerize :kind, in: [:kind_text1, :kind_text2], default: :kind_text1
+  enumerize :kind,
+            in: [:sign, :ibeacon, :question, :picture_wall, :treasure_map, :guess_location, :children, :bank],
+            default: :question
+
+  field :rank
+  enumerize :rank,
+            in: [:green, :blue, :purple, :gold],
+            default: :green
 
   field :credit, type: Integer
-  field :rank, type: Integer
   field :count, type: Integer
   field :startup, type: Time
   field :deadline, type: Time
 
   field :status
-  # TODO: @sy.li, define the enum
-  enumerize :status, in: [:status1, :status2], default: :status1
+  # commented: has got feedback from the solver
+  enumerize :status,
+            in: [:unsolved, :solved, :commented ],
+            default: :unsolved
 
   field :message, type: String
   field :feedback, type: Integer

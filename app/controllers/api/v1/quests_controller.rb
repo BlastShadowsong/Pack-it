@@ -1,4 +1,4 @@
-class Api::V1::QuestsControllerController < Api::V1::ApiController
+class Api::V1::QuestsController < Api::V1::ApiController
   before_action :set_quest, only: [:show, :update]
 
   def index

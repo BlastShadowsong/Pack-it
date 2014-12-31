@@ -6,8 +6,10 @@ class Solution
   extend Enumerize
 
   field :status
-  # TODO: @sy.li, define the enum
-  enumerize :status, in: [:status1, :status2], default: :status1
+  # commented: has got feedback from the solver
+  enumerize :status,
+            in: [:unsolved, :solved, :commented ],
+            default: :unsolved
 
   field :message, type: String
   field :answer, type: String
