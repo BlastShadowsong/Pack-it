@@ -2,8 +2,9 @@ class Api::V1::QuestsController < Api::V1::ApiController
   before_action :set_quest, only: [:show, :update]
 
   def index
-    # TODO: @sy.li, need define a scope query of Quest to get unsolved latest items
-    @quests = Quest.all
+    # TODO: @sy.li, need paged list for @quests
+    # dynamic query for where(), e.g. /quests?quest[status]=unsolved
+    @quests = params[:quest].present? ? Quest.where(quest_params) : Quest.all
     respond_with @quests
   end
 
