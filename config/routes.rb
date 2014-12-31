@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
       resources :business_complexes do
         resources :locators
+        resources :shops, shallow: true
       end
 
       get '/me' => "credentials#me"
