@@ -2,10 +2,10 @@ class Api::V1::QuestsController < Api::V1::ApiController
   before_action :set_quest, only: [:show, :update]
 
   def index
-    # TODO: @sy.li, need paged list for @quests
     # dynamic query for where(), e.g. /quests?quest[status]=unsolved
     @quests = params[:quest].present? ? Quest.where(quest_params) : Quest.all
-    respond_with @quests
+    # pagination, 25 per page by default, e.g. /quests?page=2
+    respond_with @quests.desc(:created_at).page(params[:page])
   end
 
   def show
