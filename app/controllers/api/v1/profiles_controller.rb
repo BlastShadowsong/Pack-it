@@ -11,14 +11,14 @@ class Api::V1::ProfilesController < Api::V1::ApiController
     respond_with @profile
   end
 
-  def create
-    @profile = @user.profiles.build(profile_params)
-    @profile.save!
-    respond_with 'api_v1', @profile
-  end
-
   def update
-    @profile.update!(profile_params)
+    if @profile.nil?
+      @profile = @user.profiles.build(profile_params)
+      @profile['_type'] = params[:id]
+      @profile.save!
+    else
+      @profile.update!(profile_params)
+    end
     respond_with 'api_v1', @profile
   end
 

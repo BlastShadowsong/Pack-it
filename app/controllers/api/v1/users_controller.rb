@@ -9,9 +9,9 @@ class Api::V1::UsersController < Api::V1::ApiController
     respond_with @user
   end
 
-  def create
-    respond_with 'api_v1', User.create!(user_params)
-  end
+  # def create
+  #   respond_with 'api_v1', User.create!(user_params)
+  # end
 
   private
   def user_params
