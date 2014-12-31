@@ -23,9 +23,15 @@ Rails.application.routes.draw do
       resources :users do
         resources :profiles
       end
+
       resources :quests do
         resources :solutions
       end
+
+      resources :business_complexes do
+        resources :locators
+      end
+
       get '/me' => "credentials#me"
     end
   end

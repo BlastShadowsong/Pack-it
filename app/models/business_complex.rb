@@ -7,6 +7,7 @@ class BusinessComplex
   field :name, type: String
   field :logo, type: String
   field :map, type: String
+  field :uuid, type: String
 
   embeds_one :outdoor_position, as: :locatable
   embeds_one :address, as: :addressable
