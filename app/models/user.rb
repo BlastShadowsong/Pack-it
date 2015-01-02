@@ -7,6 +7,7 @@ class User
 
   extend Enumerize
 
+  # TODO：需要新增参数：推送id，跟用户为一对一关系
   field :role
   enumerize :role, in: [:user, :admin], default: :user
 

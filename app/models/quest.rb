@@ -10,6 +10,7 @@ class Quest
             in: [:sign, :ibeacon, :question, :picture_wall, :treasure_map, :guess_location, :children, :bank],
             default: :question
 
+  # TODO: 添加一个字段，表示是哪一个商家，并且关联到business_complex
   field :rank
   enumerize :rank,
             in: [:green, :blue, :purple, :gold],
@@ -22,8 +23,9 @@ class Quest
 
   field :status
   # commented: has got feedback from the solver
+  # failed: no answer or has been closed by seeker
   enumerize :status,
-            in: [:unsolved, :solved, :commented ],
+            in: [:unsolved, :solved, :commented, :failed ],
             default: :unsolved
 
   field :message, type: String
