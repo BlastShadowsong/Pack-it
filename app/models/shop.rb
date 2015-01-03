@@ -12,6 +12,7 @@ class Shop
   accepts_nested_attributes_for :indoor_position, :address
 
   belongs_to :business_complex
+  has_many :bargains
 
   alias_method :merchant, :creator
 end
