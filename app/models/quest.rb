@@ -17,7 +17,9 @@ class Quest
             default: :green
 
   field :credit, type: Integer
-  field :count, type: Integer
+  # amount表示分发的数量，count表示实际完成的数量
+  field :amount, type: Integer
+  field :count, type: Integer, default: 0
   field :startup, type: Time
   field :deadline, type: Time
 
@@ -29,7 +31,12 @@ class Quest
             default: :unsolved
 
   field :message, type: String
-  field :feedback, type: Integer
+
+  field :feedback
+  enumerize :feedback,
+            in: [:uncommented, :accepted, :denied],
+            default: :uncommented
+
 
   has_many :solutions
 
