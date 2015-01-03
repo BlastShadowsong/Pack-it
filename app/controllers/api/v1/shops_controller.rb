@@ -3,7 +3,7 @@ class Api::V1::ShopsController < Api::V1::ApiController
   before_action :set_shop, only: [:show]
 
   def index
-    respond_with @business_complex.shops
+    respond_with @business_complex.shops.desc(:created_at).page(params[:page])
   end
 
   def show
