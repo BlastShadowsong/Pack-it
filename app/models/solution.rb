@@ -16,8 +16,8 @@ class Solution
             default: :green
 
   field :credit, type: Integer
-  field :startup, type: Time
-  field :deadline, type: Time
+  field :duration, type: Integer
+
   field :status
   enumerize :status,
             in: [:unsolved, :solved, :commented, :failed ],
@@ -31,8 +31,14 @@ class Solution
             in: [:uncommented, :accepted, :denied],
             default: :uncommented
 
-  belongs_to :quest
+  field :favorite
+  enumerize :favorite,
+            in: [:true, :false],
+            default: :true
 
-  # TODO: 此处Solver应该标识任务接收者的user_id
+  belongs_to :quest
+  belongs_to :solver_profile
+
+  alias_method :startup, :created_at
   alias_method :solver, :creator
 end

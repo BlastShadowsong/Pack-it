@@ -13,7 +13,4 @@ class SolverProfile < Profile
   field :denied, type: Integer
   # credit 表示该Solver获得的积分总数
   field :credit, type: Integer
-
-  # prefer 表示用户收藏的Solution id
-  field :prefer, type: Array(Integer)
 end

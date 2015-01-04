@@ -13,7 +13,4 @@ class SeekerProfile < Profile
   field :denied, type: Integer
   # credit 表示Seeker消费的积分总数
   field :credit, type: Integer
-
-  # prefer 表示用户收藏的Quest id
-  field :prefer, type: Array(Integer)
 end
