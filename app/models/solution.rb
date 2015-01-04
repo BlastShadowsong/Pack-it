@@ -5,6 +5,8 @@ class Solution
 
   extend Enumerize
 
+  after_create :on_created
+
   field :kind
   enumerize :kind,
             in: [:sign, :ibeacon, :question, :picture_wall, :treasure_map, :guess_location, :children, :bank],
@@ -41,4 +43,11 @@ class Solution
 
   alias_method :startup, :created_at
   alias_method :solver, :creator
+
+  private
+  def on_created
+    # add itself to solver's favorite solutions
+    self.creator.solver_profile.solutions << self
+    self.creator.solver_profile.save!
+  end
 end

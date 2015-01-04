@@ -55,7 +55,11 @@ class Quest
 
   private
   def on_created
-    # TODO: define xxWorker.perform(quest_id) -> { quest.deadline > Time.now -> dead }
+    # add itself to seeker's favorite quests
+    self.creator.seeker_profile.quests << self
+    self.creator.seeker_profile.save!
+    # schedule a job to close itself at deadline
+    CloseQuestWorker.perform_at(self.deadline, self.id)
     # distribution
     # TODO: 任务分发
 

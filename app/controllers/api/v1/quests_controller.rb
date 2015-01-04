@@ -4,9 +4,10 @@ class Api::V1::QuestsController < Api::V1::ApiController
 
   def index
     # dynamic query for where(), e.g. /quests?quest[status]=unsolved
-    @quests = params[:quest].present? ? Quest.where(quest_params) : Quest.all
-    # pagination, 25 per page by default, e.g. /quests?page=2
-    respond_with @quests.desc(:created_at).page(params[:page])
+    @quests = Quest.all
+    @quests = @quests.where(quest_params) if params[:quest].present?
+    # pagination, 25 per page by default, e.g. /quests?page=2&page_size=25
+    respond_with @quests.desc(:created_at).page(params[:page]).per(params[:page_size])
   end
 
   def show

@@ -60,6 +60,8 @@ class User
   alias_method :name, :email
 
   has_many :profiles
+  has_one :seeker_profile
+  has_one :solver_profile
 
   def to_key
     id.to_s

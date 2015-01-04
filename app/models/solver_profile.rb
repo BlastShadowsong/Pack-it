@@ -13,4 +13,6 @@ class SolverProfile < Profile
   field :denied, type: Integer
   # credit 表示该Solver获得的积分总数
   field :credit, type: Integer
+
+  has_and_belongs_to_many :solutions, inverse_of: nil
 end
