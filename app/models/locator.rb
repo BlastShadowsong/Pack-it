@@ -5,8 +5,8 @@ class Locator
   field :minor, type: Integer
   field :name, type: String
 
-  embeds_one :outdoor_position, as: :locatable
-  accepts_nested_attributes_for :outdoor_position
+  embeds_one :indoor_position, as: :locatable
+  accepts_nested_attributes_for :indoor_position
 
   belongs_to :business_complex
 
