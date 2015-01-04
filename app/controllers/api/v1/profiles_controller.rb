@@ -1,5 +1,5 @@
 class Api::V1::ProfilesController < Api::V1::ApiController
-  before_action :set_user
+  before_action :set_user, only: [:index, :show]
   before_action :set_profile, only: [:show, :update]
 
   def index
@@ -13,7 +13,7 @@ class Api::V1::ProfilesController < Api::V1::ApiController
 
   def update
     if @profile.nil?
-      @profile = @user.profiles.build(profile_params)
+      @profile = current_resource_owner.profiles.build(profile_params)
       @profile['_type'] = params[:id]
       @profile.save!
     else
@@ -32,6 +32,7 @@ class Api::V1::ProfilesController < Api::V1::ApiController
   end
 
   def set_user
-    @user = params[:user_id].present? ? User.find(params[:user_id]) : current_resource_owner
+    @user = User.find(params[:user_id]) if params[:user_id].present?
+    @user = current_resource_owner if @user.nil?
   end
 end
