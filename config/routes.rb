@@ -24,16 +24,23 @@ Rails.application.routes.draw do
         resources :profiles, only: [:index, :show]
       end
 
-      resources :business_complexes, only: [:index, :show] do
+      resources :territories, only: [:index, :show] do
+        resources :business_complexes, only: [:index]
+        resources :shops, only: [:index]
+        resources :bargains, only: [:index]
+      end
+
+      resources :business_complexes, only: [:show] do
         resources :locators, only: [:index]
         resources :shops, only: [:index]
         resources :bargains, only: [:index]
       end
 
-      resources :shops, only: [:index, :show] do
+      resources :shops, only: [:show] do
         resources :bargains, only: [:index]
       end
-      resources :bargains, only: [:index, :show]
+
+      resources :bargains, only: [:show]
 
       resources :shopping_tags, only: [:index, :show] do
         resources :shops, only: [:index]
@@ -42,6 +49,7 @@ Rails.application.routes.draw do
 
       resources :brands, only: [:index, :show] do
         resources :shops, only: [:index]
+        resources :bargains, only: [:index]
       end
 
       get '/me' => "credentials#me"
