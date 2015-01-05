@@ -15,4 +15,8 @@ class BusinessComplex
 
   has_many :locators
   has_many :shops
+
+  def bargains
+    Bargain.in(shop_id: shops.map(&:id))
+  end
 end

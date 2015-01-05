@@ -1,3 +1,3 @@
-class ShoppingProfile < Profile
+class MerchantProfile < Profile
   include Mongoid::Document
 end

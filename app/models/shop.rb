@@ -6,12 +6,14 @@ class Shop
 
   field :name, type: String
   field :logo, type: String
+  field :no, type: String
 
   embeds_one :indoor_position, as: :locatable
-  embeds_one :address, as: :addressable
-  accepts_nested_attributes_for :indoor_position, :address
-
-  belongs_to :business_complex
+  accepts_nested_attributes_for :indoor_position
 
   alias_method :merchant, :creator
+
+  belongs_to :business_complex
+  belongs_to :brand
+  has_many :bargains
 end
