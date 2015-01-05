@@ -62,6 +62,9 @@ class User
   has_many :profiles
   has_one :seeker_profile
   has_one :solver_profile
+  has_one :location_profile
+  has_one :social_profile
+
 
   def to_key
     id.to_s
