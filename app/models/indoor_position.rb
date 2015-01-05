@@ -1,8 +1,14 @@
-class IndoorPosition < Position
+class IndoorPosition
   include Mongoid::Document
 
+  field :x, type: Float
+  field :y, type: Float
+  field :floor, type: Integer
   field :radius, type: Integer
   field :coordinator, type: String
+
+  embedded_in :indoor_locatable, polymorphic: true
+
 
   def min_latitude
     self.latitude - self.radius
@@ -19,5 +25,4 @@ class IndoorPosition < Position
   def max_longitude
     self.longitude + self.radius
   end
-
 end
