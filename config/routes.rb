@@ -19,18 +19,32 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :profiles
-      resources :users do
-        resources :profiles
+      resources :profiles, only: [:index, :show, :update]
+      resources :users, only: [:index, :show, :create, :update] do
+        resources :profiles, only: [:index, :show]
       end
 
       resources :quests do
         resources :solutions
       end
 
-      resources :business_complexes do
-        resources :locators
-        resources :shops, shallow: true
+      resources :business_complexes, only: [:index, :show] do
+        resources :locators, only: [:index]
+        resources :shops, only: [:index]
+        resources :bargains, only: [:index]
+      end
+
+      resources :shops, only: [:index, :show] do
+        resources :bargains, only: [:index]
+      end
+      resources :bargains, only: [:index, :show]
+
+      resources :bargain_tags, only: [:index, :show] do
+        resources :bargains, only: [:index]
+      end
+
+      resources :brands, only: [:index, :show] do
+        resources :shops, only: [:index]
       end
 
       get '/me' => "credentials#me"

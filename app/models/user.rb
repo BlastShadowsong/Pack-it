@@ -64,6 +64,8 @@ class User
   has_one :solver_profile
   has_one :location_profile
   has_one :social_profile
+  has_one :customer_profile
+  has_one :merchant_profile
 
 
   def to_key
