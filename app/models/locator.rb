@@ -9,10 +9,4 @@ class Locator
   accepts_nested_attributes_for :indoor_position
 
   belongs_to :mall
-
-  def as_json(options = nil)
-    super(:include => {
-              :mall => {:only => :uuid}
-          })
-  end
 end
