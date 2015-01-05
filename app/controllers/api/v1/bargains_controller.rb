@@ -1,5 +1,5 @@
 class Api::V1::BargainsController < Api::V1::ApiController
-  before_action :set_territory, only: [:index]
+  before_action :set_city, only: [:index]
   before_action :set_mall, only: [:index]
   before_action :set_shopping_tag, only: [:index]
   before_action :set_brand, only: [:index]
@@ -8,7 +8,7 @@ class Api::V1::BargainsController < Api::V1::ApiController
 
   def index
     @bargains = Bargain.all
-    @bargains = @territory.bargains if @territory.present?
+    @bargains = @city.bargains if @city.present?
     @bargains = @mall.bargains if @mall.present?
     @bargains = @shopping_tag.bargains if @shopping_tag.present?
     @bargains = @brand.bargains if @brand.present?
@@ -30,8 +30,8 @@ class Api::V1::BargainsController < Api::V1::ApiController
     @bargain = Bargain.find(params[:id])
   end
 
-  def set_territory
-    @territory = Territory.find(params[:territory_id]) if params[:territory_id].present?
+  def set_city
+    @city = City.find(params[:city_id]) if params[:city_id].present?
   end
 
   def set_mall

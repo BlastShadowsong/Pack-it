@@ -24,7 +24,7 @@ Rails.application.routes.draw do
         resources :profiles, only: [:index, :show]
       end
 
-      resources :territories, only: [:index, :show] do
+      resources :cities, only: [:index, :show] do
         resources :malls, only: [:index]
         resources :shops, only: [:index]
         resources :bargains, only: [:index]
