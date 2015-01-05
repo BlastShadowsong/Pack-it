@@ -33,13 +33,7 @@ class Solution
             in: [:uncommented, :accepted, :denied],
             default: :uncommented
 
-  field :favorite
-  enumerize :favorite,
-            in: [:true, :false],
-            default: :true
-
   belongs_to :quest
-  belongs_to :solver_profile
 
   alias_method :startup, :created_at
   alias_method :solver, :creator
@@ -47,7 +41,7 @@ class Solution
   private
   def on_created
     # add itself to solver's favorite solutions
-    self.creator.solver_profile.solutions << self
-    self.creator.solver_profile.save!
+    # self.creator.solver_profile.solutions << self
+    # self.creator.solver_profile.save!
   end
 end
