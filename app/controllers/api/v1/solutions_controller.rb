@@ -8,7 +8,7 @@ class Api::V1::SolutionsController < Api::V1::ApiController
   end
 
   def create
-    # TODO：创建任务在QuestDistributeWorker中完成，Solver不能自己创建任务
+    # 创建任务在QuestDistributeWorker中完成，Solver不能自己创建任务
     @solution = @quest.solutions.build(solution_params)
     @solution.save!
     respond_with 'api_v1', @solution
