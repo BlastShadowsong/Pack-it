@@ -10,7 +10,7 @@ class Api::V1::BargainsController < Api::V1::ApiController
     @bargains = @bargain_tag.bargains if @bargain_tag.present?
     @bargains = @shop.bargains if @shop.present?
     @bargains = @bargains.where(bargain_params) if params[:bargain].present?
-    respond_with @bargains.desc(:created_at).page(params[:page]).per(params[:page_size])
+    respond_with @bargains.desc(:created_at).page(params[:page]).per(params[:size])
   end
 
   def show
