@@ -13,7 +13,7 @@ class Shop
 
   alias_method :merchant, :creator
 
-  belongs_to :business_complex
+  belongs_to :mall
   belongs_to :brand
   has_many :bargains
 

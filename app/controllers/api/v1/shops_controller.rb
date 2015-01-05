@@ -1,6 +1,6 @@
 class Api::V1::ShopsController < Api::V1::ApiController
   before_action :set_territory, only: [:index]
-  before_action :set_business_complex, only: [:index]
+  before_action :set_mall, only: [:index]
   before_action :set_shopping_tag, only: [:index]
   before_action :set_brand, only: [:index]
   before_action :set_shop, only: [:show]
@@ -8,7 +8,7 @@ class Api::V1::ShopsController < Api::V1::ApiController
   def index
     @shops = Shop.all
     @shops = @territory.shops if @territory.present?
-    @shops = @business_complex.shops if @business_complex.present?
+    @shops = @mall.shops if @mall.present?
     @shops = @shopping_tag.shops if @shopping_tag.present?
     @shops = @brand.shops if @brand.present?
     @shops = @shops.where(shop_params) if params[:shop].present?
@@ -32,8 +32,8 @@ class Api::V1::ShopsController < Api::V1::ApiController
     @territory = Territory.find(params[:territory_id]) if params[:territory_id].present?
   end
 
-  def set_business_complex
-    @business_complex = BusinessComplex.find(params[:business_complex_id]) if params[:business_complex_id].present?
+  def set_mall
+    @mall = Mall.find(params[:mall_id]) if params[:mall_id].present?
   end
 
   def set_shopping_tag

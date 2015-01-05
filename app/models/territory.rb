@@ -3,10 +3,10 @@ class Territory
 
   field :name, type: String
 
-  has_many :business_complexes
+  has_many :malls
 
   def shops
-    Shop.in(business_complex_id: business_complexes.map(&:id))
+    Shop.in(mall_id: malls.map(&:id))
   end
 
   def bargains

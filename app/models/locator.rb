@@ -8,11 +8,11 @@ class Locator
   embeds_one :indoor_position, as: :indoor_locatable
   accepts_nested_attributes_for :indoor_position
 
-  belongs_to :business_complex
+  belongs_to :mall
 
   def as_json(options = nil)
     super(:include => {
-              :business_complex => {:only => :uuid}
+              :mall => {:only => :uuid}
           })
   end
 end

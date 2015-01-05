@@ -1,4 +1,4 @@
-class BusinessComplex
+class Mall
   include Mongoid::Document
 
   include Mongoid::Timestamps

@@ -25,12 +25,12 @@ Rails.application.routes.draw do
       end
 
       resources :territories, only: [:index, :show] do
-        resources :business_complexes, only: [:index]
+        resources :malls, only: [:index]
         resources :shops, only: [:index]
         resources :bargains, only: [:index]
       end
 
-      resources :business_complexes, only: [:show] do
+      resources :malls, only: [:show] do
         resources :locators, only: [:index]
         resources :shops, only: [:index]
         resources :bargains, only: [:index]
