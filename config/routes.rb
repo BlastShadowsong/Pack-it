@@ -35,7 +35,8 @@ Rails.application.routes.draw do
       end
       resources :bargains, only: [:index, :show]
 
-      resources :bargain_tags, only: [:index, :show] do
+      resources :shopping_tags, only: [:index, :show] do
+        resources :shops, only: [:index]
         resources :bargains, only: [:index]
       end
 
