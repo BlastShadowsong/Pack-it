@@ -59,6 +59,8 @@ class User
   alias_method :name, :email
 
   has_many :profiles
+  has_one :location_profile
+  has_one :social_profile
 
   def to_key
     id.to_s
