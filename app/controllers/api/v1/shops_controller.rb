@@ -1,11 +1,13 @@
 class Api::V1::ShopsController < Api::V1::ApiController
   before_action :set_business_complex, only: [:index]
+  before_action :set_shopping_tag, only: [:index]
   before_action :set_brand, only: [:index]
   before_action :set_shop, only: [:show]
 
   def index
     @shops = Shop.all
     @shops = @business_complex.shops if @business_complex.present?
+    @shops = @shopping_tag.shops if @shopping_tag.present?
     @shops = @brand.shops if @brand.present?
     @shops = @shops.where(shop_params) if params[:shop].present?
     respond_with @shops.desc(:created_at).page(params[:page]).per(params[:size])
@@ -26,6 +28,10 @@ class Api::V1::ShopsController < Api::V1::ApiController
 
   def set_business_complex
     @business_complex = BusinessComplex.find(params[:business_complex_id]) if params[:business_complex_id].present?
+  end
+
+  def set_shopping_tag
+    @shopping_tag = ShoppingTag.find(params[:shopping_tag_id]) if params[:shopping_tag_id].present?
   end
 
   def set_brand
