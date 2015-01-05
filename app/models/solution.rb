@@ -41,7 +41,6 @@ class Solution
   private
   def on_created
     # add itself to solver's favorite solutions
-    # self.creator.solver_profile.solutions << self
-    # self.creator.solver_profile.save!
+    self.creator.solver_profile.solutions.push(self)
   end
 end

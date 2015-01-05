@@ -50,9 +50,8 @@ class Quest
   private
   def on_created
     # add itself to seeker's favorite quests
-    # self.creator.seeker_profile.quests << self
-    # self.creator.seeker_profile.save!
-    # # schedule a job to close itself at deadline
+    self.creator.seeker_profile.quests.push(self)
+    # schedule a job to close itself at deadline
     # CloseQuestWorker.perform_at(self.deadline, self.id)
     # distribution
 
