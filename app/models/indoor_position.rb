@@ -10,19 +10,19 @@ class IndoorPosition
   embedded_in :indoor_locatable, polymorphic: true
 
 
-  def min_latitude
-    self.latitude - self.radius
+  def min_x
+    self.x - self.radius
   end
 
-  def min_longitude
-    self.longitude - self.radius
+  def max_x
+    self.x + self.radius
   end
 
-  def max_latitude
-    self.latitude + self.radius
+  def min_y
+    self.y - self.radius
   end
 
-  def max_longitude
-    self.longitude + self.radius
+  def max_y
+    self.y + self.radius
   end
 end

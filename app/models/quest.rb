@@ -58,5 +58,6 @@ class Quest
 
     DistributeQuestWorker.perform_async(self.id.to_s)
 
+    # TODO: 新建worker，当时间到达时调用quest_finish函数
   end
 end
