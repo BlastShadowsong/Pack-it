@@ -6,5 +6,5 @@ class Bargain
   field :name, type: String
 
   belongs_to :shop
-  has_and_belongs_to_many :bargain_tags, inverse_of: nil
+  has_and_belongs_to_many :shopping_tags, inverse_of: nil
 end

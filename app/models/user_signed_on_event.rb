@@ -1,6 +1,5 @@
-class UserSignedOnEvent
+class UserSignedOnEvent < Event
   include Mongoid::Document
-  include Mongoid::Timestamps::Created
 
   embeds_one :outdoor_position, as: :locatable
   embeds_one :indoor_position, as: :locatable
