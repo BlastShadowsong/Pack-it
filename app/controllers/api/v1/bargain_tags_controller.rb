@@ -3,7 +3,7 @@ class Api::V1::BargainTagsController < Api::V1::ApiController
 
   def index
     @bargain_tags = BargainTag.all
-    respond_with @bargain_tags.page(params[:page]).per(params[:page_size])
+    respond_with @bargain_tags.page(params[:page]).per(params[:size])
   end
 
   def show

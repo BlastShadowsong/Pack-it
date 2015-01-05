@@ -8,7 +8,7 @@ class Api::V1::ShopsController < Api::V1::ApiController
     @shops = @business_complex.shops if @business_complex.present?
     @shops = @brand.shops if @brand.present?
     @shops = @shops.where(shop_params) if params[:shop].present?
-    respond_with @shops.desc(:created_at).page(params[:page]).per(params[:page_size])
+    respond_with @shops.desc(:created_at).page(params[:page]).per(params[:size])
   end
 
   def show
