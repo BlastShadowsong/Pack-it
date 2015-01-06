@@ -2,7 +2,7 @@ class Shop
   include Mongoid::Document
   include Mongoid::Timestamps
   include Trackable
-  include Locatable::Indoor::Circle
+  include Locatable::Indoor
 
   field :name, type: String
   field :logo, type: String
