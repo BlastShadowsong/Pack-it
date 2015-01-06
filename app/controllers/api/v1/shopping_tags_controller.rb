@@ -1,4 +1,4 @@
-class Api::V1::ShoppingTagsController < Api::V1::ApiController
+class Api::V1::ShoppingTagsController < Api::ApplicationController
   before_action :set_shopping_tag, only: [:show]
 
   def index

@@ -1,4 +1,4 @@
-class Api::V1::BargainsController < Api::V1::ApiController
+class Api::V1::BargainsController < Api::ApplicationController
   before_action :set_city, only: [:index]
   before_action :set_mall, only: [:index]
   before_action :set_shopping_tag, only: [:index]

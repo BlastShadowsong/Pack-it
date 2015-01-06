@@ -1,4 +1,4 @@
-class Api::V1::BrandsController < Api::V1::ApiController
+class Api::V1::BrandsController < Api::ApplicationController
   def index
     respond_with Brand.all
   end

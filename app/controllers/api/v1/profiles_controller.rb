@@ -1,4 +1,4 @@
-class Api::V1::ProfilesController < Api::V1::ApiController
+class Api::V1::ProfilesController < Api::ApplicationController
   before_action :set_user
   before_action :set_profile, only: [:show, :update]
 

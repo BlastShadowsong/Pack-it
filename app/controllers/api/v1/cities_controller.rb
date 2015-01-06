@@ -1,4 +1,4 @@
-class Api::V1::CitiesController < Api::V1::ApiController
+class Api::V1::CitiesController < Api::ApplicationController
   def index
     respond_with City.all
   end
