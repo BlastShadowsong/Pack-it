@@ -1,6 +1,6 @@
 class Locator
   include Mongoid::Document
-  include Locatable::Indoor::Point
+  include Locatable::Indoor
 
   field :major, type: Integer
   field :minor, type: Integer
