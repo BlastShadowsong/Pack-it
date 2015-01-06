@@ -54,11 +54,16 @@ class Quest
 
   def complete
     # TODO: step 0: 对Solutions的结果做voting，并将最终结果存入Quest的result中
+    self.solutions.each { |solution|
+      if(solution.status.solved?)
+        self.set(result: solution.result)
+      end
+    }
 
     # step 1: 修改Quest与相应Solutions中的状态为solved
-    self.set(status: solved)
+    self.set(status: :solved)
     self.solutions.each { |solution|
-      solution.set(status: solved)
+      solution.set(status: :solved)
     }
 
     # step 2: 修改Seeker与Solvers的credit
@@ -78,11 +83,11 @@ class Quest
     # TODO: step 4: 向Seeker和Solver推送结果
   end
 
-  def fail
+  def close
     # step 1: 修改Quest与相应Solutions中的状态为failed
-    self.set(status: failed)
+    self.set(status: :failed)
     self.solutions.each { |solution|
-      solution.set(status: failed)
+      solution.set(status: :failed)
     }
     # step 2: 修改Seeker_Profile与Solver_Profile中的 failed + 1
     self.creator.seeker_profile.increase_failed

@@ -1,5 +1,5 @@
 class Api::V1::QuestsController < Api::V1::ApiController
-  before_action :set_quest, only: [:show, :destroy]
+  before_action :set_quest, only: [:show, :update, :destroy]
 
 
   def index
@@ -19,13 +19,14 @@ class Api::V1::QuestsController < Api::V1::ApiController
     respond_with 'api_v1', @quest
   end
 
-  def destroy
-    # TODO: 调用fail方法
+  def update
+    @quest.update!(quest_params)
     respond_with 'api_v1', @quest
   end
 
-  def update
-
+  def destroy
+    @quest.close
+    respond_with 'api_v1', @quest
   end
 
   def check_finish

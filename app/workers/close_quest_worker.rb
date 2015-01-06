@@ -11,7 +11,7 @@ class CloseQuestWorker
     end
     # 判断count是否为0：为0表示任务失败，调用fail；不为0表示任务完成，调用complete
     if(quest.count == 0 && quest.status.failed?)
-      quest.fail
+      quest.close
       logger.info "#{subject}: Deadline: quest failed!"
     end
 

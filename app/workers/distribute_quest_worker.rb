@@ -10,20 +10,16 @@ class DistributeQuestWorker
     latest_time = Time.now - 5 * 60
 
     # step 2: 查询location_profile中满足以下条件的用户:
-    # indoor_location在坐标范围之内
+    # location在坐标范围之内
     # updated_at在latest_time之后
     # 排序依据为updated_at降序，取前amount个
-    distribute_solvers = LocationProfile.all
+    active_solvers = LocationProfile.where(:updated_at.lte => latest_time)
+    distribute_solvers = []
     quest.shops.each { |shop|
-      filter = {
-          :"updated_at" => {"$lte" => latest_time},
-          :"indoor_position.floor" => {"$eq" => shop.indoor_position.floor},
-          :"indoor_position.x" => {"$gte" => shop.indoor_position.min_x, "$lte" => shop.indoor_position.max_x},
-          :"indoor_position.y" => {"$gte" => shop.indoor_position.min_y, "$lte" => shop.indoor_position.max_y}
-      }
-      distribute_solvers = distribute_solvers.or(filter)
+      distribute_solvers += active_solvers.near(position: shop.position).max_distance(position: shop.radius)
+                                .where(:floor => shop.floor)
     }
-    distribute_solvers = distribute_solvers.limit(quest.amount)
+    distribute_solvers = distribute_solvers.take(quest.amount)
 
     # step 3: 调用solution的create方法，赋给相应的参数，分别创建对应的solution
     distribute_solvers.each { |solver|
