@@ -43,6 +43,9 @@ group :development, :test do
   gem 'spring'
 end
 
+# for api, github: 'rails-api/rails-api'
+gem 'rails-api'
+
 # template engine (instead of ERB)
 gem 'slim-rails'
 # bootstrap assets and layout, github: 'seyhunak/twitter-bootstrap-rails'

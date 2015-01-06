@@ -1,6 +1,5 @@
-class Api::ApplicationController < ActionController::Base
-  protect_from_forgery with: :null_session
-  skip_before_action :verify_authenticity_token
+class Api::ApplicationController < ActionController::API
+  include ActionController::ImplicitRender
 
   before_action -> { doorkeeper_authorize! :public }, only: [:index, :show]
   before_action -> { doorkeeper_authorize! :write }, only: [:create, :update]
