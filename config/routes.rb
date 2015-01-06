@@ -24,13 +24,13 @@ Rails.application.routes.draw do
         resources :profiles, only: [:index, :show]
       end
 
-      resources :territories, only: [:index, :show] do
-        resources :business_complexes, only: [:index]
+      resources :cities, only: [:index, :show] do
+        resources :malls, only: [:index]
         resources :shops, only: [:index]
         resources :bargains, only: [:index]
       end
 
-      resources :business_complexes, only: [:show] do
+      resources :malls, only: [:show] do
         resources :locators, only: [:index]
         resources :shops, only: [:index]
         resources :bargains, only: [:index]

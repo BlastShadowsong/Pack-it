@@ -1,5 +1,5 @@
 class Api::V1::ProfilesController < Api::V1::ApiController
-  before_action :set_user, only: [:index, :show]
+  before_action :set_user
   before_action :set_profile, only: [:show, :update]
 
   def index
