@@ -52,6 +52,8 @@ gem 'twitter-bootstrap-rails'
 gem 'mongoid'
 # enum support for both active record and mongoid, github: 'brainspec/enumerize'
 gem 'enumerize'
+# geospatial extension for mongoid, github: 'nofxx/mongoid-geospatial'
+gem 'mongoid-geospatial'
 
 # authentication, github: 'plataformatec/devise'
 gem 'devise'
@@ -74,8 +76,7 @@ gem 'sidekiq'
 gem 'sinatra', '>= 1.3.0', :require => nil
 # make job unique, github: 'mhenrixon/sidekiq-unique-jobs'
 # gem 'sidekiq-unique-jobs'
-# pagination, github: 'amatsuda/kaminari'
-gem 'kaminari'
+
 # for config/application.yml
 gem 'figaro'
 

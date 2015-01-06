@@ -1,13 +1,13 @@
 class Api::V1::LocatorsController < Api::V1::ApiController
-  before_action :set_business_complex, only: [:index]
+  before_action :set_mall, only: [:index]
 
   def index
-    respond_with @business_complex.locators
+    respond_with @mall.locators
   end
 
   private
-  def set_business_complex
-    @business_complex = BusinessComplex.find(params[:business_complex_id])
+  def set_mall
+    @mall = Mall.find(params[:mall_id])
   end
 
 end

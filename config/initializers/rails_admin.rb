@@ -1,3 +1,6 @@
+require 'rails_admin/adapters/mongoid'
+RailsAdmin::Adapters::Mongoid::DISABLED_COLUMN_TYPES.delete('Mongoid::Geospatial::Point')
+
 RailsAdmin.config do |config|
 
   config.label_methods.insert(0, :label)
