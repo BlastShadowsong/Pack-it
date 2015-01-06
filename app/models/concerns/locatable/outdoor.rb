@@ -6,7 +6,9 @@ module Locatable
       include Mongoid::Document
       include Mongoid::Geospatial
 
-      field :location, type: Mongoid::Geospatial::Point, spatial: true
+      field :location, type: Mongoid::Geospatial::Point
+
+      spatial_index :location
     end
   end
 end
