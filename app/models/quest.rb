@@ -47,16 +47,70 @@ class Quest
     self.startup + self.duration * 60
   end
 
+  def credit_expend
+    self.credit * self.count
+  end
+
+  def complete
+    # step 1: 修改Quest与相应Solutions中的状态为solved
+    self.set(status: solved)
+    self.solutions.each { |solution|
+      solution.set(status: solved)
+    }
+
+    # step 2: 修改Seeker与Solvers的credit
+    self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
+    self.solutions.each { |solution|
+      solution.creator.crowdsourcing_profile.increase_credit(solution.credit)
+    }
+
+    # step 3: 修改Seeker_Profile与Solver_Profile中的 finished + 1 以及积分变化
+    self.creator.seeker_profile.increase_finished
+    self.creator.seeker_profile.increase_credit(self.credit_expend)
+    self.solutions.each { |solution|
+      solution.creator.solver_profile.increase_finished
+      solution.creator.solver_profile.increase_credit(solution.credit)
+    }
+
+    # TODO: step 4: 向Seeker和Solver推送结果
+  end
+
+  def fail
+    # step 1: 修改Quest与相应Solutions中的状态为failed
+    self.set(status: failed)
+    self.solutions.each { |solution|
+      solution.set(status: failed)
+    }
+    # step 2: 修改Seeker_Profile与Solver_Profile中的 failed + 1
+    self.creator.seeker_profile.increase_failed
+    self.solutions.each { |solution|
+      solution.creator.solver_profile.increase_failed
+    }
+
+    # TODO: step 3: 向Seeker和Solver推送结果
+  end
+
+  def feedback
+    # 任务只能取消/重发，用户唯一可以做的修改就是添加feedback
+    # TODO: 任务评价
+    # step 1: 修改Quest的status为commented，feedback为上传的feedback
+    #
+    # step 2: 在Seeker_Profile的prefer中修改相应的accepted或denied + 1
+    #
+    # step 3: 找到Quest相关的solution，修改status为commented
+    # 如果该用户答案与最终答案一致且用户accept，修改feedback为 accepted，Solver_Profile中 accepted + 1
+    # 如果该用户答案与最终答案一致且用户denied，修改feedback为 denied，Solver_Profile中 denied + 1
+    # 如果该用户答案与最终答案不一致且用户accept，修改feedback为 denied，Solver_Profile中 denied + 1
+  end
+
+
   private
   def on_created
     # add itself to seeker's favorite quests
     self.creator.seeker_profile.quests.push(self)
     # schedule a job to close itself at deadline
-    # CloseQuestWorker.perform_at(self.deadline, self.id)
+    CloseQuestWorker.perform_at(self.deadline, self.id)
     # distribution
-
     DistributeQuestWorker.perform_async(self.id.to_s)
-
-    # TODO: 新建worker，当时间到达时调用quest_finish函数
   end
 end

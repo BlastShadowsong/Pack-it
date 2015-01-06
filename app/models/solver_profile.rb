@@ -19,4 +19,24 @@ class SolverProfile < Profile
   def increase_total
     self.inc(total: 1)
   end
+
+  def increase_finished
+    self.inc(finished: 1)
+  end
+
+  def increase_failed
+    self.inc(failed: 1)
+  end
+
+  def increase_accepted
+    self.inc(accepted: 1)
+  end
+
+  def increase_denied
+    self.inc(denied: 1)
+  end
+
+  def increase_credit(value)
+    self.inc(credit: value)
+  end
 end

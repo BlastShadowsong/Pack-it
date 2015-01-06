@@ -6,4 +6,12 @@ class CrowdsourcingProfile < Profile
   enumerize :kind,
             in: [:customer, :shopkeeper, :officer],
             default: :customer
+
+  def increase_credit(value)
+    self.inc(credit: value)
+  end
+
+  def decrease_credit(value)
+    self.inc(credit: (-1) * value)
+  end
 end

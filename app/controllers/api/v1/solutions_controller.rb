@@ -2,7 +2,7 @@ class Api::V1::SolutionsController < Api::V1::ApiController
   before_action :set_quest, only: [:index, :create]
 
   def index
-    # TODO：查询任务在Solver_Profile中完成（还有删除任务，status修改和prefer中删除）
+    # TODO：查询任务在Solver_Profile中完成（还有完成任务、删除任务）
     @solutions = @quest.solutions
     respond_with @solutions
   end

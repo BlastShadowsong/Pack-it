@@ -45,7 +45,6 @@ class DistributeQuestWorker
 
     distribute_solvers.each{ |solver|
       solver.user.solver_profile.increase_total
-      # TODO: 添加入收藏
     }
     # step 5: 使用腾讯信鸽进行推送
   end
