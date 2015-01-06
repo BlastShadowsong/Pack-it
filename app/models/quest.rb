@@ -31,6 +31,7 @@ class Quest
             default: :unsolved
 
   field :message, type: String
+  field :result, type: String
 
   field :feedback
   enumerize :feedback,
@@ -52,6 +53,8 @@ class Quest
   end
 
   def complete
+    # TODO: step 0: 对Solutions的结果做voting，并将最终结果存入Quest的result中
+
     # step 1: 修改Quest与相应Solutions中的状态为solved
     self.set(status: solved)
     self.solutions.each { |solution|

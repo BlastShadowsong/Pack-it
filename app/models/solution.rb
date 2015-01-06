@@ -26,7 +26,7 @@ class Solution
             default: :unsolved
 
   field :message, type: String
-  field :answer, type: String
+  field :result, type: String
 
   field :feedback
   enumerize :feedback,
