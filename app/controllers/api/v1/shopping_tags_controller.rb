@@ -3,7 +3,7 @@ class Api::V1::ShoppingTagsController < Api::V1::ApiController
 
   def index
     @shopping_tags = ShoppingTag.all
-    respond_with @shopping_tags.page(params[:page]).per(params[:size])
+    paginate_with @shopping_tags
   end
 
   def show

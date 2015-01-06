@@ -2,7 +2,8 @@ class Api::V1::UsersController < Api::V1::ApiController
   before_action :set_user, only: [:show]
 
   def index
-    respond_with User.all
+    @users = User.all
+    paginate_with @users
   end
 
   def show

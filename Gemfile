@@ -77,6 +77,9 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 # make job unique, github: 'mhenrixon/sidekiq-unique-jobs'
 # gem 'sidekiq-unique-jobs'
 
+# pagination for api, github: 'davidcelis/api-pagination'
+gem 'api-pagination'
+
 # for config/application.yml
 gem 'figaro'
 
