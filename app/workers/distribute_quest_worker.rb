@@ -5,7 +5,7 @@ class DistributeQuestWorker
     subject = "quest #{quest_id}"
     logger.info "start DistributeQuestWorker for #{subject}"
     quest = Quest.find(quest_id)
-    
+
     # step 1: 查询business_complex表，获得商家位置，确定分发参数（坐标上下限，人数），支持的最晚时间
     latest_time = Time.now - 5 * 60
 
@@ -41,10 +41,10 @@ class DistributeQuestWorker
 
     # step 4: 修改Seeker_Profile中 total + 1，各个solution对应的Solver_Profile中 total + 1
 
-    quest.creator.seeker_profile.set(total:quest.creator.seeker_profile.total_add)
+    quest.creator.seeker_profile.increase_total
 
     distribute_solvers.each{ |solver|
-      solver.user.solver_profile.set(total:solver.user.solver_profile.total_add)
+      solver.user.solver_profile.increase_total
       # TODO: 添加入收藏
     }
     # step 5: 使用腾讯信鸽进行推送

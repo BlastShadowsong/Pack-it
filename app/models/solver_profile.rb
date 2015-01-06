@@ -16,7 +16,7 @@ class SolverProfile < Profile
 
   has_and_belongs_to_many :solutions, inverse_of: nil
 
-  def total_add
-    total + 1
+  def increase_total
+    self.inc(total: 1)
   end
 end
