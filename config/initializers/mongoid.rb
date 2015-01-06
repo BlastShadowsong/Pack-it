@@ -1,3 +1,4 @@
+# remove $oid from json string
 BSON::ObjectId.class_eval do
   def to_json(*args)
     to_s.to_json

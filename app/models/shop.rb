@@ -1,15 +1,12 @@
 class Shop
   include Mongoid::Document
-
   include Mongoid::Timestamps
   include Trackable
+  include Locatable::Indoor::Circle
 
   field :name, type: String
   field :logo, type: String
   field :no, type: String
-
-  embeds_one :indoor_position, as: :indoor_locatable
-  accepts_nested_attributes_for :indoor_position
 
   alias_method :merchant, :creator
 

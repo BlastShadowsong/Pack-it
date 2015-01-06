@@ -1,17 +1,14 @@
 class Mall
   include Mongoid::Document
-
   include Mongoid::Timestamps
   include Trackable
+  include Locatable::Outdoor
 
   field :name, type: String
   field :logo, type: String
   field :map, type: String
   field :uuid, type: String
   field :address, type: String
-
-  embeds_one :outdoor_position, as: :outdoor_locatable
-  accepts_nested_attributes_for :outdoor_position
 
   has_many :locators
   has_many :shops
