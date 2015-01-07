@@ -1,4 +1,4 @@
-class Api::V1::ProfilesController < Api::V1::ApiController
+class Api::V1::ProfilesController < Api::ApplicationController
   before_action :set_user
   before_action :set_profile, only: [:show, :update]
 
@@ -8,7 +8,7 @@ class Api::V1::ProfilesController < Api::V1::ApiController
   end
 
   def show
-    respond_with @profile
+    respond_with @profile if stale?(@profile)
   end
 
   def update
@@ -19,7 +19,7 @@ class Api::V1::ProfilesController < Api::V1::ApiController
     else
       @profile.update!(profile_params)
     end
-    respond_with 'api_v1', @profile
+    respond_with @profile
   end
 
   private

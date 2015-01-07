@@ -1,9 +1,17 @@
-class Api::V1::BrandsController < Api::V1::ApiController
+class Api::V1::BrandsController < Api::ApplicationController
+  before_action :set_brand, only: [:show]
+
   def index
-    respond_with Brand.all
+    @brands = Brand.all
+    paginate_with @brands
   end
 
   def show
-    respond_with Brand.find(params[:id])
+    respond_with @brand if stale?(@brand)
+  end
+
+  private
+  def set_brand
+    @brand = Brand.find(params[:id])
   end
 end

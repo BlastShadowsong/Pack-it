@@ -1,4 +1,4 @@
-class Api::V1::BargainsController < Api::V1::ApiController
+class Api::V1::BargainsController < Api::ApplicationController
   before_action :set_city, only: [:index]
   before_action :set_mall, only: [:index]
   before_action :set_shopping_tag, only: [:index]
@@ -7,18 +7,18 @@ class Api::V1::BargainsController < Api::V1::ApiController
   before_action :set_bargain, only: [:show]
 
   def index
-    @bargains = Bargain.all
     @bargains = @city.bargains if @city.present?
     @bargains = @mall.bargains if @mall.present?
     @bargains = @shopping_tag.bargains if @shopping_tag.present?
     @bargains = @brand.bargains if @brand.present?
     @bargains = @shop.bargains if @shop.present?
+    @bargains = Bargain.all if @bargains.nil?
     @bargains = @bargains.where(bargain_params) if params[:bargain].present?
-    respond_with @bargains.desc(:created_at).page(params[:page]).per(params[:size])
+    paginate_with @bargains.desc(:created_at)
   end
 
   def show
-    respond_with @bargain
+    respond_with @bargain if stale?(@bargain)
   end
 
   private

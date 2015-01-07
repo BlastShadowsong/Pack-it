@@ -77,6 +77,15 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 # make job unique, github: 'mhenrixon/sidekiq-unique-jobs'
 # gem 'sidekiq-unique-jobs'
 
+# for api, github: 'rails-api/rails-api'
+gem 'rails-api'
+# for api versions, github: 'bploetz/versionist'
+gem 'versionist'
+# for api serialization, github: 'rails-api/active_model_serializers'
+gem 'active_model_serializers', '~> 0.8.0'
+# pagination for api, github: 'davidcelis/api-pagination'
+gem 'api-pagination'
+
 # for config/application.yml
 gem 'figaro'
 

@@ -1,16 +1,18 @@
-class Api::V1::UsersController < Api::V1::ApiController
+class Api::V1::UsersController < Api::ApplicationController
   before_action :set_user, only: [:show]
 
   def index
-    respond_with User.all
+    @users = User.all
+    paginate_with @users
   end
 
   def show
-    respond_with @user
+    respond_with @user if stale?(@user)
   end
 
+  # TODO: user registration
   # def create
-  #   respond_with 'api_v1', User.create!(user_params)
+  #   respond_with User.create!(user_params)
   # end
 
   private

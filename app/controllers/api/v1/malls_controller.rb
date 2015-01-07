@@ -1,4 +1,4 @@
-class Api::V1::MallsController < Api::V1::ApiController
+class Api::V1::MallsController < Api::ApplicationController
   before_action :set_city, only: [:index]
   before_action :set_mall, only: [:show]
 
@@ -7,7 +7,7 @@ class Api::V1::MallsController < Api::V1::ApiController
   end
 
   def show
-    respond_with @mall
+    respond_with @mall if stale?(@mall)
   end
 
   private
