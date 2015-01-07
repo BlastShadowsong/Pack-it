@@ -13,7 +13,7 @@ class DistributeQuestWorker
     # location在坐标范围之内
     # updated_at在latest_time之后
     # 排序依据为updated_at降序，取前amount个
-    active_solvers = LocationProfile.where(:updated_at.lte => latest_time)
+    active_solvers = LocationProfile.where(:updated_at.lte => latest_time).ne(user: quest.creator)
     distribute_solvers = []
     quest.shops.each { |shop|
       distribute_solvers += active_solvers.near(position: shop.position).max_distance(position: shop.radius)

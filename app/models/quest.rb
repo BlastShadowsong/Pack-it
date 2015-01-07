@@ -59,19 +59,16 @@ class Quest
         self.set(result: solution.result)
       end
     }
-
     # step 1: 修改Quest与相应Solutions中的状态为solved
     self.set(status: :solved)
     self.solutions.each { |solution|
       solution.set(status: :solved)
     }
-
     # step 2: 修改Seeker与Solvers的credit
     self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
     self.solutions.each { |solution|
       solution.creator.crowdsourcing_profile.increase_credit(solution.credit)
     }
-
     # step 3: 修改Seeker_Profile与Solver_Profile中的 finished + 1 以及积分变化
     self.creator.seeker_profile.increase_finished
     self.creator.seeker_profile.increase_credit(self.credit_expend)
@@ -79,7 +76,6 @@ class Quest
       solution.creator.solver_profile.increase_finished
       solution.creator.solver_profile.increase_credit(solution.credit)
     }
-
     # TODO: step 4: 向Seeker和Solver推送结果
   end
 
@@ -94,21 +90,36 @@ class Quest
     self.solutions.each { |solution|
       solution.creator.solver_profile.increase_failed
     }
-
     # TODO: step 3: 向Seeker和Solver推送结果
   end
 
-  def feedback
+  def comment
     # 任务只能取消/重发，用户唯一可以做的修改就是添加feedback
     # TODO: 任务评价
-    # step 1: 修改Quest的status为commented，feedback为上传的feedback
-    #
-    # step 2: 在Seeker_Profile的prefer中修改相应的accepted或denied + 1
-    #
-    # step 3: 找到Quest相关的solution，修改status为commented
+    # step 1: 修改Quest与相应Solutions中的status为commented
+    self.set(status: :commented)
+    self.solutions.each { |solution|
+      solution.set(status: :commented)
+    }
+    # step 2: 在Seeker_Profile和相应的Solver_Profile中修改 accepted 或 denied + 1
     # 如果该用户答案与最终答案一致且用户accept，修改feedback为 accepted，Solver_Profile中 accepted + 1
     # 如果该用户答案与最终答案一致且用户denied，修改feedback为 denied，Solver_Profile中 denied + 1
     # 如果该用户答案与最终答案不一致且用户accept，修改feedback为 denied，Solver_Profile中 denied + 1
+    if(self.feedback.accepted?)
+      self.creator.seeker_profile.increase_accepted
+      self.solutions.each { |solution|
+        solution.set(feedback: :accepted)
+        solution.creator.solver_profile.increase_accepted
+      }
+    end
+
+    if(self.feedback.denied?)
+      self.creator.seeker_profile.increase_denied
+      self.solutions.each { |solution|
+        solution.set(feedback: :denied)
+        solution.creator.solver_profile.increase_denied
+      }
+    end
   end
 
 

@@ -20,7 +20,10 @@ class Api::V1::QuestsController < Api::V1::ApiController
   end
 
   def update
-    @quest.update!(quest_params)
+    if(@quest.status.solved?)
+      @quest.update!(quest_params)
+      @quest.comment
+    end
     respond_with 'api_v1', @quest
   end
 
