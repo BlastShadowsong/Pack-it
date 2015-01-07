@@ -43,11 +43,6 @@ group :development, :test do
   gem 'spring'
 end
 
-# for api, github: 'rails-api/rails-api'
-gem 'rails-api'
-# for api versions, github: 'bploetz/versionist'
-gem 'versionist'
-
 # template engine (instead of ERB)
 gem 'slim-rails'
 # bootstrap assets and layout, github: 'seyhunak/twitter-bootstrap-rails'
@@ -82,6 +77,12 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 # make job unique, github: 'mhenrixon/sidekiq-unique-jobs'
 # gem 'sidekiq-unique-jobs'
 
+# for api, github: 'rails-api/rails-api'
+gem 'rails-api'
+# for api versions, github: 'bploetz/versionist'
+gem 'versionist'
+# for api serialization, github: 'rails-api/active_model_serializers'
+gem 'active_model_serializers', '~> 0.8.0'
 # pagination for api, github: 'davidcelis/api-pagination'
 gem 'api-pagination'
 
