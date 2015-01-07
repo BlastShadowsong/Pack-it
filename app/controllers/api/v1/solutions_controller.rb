@@ -1,10 +1,15 @@
 class Api::V1::SolutionsController < Api::V1::ApiController
   before_action :set_quest, only: [:index, :create]
+  before_action :set_solution, only: [:show]
 
   def index
-    # TODO：查询任务在Solver_Profile中完成（还有完成任务、删除任务）
+    # TODO：查询任务、完成任务、删除任务
     @solutions = @quest.solutions
     respond_with @solutions
+  end
+
+  def show
+    respond_with @solution
   end
 
   def create
@@ -21,5 +26,9 @@ class Api::V1::SolutionsController < Api::V1::ApiController
 
   def set_quest
     @quest = Quest.find(params[:quest_id])
+  end
+
+  def set_solution
+    @solution = Solution.find(params[:id])
   end
 end

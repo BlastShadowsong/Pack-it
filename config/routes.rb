@@ -53,7 +53,7 @@ Rails.application.routes.draw do
       end
 
       resources :quests do
-        resources :solutions
+        resources :solutions, shallow: true
       end
 
       get '/me' => "credentials#me"

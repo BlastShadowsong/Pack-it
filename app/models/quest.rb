@@ -59,22 +59,32 @@ class Quest
         self.set(result: solution.result)
       end
     }
-    # step 1: 修改Quest与相应Solutions中的状态为solved
+    # step 1: 修改Quest的状态为solved，未完成的Solutions的状态为failed
     self.set(status: :solved)
     self.solutions.each { |solution|
-      solution.set(status: :solved)
+      if(solution.status.unsolved?)
+        solution.set(status: :failed)
+      end
     }
     # step 2: 修改Seeker与Solvers的credit
     self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
     self.solutions.each { |solution|
-      solution.creator.crowdsourcing_profile.increase_credit(solution.credit)
+      if(solution.status.solved?)
+        solution.creator.crowdsourcing_profile.increase_credit(solution.credit)
+      end
     }
-    # step 3: 修改Seeker_Profile与Solver_Profile中的 finished + 1 以及积分变化
+    # step 3: 修改Seeker_Profile中的 finished + 1 以及积分变化
+    #         修改Solver_Profile：如果完成，finished + 1，积分变化；如果失败，failed + 1，积分不变
     self.creator.seeker_profile.increase_finished
     self.creator.seeker_profile.increase_credit(self.credit_expend)
     self.solutions.each { |solution|
-      solution.creator.solver_profile.increase_finished
-      solution.creator.solver_profile.increase_credit(solution.credit)
+      if(solution.status.solved?)
+        solution.creator.solver_profile.increase_finished
+        solution.creator.solver_profile.increase_credit(solution.credit)
+      end
+      if(solution.status.failed?)
+        solution.creator.solver_profile.increase_failed
+      end
     }
     # TODO: step 4: 向Seeker和Solver推送结果
   end
@@ -95,7 +105,6 @@ class Quest
 
   def comment
     # 任务只能取消/重发，用户唯一可以做的修改就是添加feedback
-    # TODO: 任务评价
     # step 1: 修改Quest与相应Solutions中的status为commented
     self.set(status: :commented)
     self.solutions.each { |solution|
