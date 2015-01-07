@@ -20,6 +20,7 @@ class Quest
   field :credit, type: Integer, default: 0
   # amount表示分发的数量，count表示实际完成的数量
   field :amount, type: Integer, default: 0
+  # TODO: count需要重新命名
   field :count, type: Integer, default: 0
   field :duration, type: Integer
 
@@ -44,6 +45,13 @@ class Quest
   alias_method :startup, :created_at
   alias_method :seeker, :creator
 
+  def increase_count
+    self.inc(count: 1)
+    if self.count == self.amount
+      self.complete
+    end
+  end
+
   def deadline
     self.startup + self.duration * 60
   end
@@ -55,21 +63,21 @@ class Quest
   def complete
     # TODO: step 0: 对Solutions的结果做voting，并将最终结果存入Quest的result中
     self.solutions.each { |solution|
-      if(solution.status.solved?)
+      if solution.status.solved?
         self.set(result: solution.result)
       end
     }
     # step 1: 修改Quest的状态为solved，未完成的Solutions的状态为failed
     self.set(status: :solved)
     self.solutions.each { |solution|
-      if(solution.status.unsolved?)
+      if solution.status.unsolved?
         solution.set(status: :failed)
       end
     }
     # step 2: 修改Seeker与Solvers的credit
     self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
     self.solutions.each { |solution|
-      if(solution.status.solved?)
+      if solution.status.solved?
         solution.creator.crowdsourcing_profile.increase_credit(solution.credit)
       end
     }
@@ -78,11 +86,11 @@ class Quest
     self.creator.seeker_profile.increase_finished
     self.creator.seeker_profile.increase_credit(self.credit_expend)
     self.solutions.each { |solution|
-      if(solution.status.solved?)
+      if solution.status.solved?
         solution.creator.solver_profile.increase_finished
         solution.creator.solver_profile.increase_credit(solution.credit)
       end
-      if(solution.status.failed?)
+      if solution.status.failed?
         solution.creator.solver_profile.increase_failed
       end
     }
@@ -100,7 +108,8 @@ class Quest
     self.solutions.each { |solution|
       solution.creator.solver_profile.increase_failed
     }
-    # TODO: step 3: 向Seeker和Solver推送结果
+    # TODO: step 3: 需要从Seeker_Profile的Quest中移除
+    # TODO: step 4: 向Seeker和Solver推送结果
   end
 
   def comment
@@ -114,7 +123,7 @@ class Quest
     # 如果该用户答案与最终答案一致且用户accept，修改feedback为 accepted，Solver_Profile中 accepted + 1
     # 如果该用户答案与最终答案一致且用户denied，修改feedback为 denied，Solver_Profile中 denied + 1
     # 如果该用户答案与最终答案不一致且用户accept，修改feedback为 denied，Solver_Profile中 denied + 1
-    if(self.feedback.accepted?)
+    if self.feedback.accepted?
       self.creator.seeker_profile.increase_accepted
       self.solutions.each { |solution|
         solution.set(feedback: :accepted)
@@ -122,7 +131,7 @@ class Quest
       }
     end
 
-    if(self.feedback.denied?)
+    if self.feedback.denied?
       self.creator.seeker_profile.increase_denied
       self.solutions.each { |solution|
         solution.set(feedback: :denied)

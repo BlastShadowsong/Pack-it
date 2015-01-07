@@ -42,8 +42,14 @@ class Solution
   def answer
     # 修改solution的状态
     self.set(status: :solved)
+    self.quest.increase_count
   end
 
+  def close
+    self.set(status: :failed)
+    self.creator.solver_profile.increase_failed
+    # TODO: 需要从Solver_Profile的solutions表中移除
+  end
 
   private
   def on_created

@@ -3,7 +3,6 @@ class Api::V1::SolutionsController < Api::ApplicationController
   before_action :set_solution, only: [:show, :update, :destroy]
 
   def index
-    # TODO：查询任务、完成任务、删除任务
     @solutions = @quest.solutions
     @solutions = @solutions.where(solution_params) if params[:solution].present?
     paginate_with @solutions.asc(:updated_at)
@@ -22,9 +21,7 @@ class Api::V1::SolutionsController < Api::ApplicationController
 
   def update
     # Solver可以进行的唯一修改是上传result
-    if(@solution.status.unsolved?)
-      @solution.update!(quest_params)
-    end
+    @solution.update!(solution_params)
     respond_with @solution
   end
 
