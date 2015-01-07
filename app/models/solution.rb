@@ -6,6 +6,7 @@ class Solution
   extend Enumerize
 
   after_create :on_created
+  after_update :answer
 
   field :kind
   enumerize :kind,
@@ -37,6 +38,12 @@ class Solution
 
   alias_method :startup, :created_at
   alias_method :solver, :creator
+
+  def answer
+    # 修改solution的状态
+    self.set(status: :solved)
+  end
+
 
   private
   def on_created

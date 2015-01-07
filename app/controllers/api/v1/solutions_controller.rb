@@ -1,6 +1,6 @@
 class Api::V1::SolutionsController < Api::V1::ApiController
   before_action :set_quest, only: [:index, :create]
-  before_action :set_solution, only: [:show]
+  before_action :set_solution, only: [:show, :update, :destroy]
 
   def index
     # TODO：查询任务、完成任务、删除任务
@@ -16,6 +16,19 @@ class Api::V1::SolutionsController < Api::V1::ApiController
     # 创建任务在QuestDistributeWorker中完成，Solver不能自己创建任务
     @solution = @quest.solutions.build(solution_params)
     @solution.save!
+    respond_with 'api_v1', @solution
+  end
+
+  def update
+    # Solver可以进行的唯一修改是上传result
+    if(@solution.status.unsolved?)
+      @solution.update!(quest_params)
+    end
+    respond_with 'api_v1', @solution
+  end
+
+  def destroy
+    @solution.close
     respond_with 'api_v1', @solution
   end
 
