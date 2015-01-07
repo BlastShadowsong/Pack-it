@@ -10,8 +10,9 @@ class Api::V1::UsersController < Api::ApplicationController
     respond_with @user
   end
 
+  # TODO: user registration
   # def create
-  #   respond_with 'api_v1', User.create!(user_params)
+  #   respond_with User.create!(user_params)
   # end
 
   private

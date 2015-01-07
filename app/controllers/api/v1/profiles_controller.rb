@@ -19,7 +19,7 @@ class Api::V1::ProfilesController < Api::ApplicationController
     else
       @profile.update!(profile_params)
     end
-    respond_with 'api_v1', @profile
+    respond_with @profile
   end
 
   private

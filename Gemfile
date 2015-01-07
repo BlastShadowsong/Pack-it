@@ -45,6 +45,8 @@ end
 
 # for api, github: 'rails-api/rails-api'
 gem 'rails-api'
+# for api versions, github: 'bploetz/versionist'
+gem 'versionist'
 
 # template engine (instead of ERB)
 gem 'slim-rails'
