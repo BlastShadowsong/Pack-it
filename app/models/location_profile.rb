@@ -2,6 +2,6 @@ class LocationProfile < Profile
   include Mongoid::Document
 
   include Locatable::Outdoor
-  include Locatable::Indoor
+  include Locatable::Indoor::Position
 
 end

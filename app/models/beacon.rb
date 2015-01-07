@@ -1,6 +1,6 @@
-class Locator
+class Beacon
   include Mongoid::Document
-  include Locatable::Indoor
+  include Locatable::Indoor::Around
 
   field :major, type: Integer
   field :minor, type: Integer

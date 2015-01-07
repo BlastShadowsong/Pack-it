@@ -1,3 +1,3 @@
 class ShopSerializer < ActiveModel::Serializer
-  attributes :id, :name, :logo, :no, :position, :radius, :floor, :building
+  attributes :id, :name, :logo, :no, :area, :floor, :building_uuid
 end
