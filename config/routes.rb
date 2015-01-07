@@ -41,7 +41,7 @@ Rails.application.routes.draw do
 
     resources :bargains, only: [:show]
 
-    resources :taxonomies, only: [:index, :show] do
+    resources :categories, only: [:index, :show] do
       resources :tags, only: [:index]
     end
 
