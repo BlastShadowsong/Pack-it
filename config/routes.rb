@@ -51,6 +51,10 @@ Rails.application.routes.draw do
       resources :bargains, only: [:index]
     end
 
+    resources :quests do
+      resources :solutions, shallow: true
+    end
+
     get '/me' => "credentials#me"
 
   end
