@@ -18,10 +18,9 @@ class Quest
             default: :green
 
   field :credit, type: Integer, default: 0
-  # amount表示分发的数量，count表示实际完成的数量
+  # amount表示分发的数量，figure表示实际完成的数量
   field :amount, type: Integer, default: 0
-  # TODO: count需要重新命名
-  field :count, type: Integer, default: 0
+  field :figure, type: Integer, default: 0
   field :duration, type: Integer
 
   field :status
@@ -45,9 +44,9 @@ class Quest
   alias_method :startup, :created_at
   alias_method :seeker, :creator
 
-  def increase_count
-    self.inc(count: 1)
-    if self.count == self.amount
+  def increase_figure
+    self.inc(figure: 1)
+    if self.figure == self.amount
       self.complete
     end
   end
@@ -57,7 +56,7 @@ class Quest
   end
 
   def credit_expend
-    self.credit * self.count
+    self.credit * self.figure
   end
 
   def complete

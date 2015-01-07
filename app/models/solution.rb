@@ -42,7 +42,7 @@ class Solution
   def answer
     # 修改solution的状态
     self.set(status: :solved)
-    self.quest.increase_count
+    self.quest.increase_figure
   end
 
   def close
