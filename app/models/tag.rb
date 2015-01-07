@@ -2,4 +2,10 @@ class Tag
   include Mongoid::Document
 
   field :name, type: String
+
+  belongs_to :taxonomy
+
+  def tagged(queryable)
+    queryable.where(tag_ids: self.id)
+  end
 end

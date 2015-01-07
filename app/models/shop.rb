@@ -14,5 +14,5 @@ class Shop
   belongs_to :brand
   has_many :bargains
 
-  has_and_belongs_to_many :shopping_tags, inverse_of: nil
+  has_and_belongs_to_many :tags, inverse_of: nil
 end

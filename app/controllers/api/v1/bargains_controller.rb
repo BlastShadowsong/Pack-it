@@ -1,7 +1,7 @@
 class Api::V1::BargainsController < Api::ApplicationController
   before_action :set_city, only: [:index]
   before_action :set_mall, only: [:index]
-  before_action :set_shopping_tag, only: [:index]
+  before_action :set_tag, only: [:index]
   before_action :set_brand, only: [:index]
   before_action :set_shop, only: [:index]
   before_action :set_bargain, only: [:show]
@@ -9,7 +9,7 @@ class Api::V1::BargainsController < Api::ApplicationController
   def index
     @bargains = @city.bargains if @city.present?
     @bargains = @mall.bargains if @mall.present?
-    @bargains = @shopping_tag.bargains if @shopping_tag.present?
+    @bargains = @tag.tagged(Bargain) if @tag.present?
     @bargains = @brand.bargains if @brand.present?
     @bargains = @shop.bargains if @shop.present?
     @bargains = Bargain.all if @bargains.nil?
@@ -38,8 +38,8 @@ class Api::V1::BargainsController < Api::ApplicationController
     @mall = Mall.find(params[:mall_id]) if params[:mall_id].present?
   end
 
-  def set_shopping_tag
-    @shopping_tag = ShoppingTag.find(params[:shopping_tag_id]) if params[:shopping_tag_id].present?
+  def set_tag
+    @tag = Tag.find(params[:tag_id]) if params[:tag_id].present?
   end
 
   def set_brand

@@ -1,4 +1,4 @@
 class CustomerProfileSerializer < ProfileSerializer
   has_many :bargains
-  has_many :shopping_tags
+  has_many :tags
 end
