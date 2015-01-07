@@ -1,0 +1,2 @@
+class MerchantProfileSerializer < ProfileSerializer
+end

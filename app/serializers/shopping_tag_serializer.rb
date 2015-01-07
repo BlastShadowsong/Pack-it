@@ -1,0 +1,3 @@
+class ShoppingTagSerializer < TagSerializer
+
+end
