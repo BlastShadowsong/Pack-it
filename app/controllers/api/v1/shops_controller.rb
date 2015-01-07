@@ -6,17 +6,17 @@ class Api::V1::ShopsController < Api::ApplicationController
   before_action :set_shop, only: [:show]
 
   def index
-    @shops = Shop.all
     @shops = @city.shops if @city.present?
     @shops = @mall.shops if @mall.present?
     @shops = @shopping_tag.shops if @shopping_tag.present?
     @shops = @brand.shops if @brand.present?
+    @shops = Shop.all if @shops.nil?
     @shops = @shops.where(shop_params) if params[:shop].present?
     paginate_with @shops.desc(:created_at)
   end
 
   def show
-    respond_with @shop
+    respond_with @shop if stale?(@shop)
   end
 
   private

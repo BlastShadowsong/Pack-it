@@ -7,7 +7,7 @@ class Api::V1::MallsController < Api::ApplicationController
   end
 
   def show
-    respond_with @mall
+    respond_with @mall if stale?(@mall)
   end
 
   private

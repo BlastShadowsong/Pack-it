@@ -7,7 +7,7 @@ class Api::V1::ShoppingTagsController < Api::ApplicationController
   end
 
   def show
-    respond_with @shopping_tag
+    respond_with @shopping_tag if stale?(@shopping_tag)
   end
 
   private

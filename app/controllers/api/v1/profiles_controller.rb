@@ -8,7 +8,7 @@ class Api::V1::ProfilesController < Api::ApplicationController
   end
 
   def show
-    respond_with @profile
+    respond_with @profile if stale?(@profile)
   end
 
   def update

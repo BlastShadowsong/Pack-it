@@ -7,7 +7,7 @@ class Api::V1::UsersController < Api::ApplicationController
   end
 
   def show
-    respond_with @user
+    respond_with @user if stale?(@user)
   end
 
   # TODO: user registration
