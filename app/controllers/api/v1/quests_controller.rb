@@ -1,22 +1,20 @@
-class Api::V1::QuestsController < Api::V1::ApiController
+class Api::V1::QuestsController < Api::ApplicationController
   before_action :set_quest, only: [:show, :update, :destroy]
 
 
   def index
-    # dynamic query for where(), e.g. /quests?quest[status]=unsolved
     @quests = Quest.all
     @quests = @quests.where(quest_params) if params[:quest].present?
-    # pagination, 25 per page by default, e.g. /quests?page=2&size=25
-    respond_with @quests.desc(:created_at).page(params[:page]).per(params[:size])
+    paginate_with @quests.desc(:created_at)
   end
 
   def show
-    respond_with @quest
+    respond_with @quest if stale?(@quest)
   end
 
   def create
     @quest = Quest.create!(quest_params)
-    respond_with 'api_v1', @quest
+    respond_with @quest
   end
 
   def update
@@ -24,12 +22,12 @@ class Api::V1::QuestsController < Api::V1::ApiController
       @quest.update!(quest_params)
       @quest.comment
     end
-    respond_with 'api_v1', @quest
+    respond_with @quest
   end
 
   def destroy
     @quest.close
-    respond_with 'api_v1', @quest
+    respond_with @quest
   end
 
   def check_finish

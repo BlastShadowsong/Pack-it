@@ -1,22 +1,23 @@
-class Api::V1::SolutionsController < Api::V1::ApiController
+class Api::V1::SolutionsController < Api::ApplicationController
   before_action :set_quest, only: [:index, :create]
   before_action :set_solution, only: [:show, :update, :destroy]
 
   def index
     # TODO：查询任务、完成任务、删除任务
     @solutions = @quest.solutions
-    respond_with @solutions
+    @solutions = @solutions.where(solution_params) if params[:solution].present?
+    paginate_with @solutions.asc(:updated_at)
   end
 
   def show
-    respond_with @solution
+    respond_with @solution if stale?(@solution)
   end
 
   def create
     # 创建任务在QuestDistributeWorker中完成，Solver不能自己创建任务
     @solution = @quest.solutions.build(solution_params)
     @solution.save!
-    respond_with 'api_v1', @solution
+    respond_with @solution
   end
 
   def update
@@ -24,12 +25,12 @@ class Api::V1::SolutionsController < Api::V1::ApiController
     if(@solution.status.unsolved?)
       @solution.update!(quest_params)
     end
-    respond_with 'api_v1', @solution
+    respond_with @solution
   end
 
   def destroy
     @solution.close
-    respond_with 'api_v1', @solution
+    respond_with @solution
   end
 
   private
