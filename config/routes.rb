@@ -17,47 +17,42 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
-  namespace :api do
-    namespace :v1 do
-      resources :profiles, only: [:index, :show, :update]
-      resources :users, only: [:index, :show, :create, :update] do
-        resources :profiles, only: [:index, :show]
-      end
-
-      resources :cities, only: [:index, :show] do
-        resources :malls, only: [:index]
-        resources :shops, only: [:index]
-        resources :bargains, only: [:index]
-      end
-
-      resources :malls, only: [:show] do
-        resources :locators, only: [:index]
-        resources :shops, only: [:index]
-        resources :bargains, only: [:index]
-      end
-
-      resources :shops, only: [:show] do
-        resources :bargains, only: [:index]
-      end
-
-      resources :bargains, only: [:show]
-
-      resources :shopping_tags, only: [:index, :show] do
-        resources :shops, only: [:index]
-        resources :bargains, only: [:index]
-      end
-
-      resources :brands, only: [:index, :show] do
-        resources :shops, only: [:index]
-        resources :bargains, only: [:index]
-      end
-
-      resources :quests do
-        resources :solutions, shallow: true
-      end
-
-      get '/me' => "credentials#me"
+  api_version(:module => "Api::V1", :header => {:name => "API-VERSION", :value => "v1"}) do
+    resources :profiles, only: [:index, :show, :update]
+    resources :users, only: [:index, :show, :create, :update] do
+      resources :profiles, only: [:index, :show]
     end
+
+    resources :cities, only: [:index, :show] do
+      resources :malls, only: [:index]
+      resources :shops, only: [:index]
+      resources :bargains, only: [:index]
+    end
+
+    resources :malls, only: [:show] do
+      resources :locators, only: [:index]
+      resources :shops, only: [:index]
+      resources :bargains, only: [:index]
+    end
+
+    resources :shops, only: [:show] do
+      resources :bargains, only: [:index]
+    end
+
+    resources :bargains, only: [:show]
+
+    resources :shopping_tags, only: [:index, :show] do
+      resources :shops, only: [:index]
+      resources :bargains, only: [:index]
+    end
+
+    resources :brands, only: [:index, :show] do
+      resources :shops, only: [:index]
+      resources :bargains, only: [:index]
+    end
+
+    get '/me' => "credentials#me"
+
   end
   
   # The priority is based upon order of creation: first created -> highest priority.

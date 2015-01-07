@@ -1,4 +1,4 @@
-class Api::V1::LocatorsController < Api::V1::ApiController
+class Api::V1::LocatorsController < Api::ApplicationController
   before_action :set_mall, only: [:index]
 
   def index

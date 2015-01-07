@@ -1,10 +1,7 @@
 # remove $oid from json string
-BSON::ObjectId.class_eval do
-  def to_json(*args)
-    to_s.to_json
-  end
-
-  def as_json(*args)
-    to_s.as_json
+module BSON
+  class ObjectId
+    alias :to_json :to_s
+    alias :as_json :to_s
   end
 end
