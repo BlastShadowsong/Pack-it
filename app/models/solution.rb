@@ -48,7 +48,6 @@ class Solution
   def close
     self.set(status: :failed)
     self.creator.solver_profile.increase_failed
-    # TODO: 需要从Solver_Profile的solutions表中移除
   end
 
   private

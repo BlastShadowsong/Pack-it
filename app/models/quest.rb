@@ -107,8 +107,7 @@ class Quest
     self.solutions.each { |solution|
       solution.creator.solver_profile.increase_failed
     }
-    # TODO: step 3: 需要从Seeker_Profile的Quest中移除
-    # TODO: step 4: 向Seeker和Solver推送结果
+    # TODO: step 3: 向Seeker和Solver推送结果
   end
 
   def comment

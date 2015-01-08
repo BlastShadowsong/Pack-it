@@ -2,6 +2,7 @@ class Api::V1::ProfilesController < Api::ApplicationController
   before_action :set_user
   before_action :set_profile, only: [:show, :update]
 
+  # TODO: create/delete of items in profiles (using id of the item)
   def index
     @profiles = @user.profiles
     respond_with Hash[@profiles.map { |el| [el.class.name, el] }]
