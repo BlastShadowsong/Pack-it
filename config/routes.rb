@@ -18,9 +18,16 @@ Rails.application.routes.draw do
   root 'home#index'
 
   api_version(:module => "Api::V1", :header => {:name => "API-VERSION", :value => "v1"}) do
-    resources :profiles, only: [:index, :show, :update]
+
+    get '/me' => "credentials#me"
+    resource :location_profile, except: [:new, :edit]
+    resource :customer_profile, except: [:new, :edit]
+    resource :seeker_profile, except: [:new, :edit]
+    resource :solver_profile, except: [:new, :edit]
+
+    resources :profiles, only: [:index]
     resources :users, only: [:index, :show, :create, :update] do
-      resources :profiles, only: [:index, :show]
+      resources :profiles, only: [:index]
     end
 
     resources :cities, only: [:index, :show] do
@@ -59,8 +66,6 @@ Rails.application.routes.draw do
     resources :quests do
       resources :solutions, shallow: true
     end
-
-    get '/me' => "credentials#me"
 
   end
   

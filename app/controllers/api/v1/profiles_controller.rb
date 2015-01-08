@@ -1,34 +1,53 @@
 class Api::V1::ProfilesController < Api::ApplicationController
   before_action :set_user
-  before_action :set_profile, only: [:show, :update]
+  before_action :set_profile, except: [:index]
 
   def index
     @profiles = @user.profiles
-    respond_with Hash[@profiles.map { |el| [el.class.name, el] }]
+    @profiles = @profiles.where(profile_params) if params[:profile].present?
+    respond_with @profiles
   end
 
   def show
     respond_with @profile if stale?(@profile)
   end
 
+  def create
+    profile_params.each { |key, value|
+      if @profile[key].present? and value.is_a?(Array)
+        @profile[key] = @profile[key].as_json | value
+      else
+        @profile[key] = value
+      end
+    }
+    @profile.save!
+    respond_with @profile, status: :no_content
+  end
+
   def update
-    if @profile.nil?
-      @profile = current_resource_owner.profiles.build(profile_params)
-      @profile['_type'] = params[:id]
-      @profile.save!
-    else
-      @profile.update!(profile_params)
-    end
+    @profile.update!(profile_params)
     respond_with @profile
   end
 
-  private
+  def destroy
+    profile_params.each { |key, value|
+      if @profile[key].present? and value.is_a?(Array)
+        @profile[key] = @profile[key].as_json - value
+      else
+        @profile[key] = nil
+      end
+    }
+    @profile.save!
+    respond_with @profile
+  end
+
+  protected
   def profile_params
     params.require(:profile).permit!
   end
 
   def set_profile
-    @profile = @user.profiles.where(_type: params[:id]).first
+    @profile = @user.profiles.find(params[:id])
   end
 
   def set_user

@@ -60,12 +60,12 @@ class User
   alias_method :name, :email
 
   has_many :profiles
-  has_one :seeker_profile
-  has_one :solver_profile
-  has_one :location_profile
-  has_one :social_profile
-  has_one :customer_profile
-  has_one :merchant_profile
+  has_one :seeker_profile, autobuild: true
+  has_one :solver_profile, autobuild: true
+  has_one :location_profile, autobuild: true
+  has_one :social_profile, autobuild: true
+  has_one :customer_profile, autobuild: true
+  has_one :merchant_profile, autobuild: true
 
 
   def to_key
