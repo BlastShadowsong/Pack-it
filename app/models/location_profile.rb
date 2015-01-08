@@ -4,4 +4,6 @@ class LocationProfile < Profile
   include Locatable::Outdoor
   include Locatable::Indoor::Position
 
+  belongs_to :mall
+
 end
