@@ -61,6 +61,7 @@ class Quest
 
   def complete
     # TODO: step 0: 对Solutions的结果做voting，并将最终结果存入Quest的result中
+    # TODO: 调用分词函数（in Python），将分词结果存储在与Quest相关联的分词表中
     self.solutions.each { |solution|
       if solution.status.solved?
         self.set(result: solution.result)
