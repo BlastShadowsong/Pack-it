@@ -15,4 +15,8 @@ class Shop
   has_many :bargains
 
   has_and_belongs_to_many :tags, inverse_of: nil
+
+  def location
+    self.mall.location if self.mall.present?
+  end
 end
