@@ -8,7 +8,17 @@ module Locatable
       include Mongoid::Document
 
       field :floor, type: Integer
-      field :building_uuid, type: String
+      # field :building_uuid, type: String
+
+      attr_accessor :mall
+
+      def building_uuid
+        self.mall.uuid if self.mall.present?
+      end
+
+      def building_uuid=(value)
+        self.mall = Mall.find_by(uuid: value)
+      end
     end
   end
 end

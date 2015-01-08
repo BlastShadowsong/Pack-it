@@ -3,6 +3,7 @@ class Api::V1::CitiesController < Api::ApplicationController
 
   def index
     @cities = City.all
+    @cities = @cities.where(city_params) if params[:city].present?
     paginate_with @cities
   end
 
@@ -11,6 +12,10 @@ class Api::V1::CitiesController < Api::ApplicationController
   end
 
   private
+  def city_params
+    params.require(:city).permit!
+  end
+
   def set_city
     @city = City.find(params[:id])
   end

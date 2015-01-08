@@ -1,3 +1,3 @@
 class ProfileSerializer < ActiveModel::Serializer
-  attributes :id, :created_at, :updated_at
+  attributes :id, :_type, :created_at, :updated_at
 end

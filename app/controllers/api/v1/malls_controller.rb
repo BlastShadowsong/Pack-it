@@ -3,7 +3,9 @@ class Api::V1::MallsController < Api::ApplicationController
   before_action :set_mall, only: [:show]
 
   def index
-    respond_with @city.malls
+    @malls = @city.malls
+    @malls = @malls.where(mall_params) if params[:mall].present?
+    paginate_with @malls
   end
 
   def show
@@ -11,6 +13,10 @@ class Api::V1::MallsController < Api::ApplicationController
   end
 
   private
+  def mall_params
+    params.require(:mall).permit!
+  end
+
   def set_city
     @city = City.find(params[:city_id])
   end
