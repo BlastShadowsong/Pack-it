@@ -10,7 +10,8 @@ class Mall
   field :uuid, type: String
   field :address, type: String
 
-  has_many :locators
+  has_many :beacons
+  has_many :passages
   has_many :shops
   belongs_to :city
 

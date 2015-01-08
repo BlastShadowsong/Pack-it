@@ -30,7 +30,8 @@ Rails.application.routes.draw do
     end
 
     resources :malls, only: [:show] do
-      resources :locators, only: [:index]
+      resources :beacons, only: [:index]
+      resources :passages, only: [:index]
       resources :shops, only: [:index]
       resources :bargains, only: [:index]
     end

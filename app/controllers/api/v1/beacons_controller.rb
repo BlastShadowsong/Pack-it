@@ -1,8 +1,8 @@
-class Api::V1::LocatorsController < Api::ApplicationController
+class Api::V1::BeaconsController < Api::ApplicationController
   before_action :set_mall, only: [:index]
 
   def index
-    respond_with @mall.locators
+    respond_with @mall.beacons
   end
 
   private
