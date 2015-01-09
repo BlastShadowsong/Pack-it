@@ -181,7 +181,8 @@ class Quest
     # add itself to seeker's favorite quests
     self.creator.seeker_profile.quests.push(self)
     # schedule a job to close itself at deadline
-    CloseQuestWorker.perform_at(self.deadline, self.id)
+    CloseQuestWorker.perform_at(self.deadline, self.id.to_s)
+
     # distribution
     DistributeQuestWorker.perform_async(self.id.to_s)
   end
