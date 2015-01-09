@@ -21,7 +21,10 @@ Rails.application.routes.draw do
 
     get '/me' => "credentials#me"
     resource :location_profile, except: [:new, :edit]
+    resource :notification_profile, except: [:new, :edit]
+    resource :social_profile, except: [:new, :edit]
     resource :customer_profile, except: [:new, :edit]
+    resource :merchant_profile, except: [:new, :edit]
     resource :seeker_profile, except: [:new, :edit]
     resource :solver_profile, except: [:new, :edit]
 
