@@ -110,13 +110,12 @@ class Quest
       end
     }
     # step 2: 修改Seeker与Solvers的credit
-    puts self.creator.crowdsourcing_profile
-    # self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
-    # self.solutions.each { |solution|
-    #   if solution.status.solved?
-    #     solution.creator.crowdsourcing_profile.increase_credit(solution.credit)
-    #   end
-    # }
+    self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
+    self.solutions.each { |solution|
+      if solution.status.solved?
+        solution.creator.crowdsourcing_profile.increase_credit(solution.credit)
+      end
+    }
     # step 3: 修改Seeker_Profile中的 finished + 1 以及积分变化
     #         修改Solver_Profile：如果完成，finished + 1，积分变化；如果失败，failed + 1，积分不变
     self.creator.seeker_profile.increase_finished

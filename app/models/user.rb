@@ -63,6 +63,7 @@ class User
   has_one :location_profile, autobuild: true
   has_one :social_profile, autobuild: true
   has_one :seeker_profile, autobuild: true
+  has_one :crowdsourcing_profile, autobuild: true
   has_one :solver_profile, autobuild: true
   has_one :customer_profile, autobuild: true
   has_one :merchant_profile, autobuild: true
