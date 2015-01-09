@@ -21,12 +21,14 @@ class Api::V1::ProfilesController < Api::ApplicationController
       end
     }
     @profile.save!
-    respond_with @profile, status: :no_content
+    # respond_with @profile, status: :no_content
+    head :no_content
   end
 
   def update
     @profile.update!(profile_params)
-    respond_with @profile
+    # respond_with @profile
+    head :no_content
   end
 
   def destroy
@@ -38,7 +40,8 @@ class Api::V1::ProfilesController < Api::ApplicationController
       end
     }
     @profile.save!
-    respond_with @profile
+    # respond_with @profile
+    head :no_content
   end
 
   protected
