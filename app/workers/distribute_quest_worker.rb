@@ -24,12 +24,13 @@ class DistributeQuestWorker
     # step 3: 调用solution的create方法，赋给相应的参数，分别创建对应的solution
     distribute_solvers.each { |solver|
       solution = quest.solutions.build({
-                                           kind:quest.kind,
-                                           rank:quest.rank,
-                                           credit:quest.credit,
-                                           duration:quest.duration,
-                                           status:quest.status,
-                                           message:quest.message,
+                                           kind: quest.kind,
+                                           rank: quest.rank,
+                                           credit: quest.credit,
+                                           duration: quest.duration,
+                                           status: quest.status,
+                                           message: quest.message,
+                                           tag: quest.tag
                                        })
       solution.creator = solver.user
       solution.save!

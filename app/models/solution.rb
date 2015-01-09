@@ -35,6 +35,7 @@ class Solution
             default: :uncommented
 
   belongs_to :quest
+  belongs_to :tag
 
   alias_method :startup, :created_at
   alias_method :solver, :creator
