@@ -60,7 +60,6 @@ class Quest
   end
 
   def complete
-    self.voting
     # step 0: 对Solutions的结果做voting，并将最终结果存入Quest的result中
     # 取出各个solutions中的result
     sentences = []
@@ -81,10 +80,10 @@ class Quest
       }
     }
     # 去掉出现频率低（不过半数）的分词
-    segments.delete_if{|key, value| value < s.size/2 + 1}
+    segments.delete_if{|key, value| value < sentences.size/2 + 1}
     # 统计各个sentence包含高频分词的数量
     figure = Hash.new()
-    quest_result = s[0]
+    quest_result = sentences[0]
     sentences.each{|sentence|
       figure[sentence] = 0
       segments.each_key { |word|
@@ -92,7 +91,7 @@ class Quest
           figure[sentence] = figure[sentence] + 1
         end
       }
-      if figure[sentence] > figure[result]
+      if figure[sentence] > figure[quest_result]
         quest_result = sentence
       end
     }
@@ -111,12 +110,13 @@ class Quest
       end
     }
     # step 2: 修改Seeker与Solvers的credit
-    self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
-    self.solutions.each { |solution|
-      if solution.status.solved?
-        solution.creator.crowdsourcing_profile.increase_credit(solution.credit)
-      end
-    }
+    puts self.creator.crowdsourcing_profile
+    # self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
+    # self.solutions.each { |solution|
+    #   if solution.status.solved?
+    #     solution.creator.crowdsourcing_profile.increase_credit(solution.credit)
+    #   end
+    # }
     # step 3: 修改Seeker_Profile中的 finished + 1 以及积分变化
     #         修改Solver_Profile：如果完成，finished + 1，积分变化；如果失败，failed + 1，积分不变
     self.creator.seeker_profile.increase_finished
