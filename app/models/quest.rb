@@ -19,9 +19,9 @@ class Quest
 
   field :credit, type: Integer, default: 0
   # amount表示分发的数量，figure表示实际完成的数量
-  field :amount, type: Integer, default: 0
+  field :amount, type: Integer, default: 5
   field :figure, type: Integer, default: 0
-  field :duration, type: Integer
+  field :duration, type: Integer, default: 5
 
   field :status
   # commented: has got feedback from the solver
