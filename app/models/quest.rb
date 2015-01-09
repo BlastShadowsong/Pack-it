@@ -60,13 +60,49 @@ class Quest
   end
 
   def complete
+    self.voting
     # TODO: step 0: 对Solutions的结果做voting，并将最终结果存入Quest的result中
-    # TODO: 调用分词函数（in Python），将分词结果存储在与Quest相关联的分词表中
-    self.solutions.each { |solution|
+    # 取出各个solutions中的result
+    sentences = []
+    self.solutions.each{|solution|
       if solution.status.solved?
-        self.set(result: solution.result)
+        sentences.push(solution.result)
       end
     }
+    # 检索所有分词出现的频率
+    segments = Hash.new()
+    sentences.each{|sentence|
+      sentence.each_char { |word|
+        if segments.include?(word)
+          segments[word] = segments[word] + 1
+        else
+          segments[word] = 1
+        end
+      }
+    }
+    # 去掉出现频率低（不过半数）的分词
+    segments.delete_if{|key, value| value < s.size/2 + 1}
+    # 统计各个sentence包含高频分词的数量
+    figure = Hash.new()
+    quest_result = s[0]
+    sentences.each{|sentence|
+      figure[sentence] = 0
+      segments.each_key { |word|
+        if sentence.include?(word)
+          figure[sentence] = figure[sentence] + 1
+        end
+      }
+      if figure[sentence] > figure[result]
+        quest_result = sentence
+      end
+    }
+    self.set(result: quest_result)
+    # TODO: 调用分词函数（in Python），将分词结果存储在与Quest相关联的分词表中
+    # self.solutions.each { |solution|
+    #   if solution.status.solved?
+    #     self.set(result: solution.result)
+    #   end
+    # }
     # step 1: 修改Quest的状态为solved，未完成的Solutions的状态为failed
     self.set(status: :solved)
     self.solutions.each { |solution|
@@ -149,4 +185,5 @@ class Quest
     # distribution
     DistributeQuestWorker.perform_async(self.id.to_s)
   end
+
 end
