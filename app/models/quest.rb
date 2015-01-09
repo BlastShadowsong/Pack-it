@@ -39,6 +39,7 @@ class Quest
             default: :uncommented
 
   has_many :solutions
+  belongs_to :tag
   has_and_belongs_to_many :shops, inverse_of: nil
 
   alias_method :startup, :created_at
