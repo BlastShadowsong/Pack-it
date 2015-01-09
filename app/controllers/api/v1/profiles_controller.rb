@@ -1,8 +1,7 @@
 class Api::V1::ProfilesController < Api::ApplicationController
   before_action :set_user
   before_action :set_profile, except: [:index]
-
-  # TODO: create/delete of items in profiles (using id of the item)
+  
   def index
     @profiles = @user.profiles
     @profiles = @profiles.where(profile_params) if params[:profile].present?
