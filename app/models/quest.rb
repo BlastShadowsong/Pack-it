@@ -61,7 +61,7 @@ class Quest
 
   def complete
     self.voting
-    # TODO: step 0: 对Solutions的结果做voting，并将最终结果存入Quest的result中
+    # step 0: 对Solutions的结果做voting，并将最终结果存入Quest的result中
     # 取出各个solutions中的result
     sentences = []
     self.solutions.each{|solution|
