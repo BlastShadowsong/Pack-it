@@ -15,9 +15,9 @@ class User
          :authentication_keys => [:login]
 
   ## Database authenticatable
-  field :tel,                type: String
-  field :email,              type: String
-  field :encrypted_password, type: String
+  field :tel,                type: String, default: ""
+  field :email,              type: String, default: ""
+  field :encrypted_password, type: String, default: ""
 
   ## Recoverable
   field :reset_password_token,   type: String
@@ -44,11 +44,11 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
-  validates_presence_of :tel, unless: 'email.present?'
-  validates_presence_of :encrypted_password
+  validates_presence_of :tel, if: :tel_required?
+  validates_uniqueness_of :tel, allow_blank: true, if: :tel_changed?
+  validates_format_of     :tel, with: /(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}/,
+                          allow_blank: true, if: :tel_changed?
 
-  # index({ tel: 1 }, { unique: true, background: true })
-  # index({ email: 1 }, { unique: true, background: true })
 
   has_many :profiles
   has_one :notification_profile, autobuild: true
@@ -72,17 +72,21 @@ class User
     id.to_s
   end
 
-  def email_required?
-    false
-  end
-
   def self.find_first_by_auth_conditions(tainted_conditions, opts={})
     conditions = tainted_conditions.dup
-    puts conditions
     if login = conditions.delete(:login)
       self.any_of({ :tel =>  /^#{Regexp.escape(login)}$/i }, { :email =>  /^#{Regexp.escape(login)}$/i }).first
     else
       super
     end
+  end
+
+  protected
+  def email_required?
+    tel.blank?
+  end
+
+  def tel_required?
+    email.blank?
   end
 end
