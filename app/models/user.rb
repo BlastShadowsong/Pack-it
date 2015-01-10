@@ -1,7 +1,5 @@
 class User
   include Mongoid::Document
-  store_in database: 'membership'
-
   include Mongoid::Timestamps
   include Trackable
 
@@ -13,11 +11,13 @@ class User
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :authentication_keys => [:login]
 
   ## Database authenticatable
-  field :email,              type: String, default: ""
-  field :encrypted_password, type: String, default: ""
+  field :tel,                type: String
+  field :email,              type: String
+  field :encrypted_password, type: String
 
   ## Recoverable
   field :reset_password_token,   type: String
@@ -44,19 +44,11 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
-
-  validates_presence_of :email
+  validates_presence_of :tel, unless: 'email.present?'
   validates_presence_of :encrypted_password
 
-  ## Token authenticatable
-  # field :authentication_token, :type => String
-  # run 'rake db:mongoid:create_indexes' to create indexes
+  # index({ tel: 1 }, { unique: true, background: true })
   # index({ email: 1 }, { unique: true, background: true })
-  # field :name, :type => String
-  # validates_presence_of :name
-  # attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :created_at, :updated_at
-
-  alias_method :name, :email
 
   has_many :profiles
   has_one :notification_profile, autobuild: true
@@ -68,7 +60,29 @@ class User
   has_one :customer_profile, autobuild: true
   has_one :merchant_profile, autobuild: true
 
+  # for login via tel or email
+  attr_accessor :login
+
+  def name
+    self.email unless self.email.blank?
+    self.tel unless self.tel.blank?
+  end
+
   def to_key
     id.to_s
+  end
+
+  def email_required?
+    false
+  end
+
+  def self.find_first_by_auth_conditions(tainted_conditions, opts={})
+    conditions = tainted_conditions.dup
+    puts conditions
+    if login = conditions.delete(:login)
+      self.any_of({ :tel =>  /^#{Regexp.escape(login)}$/i }, { :email =>  /^#{Regexp.escape(login)}$/i }).first
+    else
+      super
+    end
   end
 end
