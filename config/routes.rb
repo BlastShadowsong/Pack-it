@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   api_version(:module => "Api::V1", :header => {:name => "API-VERSION", :value => "v1"}) do
 
-    get '/me' => "credentials#me"
+    resource :me, controller: :users, except: [:new, :edit]
     resource :location_profile, except: [:new, :edit]
     resource :notification_profile, except: [:new, :edit]
     resource :social_profile, except: [:new, :edit]
@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     resource :solver_profile, except: [:new, :edit]
 
     resources :profiles, only: [:index]
-    resources :users, only: [:index, :show, :create, :update] do
+    resources :users, only: [:index, :show] do
       resources :profiles, only: [:index]
     end
 

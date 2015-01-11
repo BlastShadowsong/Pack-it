@@ -5,6 +5,9 @@ class User
   include ActiveModel::OneTimePassword
   extend Enumerize
 
+  TEL_REGEXP = /(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}/
+
+
   field :role
   enumerize :role, in: [:user, :admin], default: :user
 
@@ -49,8 +52,7 @@ class User
 
   validates_presence_of :tel, if: :tel_required?
   validates_uniqueness_of :tel, allow_blank: true, if: :tel_changed?
-  validates_format_of     :tel, with: /(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}/,
-                          allow_blank: true, if: :tel_changed?
+  validates_format_of :tel, with: TEL_REGEXP, allow_blank: true, if: :tel_changed?
 
 
   has_many :profiles
@@ -75,6 +77,11 @@ class User
     id.to_s
   end
 
+  def send_otp_code
+    # TODO: send via sms
+    puts self.otp_code
+  end
+
   def self.find_first_by_auth_conditions(tainted_conditions, opts={})
     conditions = tainted_conditions.dup
     if login = conditions.delete(:login)
@@ -82,6 +89,12 @@ class User
     else
       super
     end
+  end
+
+  def self.authenticate!(login, password)
+    u = find_for_database_authentication(:login => login)
+    return u if u && password.length == 6 && u.authenticate_otp(password, drift: 200)
+    u if u && u.valid_password?(password)
   end
 
   protected
