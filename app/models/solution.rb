@@ -8,25 +8,12 @@ class Solution
   after_create :on_created
   after_update :answer
 
-  field :kind
-  enumerize :kind,
-            in: [:sign, :ibeacon, :question, :picture_wall, :treasure_map, :guess_location, :children, :bank],
-            default: :question
-
-  field :rank
-  enumerize :rank,
-            in: [:green, :blue, :purple, :gold],
-            default: :green
-
-  field :credit, type: Integer
-  field :duration, type: Integer
 
   field :status
   enumerize :status,
             in: [:unsolved, :solved, :commented, :failed ],
             default: :unsolved
 
-  field :message, type: String
   field :result, type: String
 
   field :feedback
@@ -35,10 +22,37 @@ class Solution
             default: :uncommented
 
   belongs_to :quest
-  belongs_to :tag
 
   alias_method :startup, :created_at
   alias_method :solver, :creator
+
+  def kind
+    self.quest.kind
+  end
+
+  def rank
+    self.quest.rank
+  end
+
+  def credit
+    self.quest.credit
+  end
+
+  def duration
+    self.quest.duration
+  end
+
+  def message
+    self.quest.message
+  end
+
+  def shops
+    self.quest.shops
+  end
+
+  def tag
+    self.quest.tag
+  end
 
   def deadline
     self.startup + self.duration * 60
