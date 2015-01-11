@@ -1,9 +1,9 @@
 class Api::ApplicationController < ActionController::API
   include ActionController::ImplicitRender
 
-  before_action -> { doorkeeper_authorize! :public }, only: [:index, :show]
-  before_action -> { doorkeeper_authorize! :write }, only: [:create, :update]
-  before_action -> { doorkeeper_authorize! :admin }, only: [:destroy]
+  before_action :authorize_public, only: [:index, :show]
+  before_action :authorize_write, only: [:create, :update]
+  before_action :authorize_admin, only: [:destroy]
 
   respond_to :json
 
@@ -12,4 +12,17 @@ class Api::ApplicationController < ActionController::API
   end
 
   alias_method :current_user, :current_resource_owner
+
+  protected
+  def authorize_public
+    doorkeeper_authorize! :public
+  end
+
+  def authorize_write
+    doorkeeper_authorize! :write
+  end
+
+  def authorize_admin
+    doorkeeper_authorize! :admin
+  end
 end

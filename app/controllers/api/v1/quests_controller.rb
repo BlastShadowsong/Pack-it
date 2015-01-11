@@ -18,7 +18,7 @@ class Api::V1::QuestsController < Api::ApplicationController
   end
 
   def update
-    if(@quest.status.solved?)
+    if @quest.status.solved?
       @quest.update!(quest_params)
       @quest.comment
     end

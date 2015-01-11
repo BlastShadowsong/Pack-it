@@ -19,9 +19,9 @@ class Quest
 
   field :credit, type: Integer, default: 0
   # amount表示分发的数量，figure表示实际完成的数量
-  field :amount, type: Integer, default: 0
+  field :amount, type: Integer, default: 5
   field :figure, type: Integer, default: 0
-  field :duration, type: Integer
+  field :duration, type: Integer, default: 5
 
   field :status
   # commented: has got feedback from the solver
@@ -39,6 +39,7 @@ class Quest
             default: :uncommented
 
   has_many :solutions
+  belongs_to :tag
   has_and_belongs_to_many :shops, inverse_of: nil
 
   alias_method :startup, :created_at
@@ -60,13 +61,48 @@ class Quest
   end
 
   def complete
-    # TODO: step 0: 对Solutions的结果做voting，并将最终结果存入Quest的result中
-    # TODO: 调用分词函数（in Python），将分词结果存储在与Quest相关联的分词表中
-    self.solutions.each { |solution|
+    # step 0: 对Solutions的结果做voting，并将最终结果存入Quest的result中
+    # 取出各个solutions中的result
+    sentences = []
+    self.solutions.each{|solution|
       if solution.status.solved?
-        self.set(result: solution.result)
+        sentences.push(solution.result)
       end
     }
+    # 检索所有分词出现的频率
+    segments = Hash.new()
+    sentences.each{|sentence|
+      sentence.each_char { |word|
+        if segments.include?(word)
+          segments[word] = segments[word] + 1
+        else
+          segments[word] = 1
+        end
+      }
+    }
+    # 去掉出现频率低（不过半数）的分词
+    segments.delete_if{|key, value| value < sentences.size/2 + 1}
+    # 统计各个sentence包含高频分词的数量
+    figure = Hash.new()
+    quest_result = sentences[0]
+    sentences.each{|sentence|
+      figure[sentence] = 0
+      segments.each_key { |word|
+        if sentence.include?(word)
+          figure[sentence] = figure[sentence] + 1
+        end
+      }
+      if figure[sentence] > figure[quest_result]
+        quest_result = sentence
+      end
+    }
+    self.set(result: quest_result)
+    # TODO: 调用分词函数（in Python），将分词结果存储在与Quest相关联的分词表中
+    # self.solutions.each { |solution|
+    #   if solution.status.solved?
+    #     self.set(result: solution.result)
+    #   end
+    # }
     # step 1: 修改Quest的状态为solved，未完成的Solutions的状态为failed
     self.set(status: :solved)
     self.solutions.each { |solution|
@@ -145,8 +181,10 @@ class Quest
     # add itself to seeker's favorite quests
     self.creator.seeker_profile.quests.push(self)
     # schedule a job to close itself at deadline
-    CloseQuestWorker.perform_at(self.deadline, self.id)
+    CloseQuestWorker.perform_at(self.deadline, self.id.to_s)
+
     # distribution
     DistributeQuestWorker.perform_async(self.id.to_s)
   end
+
 end

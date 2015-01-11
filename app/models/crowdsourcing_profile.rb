@@ -2,7 +2,7 @@ class CrowdsourcingProfile < Profile
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :credit, type: Integer
+  field :credit, type: Integer, default: 100
   enumerize :kind,
             in: [:customer, :shopkeeper, :officer],
             default: :customer

@@ -6,6 +6,7 @@ class DistributeQuestWorker
     logger.info "start DistributeQuestWorker for #{subject}"
     quest = Quest.find(quest_id)
 
+
     # step 1: 查询business_complex表，获得商家位置，确定分发参数（坐标上下限，人数），支持的最晚时间
     latest_time = Time.now - 5 * 60
 
@@ -16,21 +17,13 @@ class DistributeQuestWorker
     active_solvers = LocationProfile.where(:updated_at.lte => latest_time).ne(user: quest.creator)
     distribute_solvers = []
     quest.shops.each { |shop|
-      distribute_solvers += active_solvers.near(position: shop.position).max_distance(position: shop.radius)
-                                .where(:floor => shop.floor)
+      distribute_solvers += active_solvers.geo_spacial(:position.within_polygon => [shop.area]).where(:floor => shop.floor)
     }
     distribute_solvers = distribute_solvers.take(quest.amount)
 
     # step 3: 调用solution的create方法，赋给相应的参数，分别创建对应的solution
     distribute_solvers.each { |solver|
-      solution = quest.solutions.build({
-                                           kind:quest.kind,
-                                           rank:quest.rank,
-                                           credit:quest.credit,
-                                           duration:quest.duration,
-                                           status:quest.status,
-                                           message:quest.message,
-                                       })
+      solution = quest.solutions.build({status: quest.status, feedback: quest.feedback})
       solution.creator = solver.user
       solution.save!
     }
@@ -42,6 +35,6 @@ class DistributeQuestWorker
     distribute_solvers.each{ |solver|
       solver.user.solver_profile.increase_total
     }
-    # step 5: 使用腾讯信鸽进行推送
+    # TODO: step 5: 使用腾讯信鸽进行推送
   end
 end
