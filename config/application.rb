@@ -33,5 +33,7 @@ module IbcWeb
 
     # use the Rails default middleware stack (avoid the reduction that rails-api does),
     config.api_only = false
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end

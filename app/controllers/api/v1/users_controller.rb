@@ -14,9 +14,7 @@ class Api::V1::UsersController < Api::ApplicationController
   # sign up/in via otp
   def create
     @user = User.find_or_initialize_by(user_params)
-    unless @user.persisted?
-      # use generated password for new user
-      @user.password = Devise.friendly_token.first(8)
+    if @user.new_record?
       render json: @user.errors, status: :unprocessable_entity and return unless @user.save
     end
 

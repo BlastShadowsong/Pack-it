@@ -80,12 +80,12 @@ class User
   def send_otp_code_to_tel
     # send to tel via sms
     tpl_params = {code: self.otp_code, company: 'ibc'}
-    puts tpl_params
-    ChinaSMS.to self.tel, tpl_params, tpl_id: 2
+    puts tpl_params if Rails.env.development?
+    ChinaSMS.to(self.tel, tpl_params, tpl_id: 2) unless Rails.env.production?
   end
 
   def send_otp_code_to_email
-    # TODO: send to email via mailer
+    UserMailer.otp(self.id.to_s).deliver_later
   end
 
   def send_otp_code
@@ -115,5 +115,9 @@ class User
 
   def tel_required?
     email.blank?
+  end
+
+  def password_required?
+    not new_record?
   end
 end
