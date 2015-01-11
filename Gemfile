@@ -65,6 +65,8 @@ gem 'devise-async'
 gem 'cancancan'
 # oauth provider, github: 'doorkeeper-gem/doorkeeper'
 gem 'doorkeeper'
+# one time password, github: 'heapsource/active_model_otp'
+gem 'active_model_otp'
 
 # admin interface, github: 'sferik/rails_admin'
 gem 'rails_admin'

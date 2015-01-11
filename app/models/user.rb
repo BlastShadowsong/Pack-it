@@ -2,7 +2,7 @@ class User
   include Mongoid::Document
   include Mongoid::Timestamps
   include Trackable
-
+  include ActiveModel::OneTimePassword
   extend Enumerize
 
   field :role
@@ -44,6 +44,9 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
+  field :otp_secret_key, type: String
+  has_one_time_password
+
   validates_presence_of :tel, if: :tel_required?
   validates_uniqueness_of :tel, allow_blank: true, if: :tel_changed?
   validates_format_of     :tel, with: /(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}/,
@@ -59,6 +62,7 @@ class User
   has_one :solver_profile, autobuild: true
   has_one :customer_profile, autobuild: true
   has_one :merchant_profile, autobuild: true
+
 
   # for login via tel or email
   attr_accessor :login
