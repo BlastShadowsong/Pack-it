@@ -40,6 +40,10 @@ class Solution
   alias_method :startup, :created_at
   alias_method :solver, :creator
 
+  def deadline
+    self.startup + self.duration * 60
+  end
+
   def answer
     # 修改solution的状态
     self.set(status: :solved)
