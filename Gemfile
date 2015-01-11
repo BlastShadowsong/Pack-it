@@ -96,4 +96,4 @@ gem 'figaro'
 
 
 # github: 'saberma/china_sms'
-# gem 'china_sms'
+gem 'china_sms'

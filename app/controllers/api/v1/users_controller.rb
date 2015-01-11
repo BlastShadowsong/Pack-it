@@ -33,8 +33,8 @@ class Api::V1::UsersController < Api::ApplicationController
 
     render json: @user.errors, status: :unprocessable_entity and return unless @user.save
 
-    # TODO: send mail for email_changed
-    @user.send_otp_code if tel_changed
+    @user.send_otp_code_to_tel if tel_changed
+    @user.send_otp_code_to_email if email_changed
     doorkeeper_token.revoke if need_revoke
 
     respond_with @user

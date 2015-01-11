@@ -77,9 +77,20 @@ class User
     id.to_s
   end
 
+  def send_otp_code_to_tel
+    # send to tel via sms
+    tpl_params = {code: self.otp_code, company: 'ibc'}
+    puts tpl_params
+    ChinaSMS.to self.tel, tpl_params, tpl_id: 2
+  end
+
+  def send_otp_code_to_email
+    # TODO: send to email via mailer
+  end
+
   def send_otp_code
-    # TODO: send via sms
-    puts self.otp_code
+    self.send_otp_code_to_tel unless self.tel.blank?
+    self.send_otp_code_to_email unless self.email.blank?
   end
 
   def self.find_first_by_auth_conditions(tainted_conditions, opts={})
