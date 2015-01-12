@@ -47,6 +47,8 @@ end
 gem 'slim-rails'
 # bootstrap assets and layout, github: 'seyhunak/twitter-bootstrap-rails'
 gem 'twitter-bootstrap-rails'
+# form builder with twitter bootstrap, github: 'bootstrap-ruby/rails-bootstrap-forms'
+gem 'bootstrap_form'
 
 # ORM for mongodb, github: 'mongoid/mongoid'
 gem 'mongoid'
@@ -57,11 +59,14 @@ gem 'mongoid-geospatial'
 
 # authentication, github: 'plataformatec/devise'
 gem 'devise'
-gem 'devise-bootstrap-views'
+gem 'devise-i18n-views'
+gem 'devise-async'
 # authorization, github: 'CanCanCommunity/cancancan'
 gem 'cancancan'
 # oauth provider, github: 'doorkeeper-gem/doorkeeper'
 gem 'doorkeeper'
+# one time password, github: 'heapsource/active_model_otp'
+gem 'active_model_otp'
 
 # admin interface, github: 'sferik/rails_admin'
 gem 'rails_admin'
@@ -91,4 +96,4 @@ gem 'figaro'
 
 
 # github: 'saberma/china_sms'
-# gem 'china_sms'
+gem 'china_sms'

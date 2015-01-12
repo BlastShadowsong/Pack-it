@@ -40,3 +40,6 @@ html lang="en"
     footer
       .container.text-muted
         p &copy; #{DateTime.now.year} #{t('app.company')}
+
+- if Rails.env.development?
+  = console
