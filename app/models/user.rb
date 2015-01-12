@@ -79,9 +79,7 @@ class User
 
   def send_otp_code_to_tel
     # send to tel via sms
-    tpl_params = {code: self.otp_code, company: 'ibc'}
-    puts tpl_params if Rails.env.development?
-    ChinaSMS.to(self.tel, tpl_params, tpl_id: 2) unless Rails.env.production?
+    SendUserOtpSmsJob.perform_later(self.id.to_s)
   end
 
   def send_otp_code_to_email
