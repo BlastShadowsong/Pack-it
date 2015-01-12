@@ -1,4 +1,5 @@
 class Api::V1::ProfilesController < Api::ApplicationController
+  before_action :authorize_resource_owner!
   before_action :set_user
   before_action :set_profile, except: [:index]
 
