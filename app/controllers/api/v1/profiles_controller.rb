@@ -44,13 +44,14 @@ class Api::V1::ProfilesController < Api::ApplicationController
     head :no_content
   end
 
-  protected
+  private
   def profile_params
     params.require(:profile).permit!
   end
 
   def set_profile
-    @profile = @user.profiles.find(params[:id])
+    # @profile = @user.profiles.find_or_initialize_by(_type: params[:type])
+    @profile = @user.send(params[:type]) if @user.respond_to? params[:type]
   end
 
   def set_user
