@@ -11,14 +11,15 @@ module Locatable
       # field :building_uuid, type: String
 
       attr_accessor :mall
-
-      def building_uuid
-        self.mall.uuid if self.mall.present?
-      end
-
-      def building_uuid=(value)
-        self.mall = value.blank? ? nil : Mall.find_by(uuid: value)
-      end
     end
+
+    def building_uuid
+      self.mall.uuid if self.mall.present?
+    end
+
+    def building_uuid=(value)
+      self.mall = value.blank? ? nil : Mall.find_by(uuid: value)
+    end
+
   end
 end

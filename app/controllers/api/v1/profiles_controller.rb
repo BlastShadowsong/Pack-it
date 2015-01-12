@@ -14,7 +14,7 @@ class Api::V1::ProfilesController < Api::ApplicationController
 
   def create
     profile_params.each { |key, value|
-      if @profile[key].present? and value.is_a?(Array)
+      if @profile[key].present? && value.is_a?(Array)
         @profile[key] = @profile[key].as_json | value
       else
         @profile[key] = value
@@ -33,7 +33,7 @@ class Api::V1::ProfilesController < Api::ApplicationController
 
   def destroy
     profile_params.each { |key, value|
-      if @profile[key].present? and value.is_a?(Array)
+      if @profile[key].present? && value.is_a?(Array)
         @profile[key] = @profile[key].as_json - value
       else
         @profile[key] = nil
@@ -55,6 +55,6 @@ class Api::V1::ProfilesController < Api::ApplicationController
 
   def set_user
     @user = User.find(params[:user_id]) if params[:user_id].present?
-    @user = current_resource_owner if @user.nil?
+    @user = current_user if @user.nil?
   end
 end
