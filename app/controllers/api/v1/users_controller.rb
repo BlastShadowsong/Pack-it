@@ -27,6 +27,10 @@ class Api::V1::UsersController < Api::ApplicationController
     @user.attributes = user_params
     tel_changed = @user.tel_changed?
     email_changed = @user.email_changed?
+
+    # reset password for changed tel or email, then it need change password after sign in
+    @user.password = Devise.friendly_token if tel_changed || email_changed
+
     need_revoke = @user.encrypted_password_changed? || tel_changed || email_changed
 
     render json: @user.errors, status: :unprocessable_entity and return unless @user.save
