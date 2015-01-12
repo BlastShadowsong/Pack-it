@@ -6,7 +6,7 @@ class Mall
 
   field :name, type: String
   field :logo, type: String
-  field :map, type: String
+  field :maps, type: Array
   field :uuid, type: String
   field :address, type: String
 

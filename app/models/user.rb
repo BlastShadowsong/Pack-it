@@ -79,7 +79,7 @@ class User
 
   def send_otp_code_to_tel
     # send to tel via sms
-    SendUserOtpSmsJob.perform_later(self.id.to_s)
+    UserOtpSmsJob.perform_later(self.id.to_s)
   end
 
   def send_otp_code_to_email
