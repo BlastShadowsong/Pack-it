@@ -5,7 +5,7 @@ class Brand
   field :logo, type: String
 
 
-  validates :name, :presence => true
+  validates_presence_of :name
 
   has_many :shops
 

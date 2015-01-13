@@ -7,6 +7,7 @@ class Shop
   field :name, type: String
   field :logo, type: String
   field :no, type: String
+  field :tel, type: String
 
   alias_method :merchant, :creator
 
@@ -15,6 +16,8 @@ class Shop
   has_many :bargains
 
   has_and_belongs_to_many :tags, inverse_of: nil
+
+  validates_presence_of :name, :logo, :no, :tel
 
   def location
     self.mall.location if self.mall.present?

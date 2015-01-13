@@ -15,30 +15,31 @@ class Bargain
 
 
 
-  validates :name, :start, presence => true
+  validates_presence_of :name, :start
 
-  validate :startTime_cannot_be_in_the_past,
-           :endTime_cannot_be_in_the_past,
-           :startTime_cannot_be_greater_than_endTime
-
-
-  def startTime_cannot_be_in_the_past
-    if start.present? && start < Time.now
-      errors.add(:start, "can't be in the past")
-    end
-  end
-
-  def endTime_cannot_be_in_the_past
-    if self.end.present? && self.end < Time.now
-      errors.add(:end, "can't be in the past")
-    end
-  end
-
-  def startTime_cannot_be_greater_than_endTime
-    if start.present? && self.end.present? && self.end < start
-        errors.add(:end, "must be greater than start time")
-    end
-  end
+  # FIXME: use validates_timeliness instead
+  # validate :startTime_cannot_be_in_the_past,
+  #          :endTime_cannot_be_in_the_past,
+  #          :startTime_cannot_be_greater_than_endTime
+  #
+  #
+  # def startTime_cannot_be_in_the_past
+  #   if start.present? && start < Time.now
+  #     errors.add(:start, "can't be in the past")
+  #   end
+  # end
+  #
+  # def endTime_cannot_be_in_the_past
+  #   if self.end.present? && self.end < Time.now
+  #     errors.add(:end, "can't be in the past")
+  #   end
+  # end
+  #
+  # def startTime_cannot_be_greater_than_endTime
+  #   if start.present? && self.end.present? && self.end < start
+  #       errors.add(:end, "must be greater than start time")
+  #   end
+  # end
 
 
   def customers

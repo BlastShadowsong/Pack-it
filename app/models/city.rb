@@ -6,7 +6,7 @@ class City
   has_many :malls
 
 
-  validates :name, presence: true
+  validates_presence_of :name
 
 
   def shops
