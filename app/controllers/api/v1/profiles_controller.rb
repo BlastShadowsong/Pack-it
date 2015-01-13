@@ -20,7 +20,7 @@ class Api::V1::ProfilesController < Api::ApplicationController
   end
 
   def add
-    key = params[:property]
+    key = params[:field]
     value = params[key]
     if @profile[key].present? && value.is_a?(Array)
       @profile[key] = @profile[key].as_json | value
@@ -32,7 +32,7 @@ class Api::V1::ProfilesController < Api::ApplicationController
   end
 
   def remove
-    key = params[:property]
+    key = params[:field]
     value = params[key]
     if @profile[key].present? && value.is_a?(Array)
       @profile[key] = @profile[key].as_json - value
