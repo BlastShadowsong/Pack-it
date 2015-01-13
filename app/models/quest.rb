@@ -42,6 +42,8 @@ class Quest
   belongs_to :tag
   has_and_belongs_to_many :shops, inverse_of: nil
 
+  validates :message, :presence => true
+
   alias_method :startup, :created_at
   alias_method :seeker, :creator
 

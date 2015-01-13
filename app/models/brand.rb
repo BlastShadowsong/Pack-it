@@ -4,6 +4,9 @@ class Brand
   field :name, type: String
   field :logo, type: String
 
+
+  validates :name, :presence => true
+
   has_many :shops
 
   def bargains

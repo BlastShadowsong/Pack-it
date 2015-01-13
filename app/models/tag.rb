@@ -5,6 +5,8 @@ class Tag
 
   belongs_to :category
 
+  validates :name, :presence => true
+
   def tagged(queryable)
     queryable.where(tag_ids: self.id)
   end

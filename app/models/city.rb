@@ -5,6 +5,10 @@ class City
 
   has_many :malls
 
+
+  validates :name, presence: true
+
+
   def shops
     Shop.in(mall_id: malls.map(&:id))
   end
