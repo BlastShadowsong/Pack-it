@@ -1,3 +1,5 @@
+require 'hybrid_crypt'
+
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -101,6 +103,16 @@ class User
   end
 
   def self.authenticate!(login, password)
+    # the password must greater than 20 if it has been encrypted
+    if password.length > 20 && password.include?(',')
+      # [password, key, iv]
+      encrypted_data = password.split(',')
+      data = encrypted_data[0]
+      key = encrypted_data[1]
+      iv = encrypted_data[2] if encrypted_data.size > 2 # iv is optional
+      password = HybridCrypt.new.decrypt(data, key, iv)
+    end
+
     u = find_for_database_authentication(:login => login)
     return u if u && password.length == 6 && u.authenticate_otp(password, drift: 200)
     u if u && u.valid_password?(password)
