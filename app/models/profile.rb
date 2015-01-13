@@ -1,7 +1,7 @@
 class Profile
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Mongoid::Attributes::Dynamic
+  # include Mongoid::Attributes::Dynamic
 
   extend Enumerize
 
