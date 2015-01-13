@@ -13,35 +13,33 @@ class Api::V1::ProfilesController < Api::ApplicationController
     respond_with @profile if stale?(@profile)
   end
 
-  def create
-    profile_params.each { |key, value|
-      if @profile[key].present? && value.is_a?(Array)
-        @profile[key] = @profile[key].as_json | value
-      else
-        @profile[key] = value
-      end
-    }
-    @profile.save!
-    # respond_with @profile, status: :no_content
-    head :no_content
-  end
-
   def update
     @profile.update!(profile_params)
     # respond_with @profile
     head :no_content
   end
 
-  def destroy
-    profile_params.each { |key, value|
-      if @profile[key].present? && value.is_a?(Array)
-        @profile[key] = @profile[key].as_json - value
-      else
-        @profile[key] = nil
-      end
-    }
+  def add
+    key = params[:property]
+    value = params[key]
+    if @profile[key].present? && value.is_a?(Array)
+      @profile[key] = @profile[key].as_json | value
+    else
+      @profile[key] = value
+    end
     @profile.save!
-    # respond_with @profile
+    head :no_content
+  end
+
+  def remove
+    key = params[:property]
+    value = params[key]
+    if @profile[key].present? && value.is_a?(Array)
+      @profile[key] = @profile[key].as_json - value
+    else
+      @profile[key] = nil
+    end
+    @profile.save!
     head :no_content
   end
 
@@ -52,7 +50,8 @@ class Api::V1::ProfilesController < Api::ApplicationController
 
   def set_profile
     # @profile = @user.profiles.find_or_initialize_by(_type: params[:type])
-    @profile = @user.send(params[:type]) if @user.respond_to? params[:type]
+    profile_type = params[:type] || params[:profile_type]
+    @profile = @user.send(profile_type) if @user.respond_to? profile_type
   end
 
   def set_user

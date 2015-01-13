@@ -21,7 +21,10 @@ Rails.application.routes.draw do
 
     resource :me, controller: :users, except: [:new, :edit]
 
-    resources :profiles, param: :type, except: [:new, :edit]
+    resources :profiles, param: :type, only: [:index, :show, :update] do
+      post ':property', to: 'profiles#add'
+      delete ':property', to: 'profiles#remove'
+    end
 
     resources :users, only: [:index, :show] do
       resources :profiles, param: :type, only: [:index, :show]
