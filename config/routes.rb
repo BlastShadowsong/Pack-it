@@ -20,17 +20,11 @@ Rails.application.routes.draw do
   api_version(:module => "Api::V1", :header => {:name => "API-VERSION", :value => "v1"}) do
 
     resource :me, controller: :users, except: [:new, :edit]
-    resource :location_profile, except: [:new, :edit]
-    resource :notification_profile, except: [:new, :edit]
-    resource :social_profile, except: [:new, :edit]
-    resource :customer_profile, except: [:new, :edit]
-    resource :merchant_profile, except: [:new, :edit]
-    resource :seeker_profile, except: [:new, :edit]
-    resource :solver_profile, except: [:new, :edit]
 
-    resources :profiles, only: [:index]
+    resources :profiles, param: :type, except: [:new, :edit]
+
     resources :users, only: [:index, :show] do
-      resources :profiles, only: [:index]
+      resources :profiles, param: :type, only: [:index, :show]
     end
 
     resources :cities, only: [:index, :show] do

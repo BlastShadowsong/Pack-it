@@ -91,6 +91,9 @@ gem 'active_model_serializers', '~> 0.8.0'
 # pagination for api, github: 'davidcelis/api-pagination'
 gem 'api-pagination'
 
+# for rabbitmq client, github: 'ruby-amqp/bunny'
+gem 'bunny'
+
 # for config/application.yml
 gem 'figaro'
 
