@@ -36,5 +36,12 @@ class DistributeQuestWorker
       solver.user.solver_profile.increase_total
     }
     # TODO: step 5: 使用腾讯信鸽进行推送
+    user_id = []
+    distribute_solvers.each {|solver|
+      user_id += solver.id
+    }
+    title = "有新的问题期待您的帮助："
+    content = quest.message
+    PushNotificationJob.perform(user_id, title, content)
   end
 end
