@@ -1,5 +1,5 @@
 class Api::V1::UsersController < Api::ApplicationController
-  skip_before_action :authorize_write, only: [:create]
+  before_action :authorize_resource_owner!, only: [:show, :update, :destroy]
   before_action :set_user, only: [:show, :update, :destroy]
 
   def index
@@ -48,7 +48,7 @@ class Api::V1::UsersController < Api::ApplicationController
 
   private
   def user_params
-    params.require(:user).permit!
+    params.require(:user).permit(:tel, :email, :password)
   end
 
   def set_user
