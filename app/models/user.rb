@@ -1,3 +1,5 @@
+require 'hybrid_crypt'
+
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -91,6 +93,11 @@ class User
     self.send_otp_code_to_email unless self.email.blank?
   end
 
+  def password=(new_password)
+    new_password = HybridCrypt.new.decrypt(new_password) if new_password && new_password.length > 20
+    super
+  end
+
   def self.find_first_by_auth_conditions(tainted_conditions, opts={})
     conditions = tainted_conditions.dup
     if login = conditions.delete(:login)
@@ -101,8 +108,11 @@ class User
   end
 
   def self.authenticate!(login, password)
+    # the password must greater than 20 if it has been encrypted
+    password = HybridCrypt.new.decrypt(password) if password && password.length > 20
+
     u = find_for_database_authentication(:login => login)
-    return u if u && password.length == 6 && u.authenticate_otp(password, drift: 200)
+    return u if u && password.length == otp_digits && u.authenticate_otp(password, drift: 200)
     u if u && u.valid_password?(password)
   end
 

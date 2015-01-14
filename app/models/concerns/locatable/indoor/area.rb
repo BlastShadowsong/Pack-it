@@ -19,6 +19,12 @@ module Locatable
           end
         end
       end
+
+      def area_points
+        self.area.map { |el|
+          Mongoid::Geospatial::Point.new(el[0], el[1]).to_hash
+        }
+      end
     end
   end
 end
