@@ -1,4 +1,5 @@
 class Api::V1::QuestsController < Api::ApplicationController
+  before_action :authorize_resource_owner!, only: [:index, :show, :create, :update, :destroy]
   before_action :set_quest, only: [:show, :update, :destroy]
 
 

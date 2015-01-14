@@ -133,11 +133,11 @@ class Quest
       end
     }
     # step 4: 向Seeker推送结果
-    user_id = []
-    user_id += self.id.to_s
+    user_ids = []
+    user_ids.push(self.id.to_s)
     title = "您的问题有新的答案："
     content = quest_result
-    PushNotificationJob.perform_now(user_id, title, content)
+    PushNotificationJob.perform_now(user_ids, title, content)
   end
 
   def close
@@ -152,11 +152,11 @@ class Quest
       solution.creator.solver_profile.increase_failed
     }
     # step 3: 向Seeker推送结果
-    user_id = []
-    user_id += self.id.to_s
+    user_ids = []
+    user_ids.push(self.id.to_s)
     title = "很遗憾，您的问题没能得到解决。"
     content = "试试重新描述一下？"
-    PushNotificationJob.perform_now(user_id, title, content)
+    PushNotificationJob.perform_now(user_ids, title, content)
   end
 
   def comment
@@ -192,6 +192,7 @@ class Quest
   def on_created
     # add itself to seeker's favorite quests
     self.creator.seeker_profile.quests.push(self)
+    self.creator.seeker_profile.touch(:updated_at)
     # schedule a job to close itself at deadline
     CloseQuestWorker.perform_at(self.deadline, self.id.to_s)
 

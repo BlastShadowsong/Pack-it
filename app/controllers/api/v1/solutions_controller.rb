@@ -1,4 +1,5 @@
 class Api::V1::SolutionsController < Api::ApplicationController
+  before_action :authorize_resource_owner!, only: [:index, :show, :create, :update, :destroy]
   before_action :set_quest, only: [:index, :create]
   before_action :set_solution, only: [:show, :update, :destroy]
 

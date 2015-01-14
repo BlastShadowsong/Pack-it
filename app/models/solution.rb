@@ -73,5 +73,6 @@ class Solution
   def on_created
     # add itself to solver's favorite solutions
     self.creator.solver_profile.solutions.push(self)
+    self.creator.solver_profile.touch(:updated_at)
   end
 end
