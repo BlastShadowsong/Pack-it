@@ -27,10 +27,18 @@ class HybridCrypt
     encrypted_key = Base64.encode64(public_key.public_encrypt(key))
     encrypted_iv = Base64.encode64(public_key.public_encrypt(iv)) if iv
 
-    [encrypted_data, encrypted_key, encrypted_iv].reject { |el| el.nil? }
+    [encrypted_data, encrypted_key, encrypted_iv].reject { |el| el.nil? }.join(',')
   end
 
-  def decrypt(encrypted_data, encrypted_key, encrypted_iv = nil)
+  def decrypt(encrypted_data_key_iv)
+    return encrypted_data_key_iv unless encrypted_data_key_iv.include?(',')
+
+    # [data, key, iv]
+    encrypted_ary = encrypted_data_key_iv.split(',')
+    encrypted_data = encrypted_ary[0]
+    encrypted_key = encrypted_ary[1]
+    encrypted_iv = encrypted_ary[2] if encrypted_ary.size > 2 # iv is optional
+
     # RSA: decrypt the AES key
     private_key = OpenSSL::PKey::RSA.new(@rsa_private_key, @rsa_pass_phrase)
     decrypted_key = private_key.private_decrypt(Base64.decode64(encrypted_key))
