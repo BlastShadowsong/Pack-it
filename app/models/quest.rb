@@ -132,12 +132,12 @@ class Quest
         solution.creator.solver_profile.increase_failed
       end
     }
-    # TODO: step 4: 向Seeker推送结果
+    # step 4: 向Seeker推送结果
     user_id = []
-    user_id += self.id
+    user_id += self.id.to_s
     title = "您的问题有新的答案："
     content = quest_result
-    PushNotificationJob.perform(user_id, title, content)
+    PushNotificationJob.perform_now(user_id, title, content)
   end
 
   def close
@@ -151,12 +151,12 @@ class Quest
     self.solutions.each { |solution|
       solution.creator.solver_profile.increase_failed
     }
-    # TODO: step 3: 向Seeker推送结果
+    # step 3: 向Seeker推送结果
     user_id = []
-    user_id += self.id
+    user_id += self.id.to_s
     title = "很遗憾，您的问题没能得到解决。"
     content = "试试重新描述一下？"
-    PushNotificationJob.perform(user_id, title, content)
+    PushNotificationJob.perform_now(user_id, title, content)
   end
 
   def comment
