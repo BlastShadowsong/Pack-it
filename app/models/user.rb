@@ -112,7 +112,7 @@ class User
     password = HybridCrypt.new.decrypt(password) if password.length > 20
 
     u = find_for_database_authentication(:login => login)
-    return u if u && password.length == 6 && u.authenticate_otp(password, drift: 200)
+    return u if u && password.length == otp_digits && u.authenticate_otp(password, drift: 200)
     u if u && u.valid_password?(password)
   end
 
