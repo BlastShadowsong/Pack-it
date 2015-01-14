@@ -19,6 +19,12 @@ module Locatable
           end
         end
       end
+
+      def route_points
+        self.route.map { |el|
+          Mongoid::Geospatial::Point.new(el[0], el[1]).to_hash
+        }
+      end
     end
   end
 end

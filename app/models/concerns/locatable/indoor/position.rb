@@ -19,6 +19,11 @@ module Locatable
         #   end
         # end
       end
+
+      def position_point
+        position.to_hash
+        # Mongoid::Geospatial::Point.new(position[0], position[1]).to_hash
+      end
     end
   end
 end
