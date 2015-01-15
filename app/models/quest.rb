@@ -184,20 +184,7 @@ class Quest
     end
   end
 
-
-  private
-  def on_created
-    # add itself to seeker's favorite quests
-    self.creator.seeker_profile.quests.push(self)
-    self.creator.seeker_profile.touch(:updated_at)
-    self.judge_kind
-    # schedule a job to close itself at deadline
-    CloseQuestJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
-
-    # distribution
-    DistributeQuestJob.perform_later(self.id.to_s)
-  end
-
+  protected
   def judge_kind
     if self.credit <= 20
       self.set(kind: :green)
@@ -211,6 +198,19 @@ class Quest
     if self.credit > 200
       self.set(kind: :gold)
     end
+  end
+
+  private
+  def on_created
+    # add itself to seeker's favorite quests
+    self.creator.seeker_profile.quests.push(self)
+    self.creator.seeker_profile.touch(:updated_at)
+    self.judge_kind
+    # schedule a job to close itself at deadline
+    CloseQuestJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
+
+    # distribution
+    DistributeQuestJob.perform_later(self.id.to_s)
   end
 
 end
