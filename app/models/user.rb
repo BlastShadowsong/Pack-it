@@ -3,7 +3,6 @@ require 'hybrid_crypt'
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Trackable
   include ActiveModel::OneTimePassword
   extend Enumerize
 
