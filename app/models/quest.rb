@@ -195,7 +195,7 @@ class Quest
     CloseQuestJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
 
     # distribution
-    DistributeQuestWorker.perform_async(self.id.to_s)
+    DistributeQuestJob.perform_later(self.id.to_s)
   end
 
   def judge_kind

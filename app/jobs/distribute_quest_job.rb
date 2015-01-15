@@ -1,11 +1,8 @@
-class DistributeQuestWorker
-  include Sidekiq::Worker
+class DistributeQuestJob < ActiveJob::Base
+  queue_as :default
 
   def perform(quest_id)
-    subject = "quest #{quest_id}"
-    logger.info "start DistributeQuestWorker for #{subject}"
     quest = Quest.find(quest_id)
-
 
     # step 1: 查询business_complex表，获得商家位置，确定分发参数（坐标上下限，人数），支持的最晚时间
     latest_time = Time.now - 5 * 60
