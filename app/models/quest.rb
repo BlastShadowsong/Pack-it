@@ -56,7 +56,7 @@ class Quest
   end
 
   def deadline
-    self.startup + self.duration * 60
+    self.startup + self.duration.minutes
   end
 
   def credit_expend
@@ -196,7 +196,7 @@ class Quest
     self.creator.seeker_profile.touch(:updated_at)
     self.judge_kind
     # schedule a job to close itself at deadline
-    CloseQuestWorker.perform_at(self.deadline, self.id.to_s)
+    CloseQuestJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
 
     # distribution
     DistributeQuestWorker.perform_async(self.id.to_s)
