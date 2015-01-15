@@ -1,7 +1,6 @@
 class Mall
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Trackable
   include Locatable::Outdoor
 
   field :name, type: String
@@ -14,6 +13,8 @@ class Mall
   has_many :passages
   has_many :shops
   belongs_to :city
+
+  validates_presence_of :name
 
   def bargains
     Bargain.in(shop_id: shops.map(&:id))

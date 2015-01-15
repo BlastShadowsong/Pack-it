@@ -7,4 +7,7 @@ class Beacon
   field :name, type: String
 
   belongs_to :mall
+
+  validates_presence_of :name, :major, :minor
+
 end
