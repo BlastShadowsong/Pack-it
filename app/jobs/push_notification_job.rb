@@ -1,9 +1,10 @@
 class PushNotificationJob < ActiveJob::Base
   queue_as :mailers
 
-  def perform(user_ids, title, content)
+  def perform(title, content, *user_ids)
 
     profiles = NotificationProfile.in(user_id: user_ids)
+    return unless profiles.any?
 
     messages = NotificationProfile.device_type.values.map { |dt|
       {

@@ -94,7 +94,7 @@ class User
   end
 
   def password=(new_password)
-    new_password = HybridCrypt.new.decrypt(new_password) if HybridCrypt.valid?(password)
+    new_password = HybridCrypt.new.decrypt(new_password) if HybridCrypt.valid?(new_password)
     super
   end
 
@@ -110,10 +110,13 @@ class User
   def self.authenticate!(login, password)
     # the password must greater than 20 if it has been encrypted
     password = HybridCrypt.new.decrypt(password) if HybridCrypt.valid?(password)
+    return nil unless password
 
     u = find_for_database_authentication(:login => login)
-    return u if u && password.length == otp_digits && u.authenticate_otp(password, drift: 200)
-    u if u && u.valid_password?(password)
+    return nil unless u
+
+    return u if password.length == otp_digits && u.authenticate_otp(password, drift: 200)
+    u if u.valid_password?(password)
   end
 
   protected
@@ -126,6 +129,6 @@ class User
   end
 
   def password_required?
-    not new_record?
+    super unless new_record?
   end
 end

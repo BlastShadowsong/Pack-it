@@ -38,7 +38,7 @@ class HybridCrypt
   end
 
   def decrypt(encrypted_string)
-    return encrypted_string unless valid?(encrypted_string)
+    return nil unless valid?(encrypted_string)
 
     # [data, key, iv]
     encrypted_ary = encrypted_string.split(',')
@@ -53,7 +53,7 @@ class HybridCrypt
 
 
     # validate the timestamp from iv
-    return encrypted_string if @use_timestamp_iv && Time.now.to_i - decrypted_iv.to_i > @timestamp_drift
+    return nil if @use_timestamp_iv && Time.now.to_i - decrypted_iv.to_i > @timestamp_drift
 
 
     # AES: decrypt the data
