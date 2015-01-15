@@ -1,9 +1,8 @@
-class CloseQuestWorker
-  include Sidekiq::Worker
+class CloseQuestJob < ActiveJob::Base
+  queue_as :default
 
   def perform(quest_id)
     subject = "quest #{quest_id}"
-    logger.info "start CloseQuestWorker for #{subject}"
     quest = Quest.find(quest_id)
 
     if quest.status.failed?
