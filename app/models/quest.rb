@@ -9,7 +9,7 @@ class Quest
 
   field :kind
   enumerize :kind,
-            in: [:sign, :ibeacon, :question, :picture_wall, :treasure_map, :guess_location, :children, :bank],
+            in: [:sign, :beacon, :question, :picture_wall, :treasure_map, :guess_location, :children, :bank],
             default: :question
 
   field :rank
@@ -40,6 +40,7 @@ class Quest
 
   has_many :solutions
   belongs_to :tag
+  belongs_to :mall
   has_and_belongs_to_many :shops, inverse_of: nil
 
   validates_presence_of :message
@@ -193,11 +194,27 @@ class Quest
     # add itself to seeker's favorite quests
     self.creator.seeker_profile.quests.push(self)
     self.creator.seeker_profile.touch(:updated_at)
+    self.judge_kind
     # schedule a job to close itself at deadline
     CloseQuestWorker.perform_at(self.deadline, self.id.to_s)
 
     # distribution
     DistributeQuestWorker.perform_async(self.id.to_s)
+  end
+
+  def judge_kind
+    if self.credit <= 20
+      self.set(kind: :green)
+    end
+    if self.credit > 20 && self.credit <= 50
+      self.set(kind: :blue)
+    end
+    if self.credit > 50 && self.credit <= 200
+      self.set(kind: :purple)
+    end
+    if self.credit > 200
+      self.set(kind: :gold)
+    end
   end
 
 end
