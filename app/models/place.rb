@@ -1,7 +1,7 @@
 class Place
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Locatable::Indoor::Area
+  include Indoor::Area
 
   field :name, type: String
   field :logo, type: String
@@ -15,5 +15,12 @@ class Place
 
   def location
     self.building.location if self.building
+  end
+
+  rails_admin do
+    edit do
+      field :area, :serialized
+      include_all_fields
+    end
   end
 end

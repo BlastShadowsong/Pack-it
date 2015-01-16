@@ -1,7 +1,7 @@
 class Building
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Locatable::Outdoor
+  include Outdoor
 
   field :name, type: String
   field :logo, type: String

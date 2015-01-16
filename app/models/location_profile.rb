@@ -1,8 +1,7 @@
 class LocationProfile < Profile
   include Mongoid::Document
-
-  include Locatable::Outdoor
-  include Locatable::Indoor::Position
+  include Outdoor
+  include Indoor::Position
 
   belongs_to :building
 
