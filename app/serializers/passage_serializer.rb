@@ -1,3 +1,5 @@
 class PassageSerializer < ActiveModel::Serializer
-  attributes :id, :route, :route_points, :floor, :building_uuid
+  attributes :id, :floor, :building_uuid
+
+  attribute :route_points, key: :route
 end

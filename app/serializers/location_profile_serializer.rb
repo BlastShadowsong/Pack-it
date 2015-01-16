@@ -1,3 +1,5 @@
 class LocationProfileSerializer < ProfileSerializer
-  attributes :location, :position, :position_point, :floor, :building_uuid
+  attributes :location, :floor, :building_uuid
+
+  attribute :position_point, key: :position
 end
