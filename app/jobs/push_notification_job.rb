@@ -3,7 +3,7 @@ class PushNotificationJob < ActiveJob::Base
 
   def perform(title, content, *user_ids)
 
-    profiles = NotificationProfile.in(user_id: user_ids)
+    profiles = NotificationProfile.in(user: user_ids)
     return unless profiles.any?
 
     messages = NotificationProfile.device_type.values.map { |dt|

@@ -9,13 +9,6 @@ module Locatable
       field :location, type: Mongoid::Geospatial::Point
 
       spatial_index :location
-
-      # rails_admin do
-      #   edit do
-      #     field :location, :serialized
-      #     include_all_fields
-      #   end
-      # end
     end
   end
 end

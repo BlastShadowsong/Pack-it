@@ -10,6 +10,6 @@ class Brand
   has_many :shops
 
   def bargains
-    Bargain.in(shop_id: shops.map(&:id))
+    Bargain.in(shop: shops.map(&:id))
   end
 end

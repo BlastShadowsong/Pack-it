@@ -11,10 +11,10 @@ class DistributeQuestJob < ActiveJob::Base
     # location在坐标范围之内
     # updated_at在latest_time之后
     # 排序依据为updated_at降序，取前amount个
-    active_solvers = LocationProfile.where(:updated_at.gte => latest_time).where(mall: quest.mall).ne(user: quest.creator)
+    active_solvers = LocationProfile.where({:user.ne => quest.creator, :updated_at.gte => latest_time, building: quest.building})
     distribute_solvers = []
-    quest.shops.each { |shop|
-      distribute_solvers += active_solvers.geo_spacial(:position.within_polygon => [shop.area]).where(:floor => shop.floor)
+    quest.places.each { |place|
+      distribute_solvers += active_solvers.geo_spacial(:position.within_polygon => [place.area]).where(:floor => place.floor)
     }
     # TODO: 如果distribute_solvers为空，解决方案：扩大范围/延时重搜
     if distribute_solvers.any?
