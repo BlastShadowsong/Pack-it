@@ -46,8 +46,8 @@ class Solution
     self.quest.message
   end
 
-  def shops
-    self.quest.shops
+  def places
+    self.quest.places
   end
 
   def tag

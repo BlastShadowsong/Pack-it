@@ -1,0 +1,2 @@
+class FacilitySerializer < PlaceSerializer
+end

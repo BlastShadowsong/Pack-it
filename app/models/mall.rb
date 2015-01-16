@@ -1,22 +1,15 @@
-class Mall
+class Mall < Building
   include Mongoid::Document
-  include Mongoid::Timestamps
-  include Locatable::Outdoor
 
-  field :name, type: String
-  field :logo, type: String
-  field :maps, type: Array
-  field :uuid, type: String
-  field :address, type: String
+  def facilities
+    self.places.where(_type: Facility.to_s)
+  end
 
-  has_many :beacons
-  has_many :passages
-  has_many :shops
-  belongs_to :city
-
-  validates_presence_of :name
+  def shops
+    self.places.where(_type: Shop.to_s)
+  end
 
   def bargains
-    Bargain.in(shop_id: shops.map(&:id))
+    Bargain.in(shop: shops.map(&:id))
   end
 end

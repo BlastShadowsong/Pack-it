@@ -40,8 +40,8 @@ class Quest
 
   has_many :solutions
   belongs_to :tag
-  belongs_to :mall
-  has_and_belongs_to_many :shops, inverse_of: nil
+  belongs_to :building
+  has_and_belongs_to_many :places, inverse_of: nil
 
   validates_presence_of :message
 
@@ -67,14 +67,14 @@ class Quest
     # step 0: 对Solutions的结果做voting，并将最终结果存入Quest的result中
     # 取出各个solutions中的result
     sentences = []
-    self.solutions.each{|solution|
+    self.solutions.each { |solution|
       if solution.status.solved?
         sentences.push(solution.result)
       end
     }
     # 检索所有分词出现的频率
     segments = Hash.new()
-    sentences.each{|sentence|
+    sentences.each { |sentence|
       sentence.each_char { |word|
         if segments.include?(word)
           segments[word] = segments[word] + 1
@@ -84,11 +84,11 @@ class Quest
       }
     }
     # 去掉出现频率低（不过半数）的分词
-    segments.delete_if{|key, value| value < sentences.size/2 + 1}
+    segments.delete_if { |key, value| value < sentences.size/2 + 1 }
     # 统计各个sentence包含高频分词的数量
     figure = Hash.new()
     quest_result = sentences[0]
-    sentences.each{|sentence|
+    sentences.each { |sentence|
       figure[sentence] = 0
       segments.each_key { |word|
         if sentence.include?(word)

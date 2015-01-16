@@ -6,8 +6,8 @@ class Beacon
   field :minor, type: Integer
   field :name, type: String
 
-  belongs_to :mall
+  belongs_to :building
 
-  validates_presence_of :name, :major, :minor
+  validates_presence_of :name, :major, :minor, :building, :floor
 
 end

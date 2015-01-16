@@ -6,12 +6,12 @@ class Api::V1::ShopsController < Api::ApplicationController
   before_action :set_shop, only: [:show]
 
   def index
-    @shops = @city.shops if @city.present?
-    @shops = @mall.shops if @mall.present?
-    @shops = @tag.tagged(Shop) if @tag.present?
-    @shops = @brand.shops if @brand.present?
-    @shops = Shop.all if @shops.nil?
-    @shops = @shops.where(shop_params) if params[:shop].present?
+    @shops = @city.shops if @city
+    @shops = @mall.shops if @mall
+    @shops = @tag.tagged(Shop) if @tag
+    @shops = @brand.shops if @brand
+    @shops = Shop.all unless @shops
+    @shops = @shops.where(shop_params) if params[:shop]
     paginate_with @shops.desc(:created_at)
   end
 
@@ -29,18 +29,18 @@ class Api::V1::ShopsController < Api::ApplicationController
   end
 
   def set_city
-    @city = City.find(params[:city_id]) if params[:city_id].present?
+    @city = City.find(params[:city_id]) if params[:city_id]
   end
 
   def set_mall
-    @mall = Mall.find(params[:mall_id]) if params[:mall_id].present?
+    @mall = Mall.find(params[:mall_id]) if params[:mall_id]
   end
 
   def set_tag
-    @tag = Tag.find(params[:tag_id]) if params[:tag_id].present?
+    @tag = Tag.find(params[:tag_id]) if params[:tag_id]
   end
 
   def set_brand
-    @brand = Brand.find(params[:brand_id]) if params[:brand_id].present?
+    @brand = Brand.find(params[:brand_id]) if params[:brand_id]
   end
 end

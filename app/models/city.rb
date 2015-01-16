@@ -3,17 +3,20 @@ class City
 
   field :name, type: String
 
-  has_many :malls
+  has_many :buildings
 
 
   validates_presence_of :name
 
+  def malls
+    self.buildings.where(_type: Mall.to_s)
+  end
 
   def shops
-    Shop.in(mall_id: malls.map(&:id))
+    Shop.in(building: malls.map(&:id))
   end
 
   def bargains
-    Bargain.in(shop_id: shops.map(&:id))
+    Bargain.in(shop: shops.map(&:id))
   end
 end

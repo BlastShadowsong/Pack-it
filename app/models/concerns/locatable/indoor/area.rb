@@ -25,6 +25,10 @@ module Locatable
           Mongoid::Geospatial::Point.new(el[0], el[1]).to_hash
         }
       end
+
+      def center_point
+        Mongoid::Geospatial::Point.new(self.area.center[0], self.area.center[1]).to_hash
+      end
     end
   end
 end

@@ -5,7 +5,7 @@ class Api::V1::ProfilesController < Api::ApplicationController
 
   def index
     @profiles = @user.profiles
-    @profiles = @profiles.where(profile_params) if params[:profile].present?
+    @profiles = @profiles.where(profile_params) if params[:profile]
     respond_with @profiles
   end
 
@@ -22,7 +22,7 @@ class Api::V1::ProfilesController < Api::ApplicationController
   def add
     key = params[:field]
     value = params[key]
-    if @profile[key].present? && value.is_a?(Array)
+    if @profile[key] && value.is_a?(Array)
       @profile[key] = @profile[key].as_json | value
     else
       @profile[key] = value
@@ -34,7 +34,7 @@ class Api::V1::ProfilesController < Api::ApplicationController
   def remove
     key = params[:field]
     value = params[key]
-    if @profile[key].present? && value.is_a?(Array)
+    if @profile[key] && value.is_a?(Array)
       @profile[key] = @profile[key].as_json - value
     else
       @profile[key] = nil
@@ -55,7 +55,7 @@ class Api::V1::ProfilesController < Api::ApplicationController
   end
 
   def set_user
-    @user = User.find(params[:user_id]) if params[:user_id].present?
-    @user = current_user if @user.nil?
+    @user = User.find(params[:user_id]) if params[:user_id]
+    @user = current_user unless @user
   end
 end

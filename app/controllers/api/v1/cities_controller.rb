@@ -3,7 +3,7 @@ class Api::V1::CitiesController < Api::ApplicationController
 
   def index
     @cities = City.all
-    @cities = @cities.where(city_params) if params[:city].present?
+    @cities = @cities.where(city_params) if params[:city]
     paginate_with @cities
   end
 
