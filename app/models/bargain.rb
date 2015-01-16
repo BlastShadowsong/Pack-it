@@ -15,7 +15,7 @@ class Bargain
 
 
 
-  validates_presence_of :name, :start
+  validates_presence_of :name, :start, :end
 
   # FIXME: use validates_timeliness instead
   # validate :startTime_cannot_be_in_the_past,
