@@ -14,7 +14,7 @@ class SeekerProfile < Profile
   # credit 表示Seeker消费的积分总数
   field :credit, type: Integer, default: 0
 
-  has_and_belongs_to_many :quests, inverse_of: nil
+  has_and_belongs_to_many :problems, inverse_of: nil
 
   def increase_total
     self.inc(total: 1)

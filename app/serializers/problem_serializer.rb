@@ -1,4 +1,4 @@
-class QuestSerializer < ActiveModel::Serializer
+class ProblemSerializer < ActiveModel::Serializer
   attributes :id, :kind, :rank, :credit, :amount, :figure, :duration, :status, :message, :result, :feedback, :startup, :deadline
 
   has_one :building

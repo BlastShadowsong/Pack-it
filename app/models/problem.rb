@@ -1,4 +1,4 @@
-class Quest
+class Problem
   include Mongoid::Document
   include Mongoid::Timestamps
   include Trackable
@@ -7,6 +7,7 @@ class Quest
 
   after_create :on_created
 
+  # FIXME: kind is for activity, problem(question) is also a kind of activity, so this shall be concrete class of activity
   field :kind
   enumerize :kind,
             in: [:sign, :beacon, :question, :picture_wall, :treasure_map, :guess_location, :children, :bank],
@@ -64,7 +65,7 @@ class Quest
   end
 
   def complete
-    # step 0: 对Solutions的结果做voting，并将最终结果存入Quest的result中
+    # step 0: 对Solutions的结果做voting，并将最终结果存入Problem的result中
     # 取出各个solutions中的result
     sentences = []
     self.solutions.each { |solution|
@@ -87,7 +88,7 @@ class Quest
     segments.delete_if { |key, value| value < sentences.size/2 + 1 }
     # 统计各个sentence包含高频分词的数量
     figure = Hash.new()
-    quest_result = sentences[0]
+    problem_result = sentences[0]
     sentences.each { |sentence|
       figure[sentence] = 0
       segments.each_key { |word|
@@ -95,18 +96,18 @@ class Quest
           figure[sentence] = figure[sentence] + 1
         end
       }
-      if figure[sentence] > figure[quest_result]
-        quest_result = sentence
+      if figure[sentence] > figure[problem_result]
+        problem_result = sentence
       end
     }
-    self.set(result: quest_result)
-    # TODO: 调用分词函数（in Python），将分词结果存储在与Quest相关联的分词表中
+    self.set(result: problem_result)
+    # TODO: 调用分词函数（in Python），将分词结果存储在与Problem相关联的分词表中
     # self.solutions.each { |solution|
     #   if solution.status.solved?
     #     self.set(result: solution.result)
     #   end
     # }
-    # step 1: 修改Quest的状态为solved，未完成的Solutions的状态为failed
+    # step 1: 修改Problem的状态为solved，未完成的Solutions的状态为failed
     self.set(status: :solved)
     self.solutions.each { |solution|
       if solution.status.unsolved?
@@ -135,12 +136,12 @@ class Quest
     }
     # step 4: 向Seeker推送结果
     title = "您的问题有新的答案："
-    content = quest_result
+    content = problem_result
     PushNotificationJob.perform_now(title, content, self.id.to_s)
   end
 
   def close
-    # step 1: 修改Quest与相应Solutions中的状态为failed
+    # step 1: 修改Problem与相应Solutions中的状态为failed
     self.set(status: :failed)
     self.solutions.each { |solution|
       solution.set(status: :failed)
@@ -158,7 +159,7 @@ class Quest
 
   def comment
     # 任务只能取消/重发，用户唯一可以做的修改就是添加feedback
-    # step 1: 修改Quest与相应Solutions中的status为commented
+    # step 1: 修改Problem与相应Solutions中的status为commented
     self.set(status: :commented)
     self.solutions.each { |solution|
       solution.set(status: :commented)
@@ -202,16 +203,16 @@ class Quest
 
   private
   def on_created
-    # add itself to seeker's favorite quests
-    self.creator.seeker_profile.quests.push(self)
+    # add itself to seeker's favorite problems
+    self.creator.seeker_profile.problems.push(self)
     self.creator.seeker_profile.increase_total
     self.creator.seeker_profile.touch(:updated_at)
     self.judge_rank
     # schedule a job to close itself at deadline
-    CloseQuestJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
+    CloseProblemJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
 
     # distribution
-    DistributeQuestJob.perform_later(self.id.to_s)
+    DistributeProblemJob.perform_later(self.id.to_s)
   end
 
 end

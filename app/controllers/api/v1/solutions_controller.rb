@@ -1,10 +1,10 @@
 class Api::V1::SolutionsController < Api::ApplicationController
   before_action :authorize_resource_owner!, only: [:index, :show, :create, :update, :destroy]
-  before_action :set_quest, only: [:index, :create]
+  before_action :set_problem, only: [:index, :create]
   before_action :set_solution, only: [:show, :update, :destroy]
 
   def index
-    @solutions = @quest.solutions
+    @solutions = @problem.solutions
     @solutions = @solutions.where(solution_params) if params[:solution]
     paginate_with @solutions.asc(:updated_at)
   end
@@ -14,8 +14,8 @@ class Api::V1::SolutionsController < Api::ApplicationController
   end
 
   def create
-    # 创建任务在QuestDistributeWorker中完成，Solver不能自己创建任务
-    @solution = @quest.solutions.build(solution_params)
+    # 创建任务在DistributeProblemJob中完成，Solver不能自己创建任务
+    @solution = @problem.solutions.build(solution_params)
     @solution.save!
     respond_with @solution
   end
@@ -36,8 +36,8 @@ class Api::V1::SolutionsController < Api::ApplicationController
     params.require(:solution).permit!
   end
 
-  def set_quest
-    @quest = Quest.find(params[:quest_id])
+  def set_problem
+    @problem = Problem.find(params[:problem_id])
   end
 
   def set_solution

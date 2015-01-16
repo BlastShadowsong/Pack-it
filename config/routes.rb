@@ -59,7 +59,7 @@ Rails.application.routes.draw do
       resources :bargains, only: [:index]
     end
 
-    resources :quests do
+    resources :problems do
       resources :solutions, shallow: true
     end
 

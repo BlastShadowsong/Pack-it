@@ -21,47 +21,19 @@ class Solution
             in: [:uncommented, :accepted, :denied],
             default: :uncommented
 
-  belongs_to :quest
+  belongs_to :problem
 
   alias_method :startup, :created_at
   alias_method :solver, :creator
 
-  def kind
-    self.quest.kind
-  end
-
-  def rank
-    self.quest.rank
-  end
-
-  def credit
-    self.quest.credit
-  end
-
-  def duration
-    self.quest.duration
-  end
-
-  def message
-    self.quest.message
-  end
-
-  def places
-    self.quest.places
-  end
-
-  def tag
-    self.quest.tag
-  end
-
   def deadline
-    self.startup + self.duration * 60
+    self.startup + self.duration.minutes
   end
 
   def answer
     # 修改solution的状态
     self.set(status: :solved)
-    self.quest.increase_figure
+    self.problem.increase_figure
   end
 
   def close
