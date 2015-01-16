@@ -185,18 +185,18 @@ class Quest
   end
 
   protected
-  def judge_kind
+  def judge_rank
     if self.credit <= 20
-      self.set(kind: :green)
+      self.set(rank: :green)
     end
     if self.credit > 20 && self.credit <= 50
-      self.set(kind: :blue)
+      self.set(rank: :blue)
     end
     if self.credit > 50 && self.credit <= 200
-      self.set(kind: :purple)
+      self.set(rank: :purple)
     end
     if self.credit > 200
-      self.set(kind: :gold)
+      self.set(rank: :gold)
     end
   end
 
@@ -205,7 +205,7 @@ class Quest
     # add itself to seeker's favorite quests
     self.creator.seeker_profile.quests.push(self)
     self.creator.seeker_profile.touch(:updated_at)
-    self.judge_kind
+    self.judge_rank
     # schedule a job to close itself at deadline
     CloseQuestJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
 
