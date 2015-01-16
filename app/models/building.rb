@@ -15,4 +15,10 @@ class Building
   belongs_to :city
 
   validates_presence_of :name, :city, :address
+
+  rails_admin do
+    edit do
+      exclude_fields :passages, :beacons, :places
+    end
+  end
 end

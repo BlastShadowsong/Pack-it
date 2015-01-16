@@ -12,4 +12,10 @@ class Mall < Building
   def bargains
     Bargain.in(shop: shops.map(&:id))
   end
+
+  rails_admin do
+    edit do
+      exclude_fields :passages, :beacons, :places
+    end
+  end
 end
