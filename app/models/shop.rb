@@ -7,7 +7,6 @@ class Shop < Place
 
   alias_method :merchant, :creator
 
-  belongs_to :brand
   has_many :bargains
 
   validates_presence_of :tel

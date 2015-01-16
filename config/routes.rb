@@ -59,11 +59,6 @@ Rails.application.routes.draw do
       resources :bargains, only: [:index]
     end
 
-    resources :brands, only: [:index, :show] do
-      resources :shops, only: [:index]
-      resources :bargains, only: [:index]
-    end
-
     resources :quests do
       resources :solutions, shallow: true
     end
