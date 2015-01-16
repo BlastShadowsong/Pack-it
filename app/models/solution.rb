@@ -23,12 +23,7 @@ class Solution
 
   belongs_to :problem
 
-  alias_method :startup, :created_at
   alias_method :solver, :creator
-
-  def deadline
-    self.startup + self.duration.minutes
-  end
 
   def answer
     # 修改solution的状态
