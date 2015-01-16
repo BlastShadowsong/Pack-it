@@ -1,6 +1,10 @@
 class Mall < Building
   include Mongoid::Document
 
+  def facilities
+    self.places.where(_type: Facility.to_s)
+  end
+
   def shops
     self.places.where(_type: Shop.to_s)
   end

@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :malls, only: [:show] do
       resources :beacons, only: [:index]
       resources :passages, only: [:index]
+      resources :facilities, only: [:index]
       resources :shops, only: [:index]
       resources :bargains, only: [:index]
     end
