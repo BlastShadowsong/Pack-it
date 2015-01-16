@@ -204,6 +204,7 @@ class Quest
   def on_created
     # add itself to seeker's favorite quests
     self.creator.seeker_profile.quests.push(self)
+    self.creator.seeker_profile.increase_total
     self.creator.seeker_profile.touch(:updated_at)
     self.judge_rank
     # schedule a job to close itself at deadline
