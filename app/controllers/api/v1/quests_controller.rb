@@ -5,7 +5,7 @@ class Api::V1::QuestsController < Api::ApplicationController
 
   def index
     @quests = Quest.all
-    @quests = @quests.where(quest_params) if params[:quest].present?
+    @quests = @quests.where(quest_params) if params[:quest]
     paginate_with @quests.desc(:created_at)
   end
 

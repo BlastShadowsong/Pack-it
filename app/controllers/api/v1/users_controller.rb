@@ -58,7 +58,7 @@ class Api::V1::UsersController < Api::ApplicationController
   end
 
   def set_user
-    @user = User.find(params[:id]) if params[:id].present?
-    @user = current_user if @user.nil?
+    @user = User.find(params[:id]) if params[:id]
+    @user = current_user unless @user
   end
 end

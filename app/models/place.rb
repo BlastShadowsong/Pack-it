@@ -14,6 +14,6 @@ class Place
   validates_presence_of :name, :logo, :no, :building, :floor
 
   def location
-    self.building.location if self.building.present?
+    self.building.location if self.building
   end
 end

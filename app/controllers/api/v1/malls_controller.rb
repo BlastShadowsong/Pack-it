@@ -4,7 +4,7 @@ class Api::V1::MallsController < Api::ApplicationController
 
   def index
     @malls = @city.malls
-    @malls = @malls.where(mall_params) if params[:mall].present?
+    @malls = @malls.where(mall_params) if params[:mall]
     paginate_with @malls
   end
 

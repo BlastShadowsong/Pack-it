@@ -13,7 +13,7 @@ module Locatable
     end
 
     def building_uuid
-      self.building.uuid if self.building.present?
+      self.building.uuid if self.building
     end
 
     def building_uuid=(value)
