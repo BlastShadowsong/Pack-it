@@ -5,7 +5,7 @@ class Api::V1::ProblemsController < Api::ApplicationController
 
   def index
     @problems = Problem.all
-    @problems = @problems.where(problem_params) if params[:problem]
+    @problems = query(@problems)
     paginate_with @problems.desc(:created_at)
   end
 

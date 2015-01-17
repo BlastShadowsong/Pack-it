@@ -5,7 +5,7 @@ class Api::V1::SolutionsController < Api::ApplicationController
 
   def index
     @solutions = @problem.solutions
-    @solutions = @solutions.where(solution_params) if params[:solution]
+    @solutions = query(@solutions)
     paginate_with @solutions.asc(:updated_at)
   end
 

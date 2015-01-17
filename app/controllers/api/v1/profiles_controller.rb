@@ -5,7 +5,7 @@ class Api::V1::ProfilesController < Api::ApplicationController
 
   def index
     @profiles = @user.profiles
-    @profiles = @profiles.where(profile_params) if params[:profile]
+    @profiles = query(@profiles)
     respond_with @profiles
   end
 

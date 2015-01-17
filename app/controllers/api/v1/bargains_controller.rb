@@ -11,7 +11,7 @@ class Api::V1::BargainsController < Api::ApplicationController
     @bargains = @tag.tagged(Bargain) if @tag
     @bargains = @shop.bargains if @shop
     @bargains = Bargain.all unless @bargains
-    @bargains = @bargains.where(bargain_params) if params[:bargain]
+    @bargains = query(@bargains)
     paginate_with @bargains.desc(:created_at)
   end
 

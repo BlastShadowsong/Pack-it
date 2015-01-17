@@ -1,5 +1,6 @@
 class Api::ApplicationController < ActionController::API
   include ActionController::ImplicitRender
+  include ApplicationHelper
 
   before_action -> { doorkeeper_authorize! :public }, only: [:index, :show]
   before_action -> { doorkeeper_authorize! :write }, only: [:create, :update]

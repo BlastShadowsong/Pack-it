@@ -9,7 +9,7 @@ class Api::V1::ShopsController < Api::ApplicationController
     @shops = @mall.shops if @mall
     @shops = @tag.tagged(Shop) if @tag
     @shops = Shop.all unless @shops
-    @shops = @shops.where(shop_params) if params[:shop]
+    @shops = query(@shops)
     paginate_with @shops.desc(:created_at)
   end
 

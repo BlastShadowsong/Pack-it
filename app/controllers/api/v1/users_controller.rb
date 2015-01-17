@@ -4,6 +4,7 @@ class Api::V1::UsersController < Api::ApplicationController
 
   def index
     @users = User.all
+    @users = query(@users)
     paginate_with @users
   end
 
