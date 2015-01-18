@@ -41,5 +41,5 @@ html lang="en"
       .container.text-muted
         p &copy; #{DateTime.now.year} #{t('app.company')}
 
-- if ENV['WEB_CONSOLE'].present?
+- unless Rails.env.production?
   = console
