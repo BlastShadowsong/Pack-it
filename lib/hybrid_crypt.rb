@@ -3,17 +3,14 @@ require 'base64'
 
 class HybridCrypt
 
-  def initialize(timestamp_drift = ENV['AES_TIMESTAMP_DRIFT'],
-                 rsa_public_key = ENV['RSA_PUBLIC_KEY'],
-                 rsa_private_key = ENV['RSA_PRIVATE_KEY'],
-                 rsa_pass_phrase = ENV['RSA_PASS_PHRASE'])
-    @use_timestamp_iv = !!timestamp_drift
-    @timestamp_drift = timestamp_drift.to_i if @use_timestamp_iv
+  def initialize(rsa_pass_phrase = ENV['RSA_PASS_PHRASE'],
+                 rsa_private_key = 'private.pem',
+                 rsa_public_key = 'public.pem')
     # openssl genrsa -des3 -out private.pem 2048 # 256..2048
     # openssl rsa -in private.pem -out public.pem -outform PEM -pubout
-    @rsa_public_key = rsa_public_key
-    @rsa_private_key = rsa_private_key
     @rsa_pass_phrase = rsa_pass_phrase
+    @rsa_private_key = File.read rsa_private_key
+    @rsa_public_key = File.read rsa_public_key
   end
 
   def encrypt(data)
@@ -21,23 +18,19 @@ class HybridCrypt
     cipher = OpenSSL::Cipher.new('AES-128-CBC')
     cipher.encrypt
     key = cipher.random_key
-    if @use_timestamp_iv
-      iv = cipher.iv = Time.now.to_f.to_s[0, 16]
-    else
-      iv = cipher.random_iv
-    end
+    iv = cipher.iv = Time.now.to_f.to_s[0, 16] # length must be 16 bytes = 128 bits
 
     encrypted_data = Base64.encode64(cipher.update(data) + cipher.final)
 
     # RSA: encrypt the AES key
     public_key = OpenSSL::PKey::RSA.new(@rsa_public_key)
     encrypted_key = Base64.encode64(public_key.public_encrypt(key))
-    encrypted_iv = Base64.encode64(public_key.public_encrypt(iv)) if iv
+    encrypted_iv = Base64.encode64(public_key.public_encrypt(iv))
 
     [encrypted_data, encrypted_key, encrypted_iv].join(',')
   end
 
-  def decrypt(encrypted_string)
+  def decrypt(encrypted_string, drift = 5)
     return nil unless valid?(encrypted_string)
 
     # [data, key, iv]
@@ -53,7 +46,7 @@ class HybridCrypt
 
 
     # validate the timestamp from iv
-    return nil if @use_timestamp_iv && Time.now.to_i - decrypted_iv.to_i > @timestamp_drift
+    return nil if Time.now.to_i - decrypted_iv.to_i > drift
 
 
     # AES: decrypt the data

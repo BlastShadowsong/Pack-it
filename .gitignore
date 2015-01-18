@@ -32,5 +32,8 @@ Gemfile.lock
 # Ignore redis dump
 dump.rdb
 
+# Ignore the RSA keys
+/*.pem
+
 # Ignore application configuration
 /config/application.yml
