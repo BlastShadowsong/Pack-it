@@ -10,7 +10,7 @@ module Indoor
       field :radius, type: Float, default: 1
 
       # field :around, type: Mongoid::Geospatial::Circle, default: [[0, 0], 16]
-      # spatial_index :around, COORDINATE_BOUNDARIES
+      # spatial_index :around
     end
   end
 end

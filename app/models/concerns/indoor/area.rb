@@ -9,7 +9,7 @@ module Indoor
 
       field :area, type: Mongoid::Geospatial::Polygon, default: [[0, 0], [1, 1], [2, 2]]
 
-      spatial_index :area, COORDINATE_BOUNDARIES
+      spatial_index :area
     end
 
     def area_points

@@ -1,8 +1,6 @@
 module Indoor
   extend ActiveSupport::Concern
 
-  COORDINATE_BOUNDARIES = {min: 0, max: 1000000}
-
   included do
     include Mongoid::Document
 
@@ -16,7 +14,7 @@ module Indoor
   end
 
   def building_uuid=(value)
-    self.building = value.blank? ? nil : Building.find_by(uuid: value)
+    self.building = value.blank? ? nil : Building.find_by(uuid: value.downcase)
   end
 
 end

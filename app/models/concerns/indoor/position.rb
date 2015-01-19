@@ -9,7 +9,7 @@ module Indoor
 
       field :position, type: Mongoid::Geospatial::Point, default: [0, 0]
 
-      spatial_index :position, COORDINATE_BOUNDARIES
+      spatial_index :position
     end
 
     def position_point

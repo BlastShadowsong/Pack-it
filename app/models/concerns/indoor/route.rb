@@ -9,7 +9,7 @@ module Indoor
 
       field :route, type: Mongoid::Geospatial::Line, default: [[0, 0], [1, 1]]
 
-      spatial_index :route, COORDINATE_BOUNDARIES
+      spatial_index :route
     end
 
     def route_points
