@@ -1,5 +1,5 @@
 class CloseProblemJob < ActiveJob::Base
-  queue_as :default
+  queue_as :ibc
 
   def perform(problem_id)
     subject = "problem #{problem_id}"
