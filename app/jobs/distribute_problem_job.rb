@@ -41,7 +41,7 @@ class DistributeProblemJob < ActiveJob::Base
       title = "有新的问题期待您的帮助：".to_s
       content = problem.message.to_s
       PushNotificationJob.set(wait: waiting_time).perform_later(title, content, user_ids)
-      puts title, content, user_ids
+      # puts title, content, user_ids
     end
 
     # Step 3: 重发Solutions
