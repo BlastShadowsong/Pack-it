@@ -143,7 +143,7 @@ class Problem
     # step 4: 向Seeker推送结果
     title = "您的问题有新的答案："
     content = problem_result
-    PushNotificationJob.perform_later(title, content, self.id.to_s)
+    PushNotificationJob.set(wait: waiting_time).perform_later(title, content, self.id.to_s)
   end
 
   def close
@@ -164,7 +164,7 @@ class Problem
     # step 3: 向Seeker推送结果
     title = "很遗憾，您的问题没能得到解决。"
     content = "试试重新描述一下？"
-    PushNotificationJob.perform_later(title, content, self.id.to_s)
+    PushNotificationJob.set(wait: waiting_time).perform_later(title, content, self.id.to_s)
   end
 
   def comment
@@ -232,6 +232,11 @@ class Problem
 
     # distribution
     DistributeProblemJob.perform_later(self.id.to_s)
+  end
+
+  private
+  def waiting_time
+    2 * 60
   end
 
 end
