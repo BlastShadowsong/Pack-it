@@ -20,7 +20,7 @@ class Api::V1::UsersController < Api::ApplicationController
     end
 
     @user.send_otp_code
-    head :created
+    respond_with @user, location: nil
   end
 
   # change password/tel/email
