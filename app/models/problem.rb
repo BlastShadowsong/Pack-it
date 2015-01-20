@@ -49,6 +49,8 @@ class Problem
   alias_method :startup, :created_at
   alias_method :seeker, :creator
 
+  default_scope ->{desc(:created_at)}
+
   def increase_figure
     self.inc(figure: 1)
     if self.figure == self.amount
@@ -101,12 +103,6 @@ class Problem
       end
     }
     self.set(result: problem_result)
-    # TODO: 调用分词函数（in Python），将分词结果存储在与Problem相关联的分词表中
-    # self.solutions.each { |solution|
-    #   if solution.status.solved?
-    #     self.set(result: solution.result)
-    #   end
-    # }
     # step 1: 修改Problem的状态为solved，未完成的Solutions的状态为failed
     self.set(status: :solved)
     self.solutions.each { |solution|
@@ -116,23 +112,33 @@ class Problem
     }
     # step 2: 修改Seeker与Solvers的credit
     self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
+    self.creator.crowdsourcing_profile.touch(:updated_at)
+    self.creator.crowdsourcing_profile.save
     self.solutions.each { |solution|
       if solution.status.solved?
         solution.creator.crowdsourcing_profile.increase_credit(solution.credit)
+        solution.creator.crowdsourcing_profile.touch(:updated_at)
+        solution.creator.crowdsourcing_profile.save
       end
     }
     # step 3: 修改Seeker_Profile中的 finished + 1 以及积分变化
     #         修改Solver_Profile：如果完成，finished + 1，积分变化；如果失败，failed + 1，积分不变
     self.creator.seeker_profile.increase_finished
     self.creator.seeker_profile.increase_credit(self.credit_expend)
+    self.creator.seeker_profile.touch(:updated_at)
+    self.creator.seeker_profile.save
     self.solutions.each { |solution|
       if solution.status.solved?
         solution.creator.solver_profile.increase_finished
         solution.creator.solver_profile.increase_credit(solution.credit)
+        solution.creator.solver_profile.touch(:updated_at)
+        solution.creator.solver_profile.save
       end
-      if solution.status.failed?
-        solution.creator.solver_profile.increase_failed
-      end
+      # if solution.status.failed?
+      #   solution.creator.solver_profile.increase_failed
+      #   solution.creator.solver_profile.touch(:updated_at)
+      #   solution.creator.solver_profile.save
+      # end
     }
     # step 4: 向Seeker推送结果
     title = "您的问题有新的答案："
@@ -148,8 +154,12 @@ class Problem
     }
     # step 2: 修改Seeker_Profile与Solver_Profile中的 failed + 1
     self.creator.seeker_profile.increase_failed
+    self.creator.seeker_profile.touch(:updated_at)
+    self.creator.seeker_profile.save
     self.solutions.each { |solution|
       solution.creator.solver_profile.increase_failed
+      solution.creator.solver_profile.touch(:updated_at)
+      solution.creator.solver_profile.save
     }
     # step 3: 向Seeker推送结果
     title = "很遗憾，您的问题没能得到解决。"
@@ -170,17 +180,25 @@ class Problem
     # 如果该用户答案与最终答案不一致且用户accept，修改feedback为 denied，Solver_Profile中 denied + 1
     if self.feedback.accepted?
       self.creator.seeker_profile.increase_accepted
+      self.creator.seeker_profile.touch(:updated_at)
+      self.creator.seeker_profile.save
       self.solutions.each { |solution|
         solution.set(feedback: :accepted)
         solution.creator.solver_profile.increase_accepted
+        solution.creator.solver_profile.touch(:updated_at)
+        solution.creator.solver_profile.save
       }
     end
 
     if self.feedback.denied?
       self.creator.seeker_profile.increase_denied
+      self.creator.seeker_profile.touch(:updated_at)
+      self.creator.seeker_profile.save
       self.solutions.each { |solution|
         solution.set(feedback: :denied)
         solution.creator.solver_profile.increase_denied
+        solution.creator.solver_profile.touch(:updated_at)
+        solution.creator.solver_profile.save
       }
     end
   end
@@ -207,6 +225,7 @@ class Problem
     self.creator.seeker_profile.problems.push(self)
     self.creator.seeker_profile.increase_total
     self.creator.seeker_profile.touch(:updated_at)
+    self.creator.seeker_profile.save
     self.judge_rank
     # schedule a job to close itself at deadline
     CloseProblemJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)

@@ -25,6 +25,9 @@ class Solution
 
   alias_method :solver, :creator
 
+  default_scope ->{desc(:created_at)}
+  default_scope ->{desc(:created_at)}
+
   def answer
     # 修改solution的状态
     self.set(status: :solved)
@@ -34,6 +37,8 @@ class Solution
   def close
     self.set(status: :failed)
     self.creator.solver_profile.increase_failed
+    self.creator.solver_profile.touch(:updated_at)
+    self.creator.solver_profile.save
   end
 
   private
@@ -42,5 +47,6 @@ class Solution
     self.creator.solver_profile.solutions.push(self)
     self.creator.solver_profile.increase_total
     self.creator.solver_profile.touch(:updated_at)
+    self.creator.solver_profile.save
   end
 end
