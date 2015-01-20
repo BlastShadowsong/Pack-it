@@ -1,5 +1,5 @@
 class DistributeProblemJob < ActiveJob::Base
-  queue_as :default
+  queue_as :ibc
 
   def perform(problem_id)
     problem = Problem.find(problem_id)
