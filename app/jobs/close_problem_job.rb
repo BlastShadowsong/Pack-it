@@ -12,9 +12,7 @@ class CloseProblemJob < ActiveJob::Base
       if problem.figure == 0
         problem.close
         logger.info "#{subject}: Deadline: failed!"
-      end
-
-      if problem.figure != 0
+      else
         problem.complete
         logger.info "#{subject}: Deadline: closed successfully!"
       end

@@ -116,7 +116,7 @@ class Problem
     self.creator.crowdsourcing_profile.save
     self.solutions.each { |solution|
       if solution.status.solved?
-        solution.creator.crowdsourcing_profile.increase_credit(solution.credit)
+        solution.creator.crowdsourcing_profile.increase_credit(solution.problem.credit)
         solution.creator.crowdsourcing_profile.touch(:updated_at)
         solution.creator.crowdsourcing_profile.save
       end
@@ -130,7 +130,7 @@ class Problem
     self.solutions.each { |solution|
       if solution.status.solved?
         solution.creator.solver_profile.increase_finished
-        solution.creator.solver_profile.increase_credit(solution.credit)
+        solution.creator.solver_profile.increase_credit(solution.problem.credit)
         solution.creator.solver_profile.touch(:updated_at)
         solution.creator.solver_profile.save
       end
