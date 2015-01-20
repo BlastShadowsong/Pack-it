@@ -31,6 +31,8 @@ class Solution
     # 修改solution的状态
     self.set(status: :solved)
     self.problem.increase_figure
+    self.creator.solver_profile.touch(:updated_at)
+    self.creator.solver_profile.save
   end
 
   def close
