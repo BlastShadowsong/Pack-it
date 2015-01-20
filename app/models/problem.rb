@@ -103,12 +103,6 @@ class Problem
       end
     }
     self.set(result: problem_result)
-    # TODO: 调用分词函数（in Python），将分词结果存储在与Problem相关联的分词表中
-    # self.solutions.each { |solution|
-    #   if solution.status.solved?
-    #     self.set(result: solution.result)
-    #   end
-    # }
     # step 1: 修改Problem的状态为solved，未完成的Solutions的状态为failed
     self.set(status: :solved)
     self.solutions.each { |solution|
@@ -140,11 +134,11 @@ class Problem
         solution.creator.solver_profile.touch(:updated_at)
         solution.creator.solver_profile.save
       end
-      if solution.status.failed?
-        solution.creator.solver_profile.increase_failed
-        solution.creator.solver_profile.touch(:updated_at)
-        solution.creator.solver_profile.save
-      end
+      # if solution.status.failed?
+      #   solution.creator.solver_profile.increase_failed
+      #   solution.creator.solver_profile.touch(:updated_at)
+      #   solution.creator.solver_profile.save
+      # end
     }
     # step 4: 向Seeker推送结果
     title = "您的问题有新的答案："
