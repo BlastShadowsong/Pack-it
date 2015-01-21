@@ -143,7 +143,14 @@ class Problem
     # step 4: 向Seeker推送结果
     title = "您的问题有新的答案："
     content = problem_result
-    PushNotificationJob.set(wait: waiting_time).perform_later(title, content, self.id.to_s)
+    PushNotificationJob.perform_later(title, content, self.id.to_s)
+  end
+
+  def clean
+    # 从seeker_profile中去掉这个problem
+    self.creator.seeker_profile.problems.delete(self)
+    self.creator.seeker_profile.touch(:updated_at)
+    self.creator.seeker_profile.save
   end
 
   def close
@@ -164,7 +171,7 @@ class Problem
     # step 3: 向Seeker推送结果
     title = "很遗憾，您的问题没能得到解决。"
     content = "试试重新描述一下？"
-    PushNotificationJob.set(wait: waiting_time).perform_later(title, content, self.id.to_s)
+    PushNotificationJob.perform_later(title, content, self.id.to_s)
   end
 
   def comment

@@ -35,6 +35,12 @@ class Solution
     self.creator.solver_profile.save
   end
 
+  def clean
+    self.creator.solver_profile.solutions.delete(self)
+    self.creator.solver_profile.touch(:updated_at)
+    self.creator.solver_profile.save
+  end
+
   def close
     self.set(status: :failed)
     self.creator.solver_profile.increase_failed

@@ -30,6 +30,7 @@ class Api::V1::SolutionsController < Api::ApplicationController
   end
 
   def destroy
+    @solution.clean
     @solution.close
     respond_with @solution
   end
