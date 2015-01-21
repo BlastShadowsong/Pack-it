@@ -6,14 +6,22 @@ class PushNotificationJob < ActiveJob::Base
     profiles = NotificationProfile.in(user: user_ids)
     return unless profiles.any?
 
-    messages = NotificationProfile.device_type.values.map { |dt|
+    messages = profiles.map { |np|
       {
-          :tokens => profiles.where(device_type: dt).map(&:device_token),
-          :device_type => dt,
+          :tokens => [np.device_token],
+          :device_type => np.device_type,
           :content => content,
           :title => title
       }
     }
+    # messages = NotificationProfile.device_type.values.map { |dt|
+    #   {
+    #       :tokens => profiles.where(device_type: dt).map(&:device_token),
+    #       :device_type => dt,
+    #       :content => content,
+    #       :title => title
+    #   }
+    # }
 
     conn = Bunny.new
     conn.start
