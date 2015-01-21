@@ -146,6 +146,13 @@ class Problem
     PushNotificationJob.perform_later(title, content, self.id.to_s)
   end
 
+  def clean
+    # 从seeker_profile中去掉这个problem
+    self.creator.seeker_profile.problems.delete(self)
+    self.creator.seeker_profile.touch(:updated_at)
+    self.creator.seeker_profile.save
+  end
+
   def close
     # step 1: 修改Problem与相应Solutions中的状态为failed
     self.set(status: :failed)

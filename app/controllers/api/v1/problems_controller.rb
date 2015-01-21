@@ -27,6 +27,7 @@ class Api::V1::ProblemsController < Api::ApplicationController
   end
 
   def destroy
+    @problem.clean
     @problem.close
     respond_with @problem
   end
