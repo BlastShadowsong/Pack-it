@@ -68,41 +68,7 @@ class Problem
 
   def complete
     # step 0: 对Solutions的结果做voting，并将最终结果存入Problem的result中
-    # 取出各个solutions中的result
-    sentences = []
-    self.solutions.each { |solution|
-      if solution.status.solved?
-        sentences.push(solution.result)
-      end
-    }
-    # 检索所有分词出现的频率
-    segments = Hash.new()
-    sentences.each { |sentence|
-      sentence.each_char { |word|
-        if segments.include?(word)
-          segments[word] = segments[word] + 1
-        else
-          segments[word] = 1
-        end
-      }
-    }
-    # 去掉出现频率低（不过半数）的分词
-    segments.delete_if { |key, value| value < sentences.size/2 + 1 }
-    # 统计各个sentence包含高频分词的数量
-    figure = Hash.new()
-    problem_result = sentences[0]
-    sentences.each { |sentence|
-      figure[sentence] = 0
-      segments.each_key { |word|
-        if sentence.include?(word)
-          figure[sentence] = figure[sentence] + 1
-        end
-      }
-      if figure[sentence] > figure[problem_result]
-        problem_result = sentence
-      end
-    }
-    self.set(result: problem_result)
+    ResultVotingJob.perform_later(self.id.to_s)
     # step 1: 修改Problem的状态为solved，未完成的Solutions的状态为failed
     self.set(status: :solved)
     self.solutions.each { |solution|
@@ -134,15 +100,10 @@ class Problem
         solution.creator.solver_profile.touch(:updated_at)
         solution.creator.solver_profile.save
       end
-      # if solution.status.failed?
-      #   solution.creator.solver_profile.increase_failed
-      #   solution.creator.solver_profile.touch(:updated_at)
-      #   solution.creator.solver_profile.save
-      # end
     }
     # step 4: 向Seeker推送结果
     title = "您的问题有新的答案："
-    content = problem_result
+    content = self.result
     PushNotificationJob.perform_later(title, content, self.id.to_s)
   end
 
@@ -239,11 +200,6 @@ class Problem
 
     # distribution
     DistributeProblemJob.perform_later(self.id.to_s)
-  end
-
-  private
-  def waiting_time
-    2 * 60
   end
 
 end
