@@ -22,6 +22,8 @@ class Api::V1::SolutionsController < Api::ApplicationController
 
   def update
     # Solver可以进行的唯一修改是上传result
+    head :unprocessable_entity and return unless @solution.status.unsolved?
+
     @solution.attributes = solution_params
 
     render json: @solution.errors, status: :unprocessable_entity and return unless @solution.save
