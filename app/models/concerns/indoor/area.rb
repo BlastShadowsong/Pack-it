@@ -7,7 +7,7 @@ module Indoor
       include Mongoid::Geospatial
       include Indoor
 
-      field :area, type: Mongoid::Geospatial::Polygon, default: [[0, 0], [1, 1], [2, 2]]
+      field :area, type: Mongoid::Geospatial::Polygon, default: [[0, 0], [3, 6], [6, 1], [0, 0]]
 
       spatial_index :area
     end
