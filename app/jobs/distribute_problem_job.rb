@@ -6,8 +6,8 @@ class DistributeProblemJob < ActiveJob::Base
 
     # Step 1: 查询user
     # 支持的最晚时间：前5分钟内（活跃的用户）
-    latest_time = Time.now - 5 * 60
-    active_solvers = LocationProfile.where({:user.ne => problem.creator, :updated_at.gte => latest_time, building: problem.building})
+    # latest_time = Time.now - 5 * 60
+    active_solvers = LocationProfile.where({:user.ne => problem.creator, building: problem.building})
 
     distribute_solvers = []
     # 如果places为空，改为向整个mall查询；
@@ -18,6 +18,7 @@ class DistributeProblemJob < ActiveJob::Base
       problem.places.each { |place|
         distribute_solvers += active_solvers.where(:floor => place.floor).geo_spacial(:position.within_polygon => [place.area])
       }
+      # 确保不会有重复的分发
       problem.solutions.each { |solution|
         distribute_solvers.each{|solver|
           if solver.user == solution.creator
@@ -29,7 +30,7 @@ class DistributeProblemJob < ActiveJob::Base
 
     # Step 2: 分发Solutions
     if distribute_solvers.any?
-      distribute_solvers = distribute_solvers.take(problem.amount - problem.solutions.count)
+      distribute_solvers = distribute_solvers.take(problem.amount * 2)
       distribute_solvers.each { |solver|
         solution = problem.solutions.build({status: problem.status, feedback: problem.feedback})
         solution.creator = solver.user
@@ -44,7 +45,7 @@ class DistributeProblemJob < ActiveJob::Base
     end
 
     # Step 3: 重发Solutions
-    if problem.solutions.count < problem.amount && problem.status.unsolved?
+    if problem.figure < problem.amount && problem.status.unsolved?
       DistributeProblemJob.set(wait: waiting_time).perform_later(problem_id.to_s)
     end
 

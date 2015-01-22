@@ -5,4 +5,6 @@ class LocationProfile < Profile
 
   belongs_to :building
 
+  default_scope ->{desc(:updated_at)}
+
 end
