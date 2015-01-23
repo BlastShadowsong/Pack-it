@@ -41,7 +41,8 @@ class DistributeProblemJob < ActiveJob::Base
       user_ids = distribute_solvers.map(&:user_id).as_json
       title = "新问题期待您的帮助"
       content = problem.message
-      PushNotificationJob.perform_later(title, content, user_ids)
+      uri = "solution"
+      PushNotificationJob.perform_later(title, content, uri, user_ids)
     end
 
     # Step 3: 重发Solutions

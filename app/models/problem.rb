@@ -1,3 +1,5 @@
+require 'base64'
+
 class Problem
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -109,7 +111,8 @@ class Problem
     # step 4: 向Seeker推送结果
     title = "您的问题有新的答案："
     content = self.result
-    PushNotificationJob.perform_later(title, content, self.id.to_s)
+    uri = self.to_uri
+    PushNotificationJob.perform_later(title, content, uri, self.id.to_s)
   end
 
   def clean
@@ -138,9 +141,10 @@ class Problem
       solution.creator.solver_profile.save
     }
     # step 3: 向Seeker推送结果
-    title = "您的问题没能得到解决"
-    content = "试试重新描述一下？"
-    PushNotificationJob.perform_later(title, content, self.id.to_s)
+    title = "您的问题未解决"
+    content = "重新描述一下？"
+    uri = "problem"
+    PushNotificationJob.perform_later(title, content, uri, self.id.to_s)
   end
 
   def comment
