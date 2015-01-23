@@ -138,7 +138,7 @@ class Problem
       solution.creator.solver_profile.save
     }
     # step 3: 向Seeker推送结果
-    title = "很遗憾，您的问题没能得到解决。"
+    title = "您的问题没能得到解决"
     content = "试试重新描述一下？"
     PushNotificationJob.perform_later(title, content, self.id.to_s)
   end

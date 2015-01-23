@@ -39,7 +39,7 @@ class DistributeProblemJob < ActiveJob::Base
 
       # 使用腾讯信鸽进行推送
       user_ids = distribute_solvers.map(&:user_id).as_json
-      title = "有新的问题期待您的帮助："
+      title = "新问题期待您的帮助"
       content = problem.message
       PushNotificationJob.perform_later(title, content, user_ids)
     end
