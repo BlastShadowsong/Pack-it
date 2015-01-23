@@ -1,5 +1,5 @@
 class PushNotificationToDeviceJob < ActiveJob::Base
-  queue_as :default
+  queue_as :mailers
 
   def perform(title, content, device_type, device_token)
     m = {
