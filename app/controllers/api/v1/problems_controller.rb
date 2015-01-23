@@ -14,6 +14,8 @@ class Api::V1::ProblemsController < Api::ApplicationController
   end
 
   def create
+    head :unprocessable_entity and return unless @problem.creator.crowdsourcing_profile.prepared_credit < @problem.creator.crowdsourcing_profile.credit
+
     @problem = Problem.create!(problem_params)
     respond_with @problem
   end

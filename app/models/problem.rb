@@ -62,6 +62,10 @@ class Problem
     self.startup + self.duration.minutes
   end
 
+  def credit_prepared
+    self.credit * self.amount
+  end
+
   def credit_expend
     self.credit * self.figure
   end
@@ -78,6 +82,7 @@ class Problem
     }
     # step 2: 修改Seeker与Solvers的credit
     self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
+    self.creator.crowdsourcing_profile.decrease_prepared_credit(self.credit_prepared)
     self.creator.crowdsourcing_profile.touch(:updated_at)
     self.creator.crowdsourcing_profile.save
     self.solutions.each { |solution|
@@ -124,6 +129,9 @@ class Problem
     self.creator.seeker_profile.increase_failed
     self.creator.seeker_profile.touch(:updated_at)
     self.creator.seeker_profile.save
+    self.creator.crowdsourcing_profile.decrease_prepared_credit(self.credit_prepared)
+    self.creator.crowdsourcing_profile.touch(:updated_at)
+    self.creator.crowdsourcing_profile.save
     self.solutions.each { |solution|
       solution.creator.solver_profile.increase_failed
       solution.creator.solver_profile.touch(:updated_at)
@@ -192,8 +200,11 @@ class Problem
     # add itself to seeker's favorite problems
     self.creator.seeker_profile.problems.push(self)
     self.creator.seeker_profile.increase_total
+    # increase the prepared_credit
+    self.creator.seeker_profile.increase_prepared_credit(self.credit_prepared)
     self.creator.seeker_profile.touch(:updated_at)
     self.creator.seeker_profile.save
+    # judge rank by the credit
     self.judge_rank
     # schedule a job to close itself at deadline
     CloseProblemJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
