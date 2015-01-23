@@ -199,11 +199,14 @@ class Problem
   def on_created
     # add itself to seeker's favorite problems
     self.creator.seeker_profile.problems.push(self)
+    # update the seeker_profile
     self.creator.seeker_profile.increase_total
-    # increase the prepared_credit
-    self.creator.seeker_profile.increase_prepared_credit(self.credit_prepared)
     self.creator.seeker_profile.touch(:updated_at)
     self.creator.seeker_profile.save
+    # increase the prepared_credit
+    self.creator.crowdsourcing_profile.increase_prepared_credit(self.credit_prepared)
+    self.creator.crowdsourcing_profile.touch(:updated_at)
+    self.creator.crowdsourcing_profile.save
     # judge rank by the credit
     self.judge_rank
     # schedule a job to close itself at deadline
