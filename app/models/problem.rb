@@ -142,8 +142,8 @@ class Problem
     # step 3: 向Seeker推送结果
     user_id = self.creator.id.to_s
     title = "您的问题未解决"
-    content = "重新描述一下？"
-    uri = "problem"
+    content = self.result
+    uri = self.to_uri
     PushNotificationJob.perform_later(title, content, uri, user_id)
   end
 
