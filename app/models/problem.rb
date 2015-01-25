@@ -112,12 +112,6 @@ class Problem
         solution.creator.solver_profile.save
       end
     }
-    # step 4: 向Seeker推送结果
-    user_id = self.creator.id.to_s
-    title = "您的问题有新的答案："
-    content = self.result
-    uri = self.to_uri
-    PushNotificationJob.perform_later(title, content, uri, user_id)
   end
 
   def clean
