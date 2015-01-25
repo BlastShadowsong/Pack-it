@@ -106,13 +106,18 @@ class Problem
         solution.creator.solver_profile.increase_credit(solution.problem.credit)
         solution.creator.solver_profile.touch(:updated_at)
         solution.creator.solver_profile.save
+      else
+        solution.creator.solver_profile.increase_failed
+        solution.creator.solver_profile.touch(:updated_at)
+        solution.creator.solver_profile.save
       end
     }
     # step 4: 向Seeker推送结果
+    user_id = self.creator.id.to_s
     title = "您的问题有新的答案："
     content = self.result
     uri = self.to_uri
-    PushNotificationJob.perform_later(title, content, uri, self.id.to_s)
+    PushNotificationJob.perform_later(title, content, uri, user_id)
   end
 
   def clean
@@ -141,10 +146,11 @@ class Problem
       solution.creator.solver_profile.save
     }
     # step 3: 向Seeker推送结果
+    user_id = self.creator.id.to_s
     title = "您的问题未解决"
     content = "重新描述一下？"
     uri = "problem"
-    PushNotificationJob.perform_later(title, content, uri, self.id.to_s)
+    PushNotificationJob.perform_later(title, content, uri, user_id)
   end
 
   def comment
@@ -163,10 +169,12 @@ class Problem
       self.creator.seeker_profile.touch(:updated_at)
       self.creator.seeker_profile.save
       self.solutions.each { |solution|
-        solution.set(feedback: :accepted)
-        solution.creator.solver_profile.increase_accepted
-        solution.creator.solver_profile.touch(:updated_at)
-        solution.creator.solver_profile.save
+        if solution.status.solved?
+          solution.set(feedback: :accepted)
+          solution.creator.solver_profile.increase_accepted
+          solution.creator.solver_profile.touch(:updated_at)
+          solution.creator.solver_profile.save
+        end
       }
     end
 
@@ -175,10 +183,12 @@ class Problem
       self.creator.seeker_profile.touch(:updated_at)
       self.creator.seeker_profile.save
       self.solutions.each { |solution|
-        solution.set(feedback: :denied)
-        solution.creator.solver_profile.increase_denied
-        solution.creator.solver_profile.touch(:updated_at)
-        solution.creator.solver_profile.save
+        if solution.status.solved?
+          solution.set(feedback: :denied)
+          solution.creator.solver_profile.increase_denied
+          solution.creator.solver_profile.touch(:updated_at)
+          solution.creator.solver_profile.save
+        end
       }
     end
   end
