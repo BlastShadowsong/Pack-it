@@ -63,7 +63,6 @@ Rails.application.routes.draw do
       resources :solutions, shallow: true
     end
 
-    resources :notification_messages, only: [:index, :destroy]
   end
   
   # The priority is based upon order of creation: first created -> highest priority.

@@ -41,10 +41,13 @@ class DistributeProblemJob < ActiveJob::Base
       # 使用腾讯信鸽进行推送
       # user_ids = distribute_solvers.map(&:user_id).as_json
       problem.solutions.each { |solution|
-        notification_message = solution.creator.notification_messages.build({title: "新问题期待您的帮助：",
-                                                                           content: problem.message,
-                                                                           uri: solution.to_uri})
-        notification_message.save!
+        n = Notification.create!({
+                                     title: "新问题期待您的帮助：",
+                                     content: problem.message,
+                                     uri: solution.to_uri,
+                                     creator: solution.creator
+                                 })
+        solution.creator.notification_profile.notifications.push(n)
       }
     end
 

@@ -57,7 +57,6 @@ class User
 
 
   has_many :profiles
-  has_many :notification_messages
   has_one :notification_profile, autobuild: true
   has_one :location_profile, autobuild: true
   has_one :social_profile, autobuild: true
