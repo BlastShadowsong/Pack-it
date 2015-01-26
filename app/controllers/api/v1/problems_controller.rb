@@ -1,10 +1,10 @@
 class Api::V1::ProblemsController < Api::ApplicationController
-  before_action :authorize_resource_owner!, only: [:index, :show, :create, :update, :destroy]
+  before_action :authorize_resource_owner!
   before_action :set_problem, only: [:show, :update, :destroy]
 
 
   def index
-    @problems = Problem.all
+    @problems = current_user.seeker_profile.problems
     @problems = query(@problems)
     paginate_with @problems.desc(:created_at)
   end

@@ -60,8 +60,10 @@ Rails.application.routes.draw do
     end
 
     resources :problems do
-      resources :solutions, shallow: true
+      resources :solutions, only: [:index]
     end
+
+    resources :solutions, except: [:new, :edit]
 
   end
   
