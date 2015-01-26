@@ -30,7 +30,8 @@ class DistributeProblemJob < ActiveJob::Base
 
     # Step 2: 分发Solutions
     if distribute_solvers.any?
-      distribute_solvers = distribute_solvers.take(problem.amount * 2)
+      # FIXME: 暂时取消分发数量的上限，保证在场所有人都能收到，之后需要可以加回来
+      # distribute_solvers = distribute_solvers.take(problem.amount * 2)
       distribute_solvers.each { |solver|
         solution = problem.solutions.build({status: problem.status, feedback: problem.feedback})
         solution.creator = solver.user

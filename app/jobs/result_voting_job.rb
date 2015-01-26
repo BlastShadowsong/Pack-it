@@ -6,9 +6,9 @@ class ResultVotingJob < ActiveJob::Base
 
     # 初始化results，只取最早回答的amount个solutions
     results = problem.solutions.where(status: :solved).asc(:updated_at).take(problem.amount)
-    
+
     # 检索所有分词出现的频率
-    segments = Hash.new()
+    segments = Hash.new
     results.each { |solution|
       solution.result.each_char { |word|
         if segments.include?(word)
@@ -23,7 +23,7 @@ class ResultVotingJob < ActiveJob::Base
     segments.delete_if { |key, value| value < results.size/2 + 1 }
 
     # 统计各个solution的result包含高频分词的数量
-    figure = Hash.new()
+    figure = Hash.new
     problem_result = results.first
     results.each { |solution|
       figure[solution.result] = 0
@@ -40,9 +40,15 @@ class ResultVotingJob < ActiveJob::Base
     problem.save!
 
     # 向Seeker推送结果
-    notification_message = problem.creator.notification_messages.build({title: "您的问题有新的答案：",
-                                                                       content: problem.result,
-                                                                       uri: problem.to_uri})
-    notification_message.save!
+    seeker_message = problem.creator.notification_messages.build({title: "您的问题有新的答案：",
+                                                                  content: problem.result,
+                                                                  uri: problem.to_uri})
+    seeker_message.save!
+    # 向结果被采纳的Solver推送消息
+    solver_message = problem_result.creator.notification_messages.build({title: "您的回答被采纳：",
+                                                                         content: problem_result.result,
+                                                                         uri: problem_result.to_uri})
+    solver_message.save!
+
   end
 end
