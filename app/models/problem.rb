@@ -51,7 +51,7 @@ class Problem
   alias_method :startup, :created_at
   alias_method :seeker, :creator
 
-  default_scope ->{desc(:created_at)}
+  default_scope -> { desc(:created_at) }
 
   def increase_figure
     self.inc(figure: 1)
@@ -140,10 +140,13 @@ class Problem
       solution.creator.solver_profile.save
     }
     # step 3: 向Seeker推送结果
-    notification_message = self.creator.notification_messages.build({title: "您的问题未解决：",
-                                                                       content: self.message,
-                                                                       uri: self.to_uri})
-    notification_message.save!
+    seeker_message = Notification.create!({
+                                              title: "您的问题未解决：",
+                                              content: self.message,
+                                              uri: self.to_uri,
+                                              creator: self.creator
+                                          })
+    self.creator.notification_profile.notifications.push(seeker_message)
   end
 
   def comment

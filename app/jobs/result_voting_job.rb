@@ -40,15 +40,20 @@ class ResultVotingJob < ActiveJob::Base
     problem.save!
 
     # 向Seeker推送结果
-    seeker_message = problem.creator.notification_messages.build({title: "您的问题有新的答案：",
-                                                                  content: problem.result,
-                                                                  uri: problem.to_uri})
-    seeker_message.save!
+    seeker_message = Notification.create!({
+                                              title: "您的问题有新的答案：",
+                                              content: problem.result,
+                                              uri: problem.to_uri,
+                                              creator: problem.creator
+                                          })
+    problem.creator.notification_profile.notifications.push(seeker_message)
     # 向结果被采纳的Solver推送消息
-    solver_message = problem_result.creator.notification_messages.build({title: "您的回答被采纳：",
-                                                                         content: problem_result.result,
-                                                                         uri: problem_result.to_uri})
-    solver_message.save!
-
+    solver_message = Notification.create!({
+                                              title: "您的回答被采纳：",
+                                              content: problem_result.result,
+                                              uri: problem_result.to_uri,
+                                              creator: problem_result.creator
+                                          })
+    problem_result.creator.notification_profile.notifications.push(solver_message)
   end
 end
