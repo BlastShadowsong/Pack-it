@@ -53,6 +53,10 @@ class Problem
 
   default_scope -> { desc(:created_at) }
 
+  def solved_solutions
+    self.solutions.where(status: :solved)
+  end
+
   def increase_figure
     self.inc(figure: 1)
     if self.figure == self.amount

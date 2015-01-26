@@ -5,5 +5,5 @@ class ProblemSerializer < ActiveModel::Serializer
   has_one :building
   has_one :tag
   has_many :places
-  has_many :solutions, serializer: SolutionPreviewSerializer
+  has_many :solved_solutions, serializer: SolutionPreviewSerializer
 end
