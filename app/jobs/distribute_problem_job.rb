@@ -20,7 +20,7 @@ class DistributeProblemJob < ActiveJob::Base
       }
       # 确保不会有重复的分发
       problem.solutions.each { |solution|
-        distribute_solvers.each{|solver|
+        distribute_solvers.each { |solver|
           if solver.user == solution.creator
             distribute_solvers.delete(solver)
           end
@@ -39,12 +39,11 @@ class DistributeProblemJob < ActiveJob::Base
 
       # 使用腾讯信鸽进行推送
       # user_ids = distribute_solvers.map(&:user_id).as_json
-      problem.solutions.each{|solution|
-        user_id = solution.creator.id.to_s
-        title = "新问题期待您的帮助"
-        content = problem.message
-        uri = solution.to_uri
-        PushNotificationJob.perform_later(title, content, uri, user_id)
+      problem.solutions.each { |solution|
+        notification_message = solution.creator.notification_messages.build({title: "新问题期待您的帮助：",
+                                                                           content: problem.message,
+                                                                           uri: solution.to_uri})
+        notification_message.save!
       }
     end
 

@@ -40,10 +40,9 @@ class ResultVotingJob < ActiveJob::Base
     problem.save!
 
     # 向Seeker推送结果
-    user_id = problem.creator.id.to_s
-    title = "您的问题有新的答案："
-    content = problem.result
-    uri = problem.to_uri
-    PushNotificationJob.perform_later(title, content, uri, user_id)
+    notification_message = problem.creator.notification_messages.build({title: "您的问题有新的答案：",
+                                                                       content: problem.result,
+                                                                       uri: problem.to_uri})
+    notification_message.save!
   end
 end
