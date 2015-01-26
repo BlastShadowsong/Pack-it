@@ -1,10 +1,11 @@
 class Api::V1::SolutionsController < Api::ApplicationController
-  before_action :authorize_resource_owner!, only: [:index, :show, :create, :update, :destroy]
+  before_action :authorize_resource_owner!
   before_action :set_problem, only: [:index, :create]
   before_action :set_solution, only: [:show, :update, :destroy]
 
   def index
-    @solutions = @problem.solutions
+    @solutions = @problem.solutions if @problem
+    @solutions = current_user.solver_profile.solutions unless @solutions
     @solutions = query(@solutions)
     paginate_with @solutions.asc(:updated_at)
   end
@@ -14,7 +15,7 @@ class Api::V1::SolutionsController < Api::ApplicationController
   end
 
   def create
-    # 创建任务在DistributeProblemJob中完成，Solver不能自己创建任务
+    # FIXME: 创建任务在DistributeProblemJob中完成，Solver不能自己创建任务
     @solution = @problem.solutions.build(solution_params)
     @solution.save!
     respond_with @solution
@@ -43,7 +44,7 @@ class Api::V1::SolutionsController < Api::ApplicationController
   end
 
   def set_problem
-    @problem = Problem.find(params[:problem_id])
+    @problem = Problem.find(params[:problem_id]) if params[:problem_id]
   end
 
   def set_solution
