@@ -1,0 +1,11 @@
+= devise_error_messages!
+.panel.panel-default
+  .panel-heading
+    .h4= t('.resend_unlock_instructions', :default => "Resend unlock instructions")
+
+  .panel-body
+    = bootstrap_form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post, html: { role: "form" } }) do |f|
+      = f.email_field :email
+      = f.submit t('.resend_unlock_instructions', :default => "Resend unlock instructions"), class: "btn btn-primary"
+
+= render "devise/shared/links"
