@@ -1,0 +1,2 @@
+class NotificationProfileSerializer < ProfileSerializer
+end
