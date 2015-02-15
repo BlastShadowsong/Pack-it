@@ -1,1 +1,0 @@
-ChinaSMS.use :yunpian, password: 'd3b6f09ccfd5cd2763908fda2caa2335'
