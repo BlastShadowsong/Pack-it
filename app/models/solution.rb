@@ -5,8 +5,8 @@ class Solution
 
   extend Enumerize
 
-  after_create :on_created
-  after_update :answer
+  # after_create :on_created
+  # after_update :answer
 
 
   field :status
@@ -14,7 +14,7 @@ class Solution
             in: [:unsolved, :solved, :commented, :failed ],
             default: :unsolved
 
-  field :result, type: String
+  field :price, type: String
 
   field :feedback
   enumerize :feedback,
@@ -27,33 +27,33 @@ class Solution
 
   default_scope ->{desc(:created_at)}
 
-  def answer
-    # 修改solution的状态
-    self.set(status: :solved)
-    self.problem.increase_figure
-    self.creator.solver_profile.touch(:updated_at)
-    self.creator.solver_profile.save
-  end
-
-  def clean
-    self.creator.solver_profile.solutions.delete(self)
-    self.creator.solver_profile.touch(:updated_at)
-    self.creator.solver_profile.save
-  end
-
-  def close
-    self.set(status: :failed)
-    self.creator.solver_profile.increase_failed
-    self.creator.solver_profile.touch(:updated_at)
-    self.creator.solver_profile.save
-  end
-
-  private
-  def on_created
-    # add itself to solver's favorite solutions
-    self.creator.solver_profile.solutions.push(self)
-    self.creator.solver_profile.increase_total
-    self.creator.solver_profile.touch(:updated_at)
-    self.creator.solver_profile.save
-  end
+  # def answer
+  #   # 修改solution的状态
+  #   self.set(status: :solved)
+  #   self.problem.increase_figure
+  #   self.creator.solver_profile.touch(:updated_at)
+  #   self.creator.solver_profile.save
+  # end
+  #
+  # def clean
+  #   self.creator.solver_profile.solutions.delete(self)
+  #   self.creator.solver_profile.touch(:updated_at)
+  #   self.creator.solver_profile.save
+  # end
+  #
+  # def close
+  #   self.set(status: :failed)
+  #   self.creator.solver_profile.increase_failed
+  #   self.creator.solver_profile.touch(:updated_at)
+  #   self.creator.solver_profile.save
+  # end
+  #
+  # private
+  # def on_created
+  #   # add itself to solver's favorite solutions
+  #   self.creator.solver_profile.solutions.push(self)
+  #   self.creator.solver_profile.increase_total
+  #   self.creator.solver_profile.touch(:updated_at)
+  #   self.creator.solver_profile.save
+  # end
 end

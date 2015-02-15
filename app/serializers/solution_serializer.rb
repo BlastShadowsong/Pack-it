@@ -1,5 +1,5 @@
 class SolutionSerializer < ActiveModel::Serializer
-  attributes :id, :status, :result, :feedback
+  attributes :id, :status, :price, :feedback
 
   has_one :problem, serializer: ProblemPreviewSerializer
 end

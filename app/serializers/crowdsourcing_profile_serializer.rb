@@ -1,3 +1,3 @@
 class CrowdsourcingProfileSerializer < ProfileSerializer
-  attributes :credit, :kind
+  attributes :credit
 end

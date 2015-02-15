@@ -1,9 +1,7 @@
 class ProblemSerializer < ActiveModel::Serializer
-  attributes :id, :kind, :rank, :credit, :amount, :figure, :duration, :status, :message, :result, :feedback,
+  attributes :id, :credit, :amount, :figure, :duration, :status, :picture, :result, :feedback,
              :startup, :deadline
 
-  has_one :building
   has_one :tag
-  has_many :places
   has_many :solved_solutions, serializer: SolutionPreviewSerializer
 end

@@ -1,2 +1,0 @@
-class FacilitySerializer < PlaceSerializer
-end
