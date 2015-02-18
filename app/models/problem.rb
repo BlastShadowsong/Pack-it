@@ -24,7 +24,7 @@ class Problem
   has_many :solutions
   belongs_to :tag
 
-  validates_presence_of :picture
+  # validates_presence_of :picture
 
   alias_method :startup, :created_at
   alias_method :seeker, :creator
