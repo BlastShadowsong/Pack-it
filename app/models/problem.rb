@@ -8,6 +8,8 @@ class Problem
 
   extend Enumerize
 
+  after_create :on_created
+
   mount_uploader :picture, PictureUploader
 
   field :duration, type: Integer, default: 5
@@ -96,31 +98,31 @@ class Problem
   #   }
   # end
   #
-  # def clean
-  #   # 从seeker_profile中去掉这个problem
-  #   self.creator.seeker_profile.problems.delete(self)
-  #   self.creator.seeker_profile.touch(:updated_at)
-  #   self.creator.seeker_profile.save
-  # end
-  #
-  # def close
-  #   # step 1: 修改Problem与相应Solutions中的状态为failed
-  #   self.set(status: :failed)
-  #   self.solutions.each { |solution|
-  #     solution.set(status: :failed)
-  #   }
-  #   # step 2: 修改Seeker_Profile与Solver_Profile中的 failed + 1
-  #   self.creator.seeker_profile.increase_failed
-  #   self.creator.seeker_profile.touch(:updated_at)
-  #   self.creator.seeker_profile.save
-  #   self.creator.crowdsourcing_profile.decrease_prepared_credit(self.credit_prepared)
-  #   self.creator.crowdsourcing_profile.touch(:updated_at)
-  #   self.creator.crowdsourcing_profile.save
-  #   self.solutions.each { |solution|
-  #     solution.creator.solver_profile.increase_failed
-  #     solution.creator.solver_profile.touch(:updated_at)
-  #     solution.creator.solver_profile.save
-  #   }
+  def clean
+    # 从seeker_profile中去掉这个problem
+    self.creator.seeker_profile.problems.delete(self)
+    self.creator.seeker_profile.touch(:updated_at)
+    self.creator.seeker_profile.save
+  end
+
+  def close
+    # step 1: 修改Problem与相应Solutions中的状态为failed
+    self.set(status: :failed)
+    self.solutions.each { |solution|
+      solution.set(status: :failed)
+    }
+    # step 2: 修改Seeker_Profile与Solver_Profile中的 failed + 1
+    self.creator.seeker_profile.increase_failed
+    self.creator.seeker_profile.touch(:updated_at)
+    self.creator.seeker_profile.save
+    # self.creator.crowdsourcing_profile.decrease_prepared_credit(self.credit_prepared)
+    # self.creator.crowdsourcing_profile.touch(:updated_at)
+    # self.creator.crowdsourcing_profile.save
+    self.solutions.each { |solution|
+      solution.creator.solver_profile.increase_failed
+      solution.creator.solver_profile.touch(:updated_at)
+      solution.creator.solver_profile.save
+    }
   #   # step 3: 向Seeker推送结果
   #   seeker_message = Notification.create!({
   #                                             title: "您的问题未解决：",
@@ -129,7 +131,7 @@ class Problem
   #                                             creator: self.creator
   #                                         })
   #   self.creator.notification_profile.notifications.push(seeker_message)
-  # end
+  end
   #
   # def comment
   #   # 任务只能取消/重发，用户唯一可以做的修改就是添加feedback
@@ -172,14 +174,14 @@ class Problem
   # end
   #
   #
-  # private
-  # def on_created
-  #   # add itself to seeker's favorite problems
-  #   self.creator.seeker_profile.problems.push(self)
-  #   # update the seeker_profile
-  #   self.creator.seeker_profile.increase_total
-  #   self.creator.seeker_profile.touch(:updated_at)
-  #   self.creator.seeker_profile.save
+  private
+  def on_created
+    # add itself to seeker's favorite problems
+    self.creator.seeker_profile.problems.push(self)
+    # update the seeker_profile
+    self.creator.seeker_profile.increase_total
+    self.creator.seeker_profile.touch(:updated_at)
+    self.creator.seeker_profile.save
   #   # increase the prepared_credit
   #   self.creator.crowdsourcing_profile.increase_prepared_credit(self.credit_prepared)
   #   self.creator.crowdsourcing_profile.touch(:updated_at)
@@ -191,6 +193,6 @@ class Problem
   #
   #   # distribution
   #   DistributeProblemJob.perform_later(self.id.to_s)
-  # end
+  end
 
 end

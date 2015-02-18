@@ -21,17 +21,17 @@ class Api::V1::ProblemsController < Api::ApplicationController
   end
 
   def create
-    head :unprocessable_entity and return unless current_user.crowdsourcing_profile.prepared_credit < current_user.crowdsourcing_profile.credit
+    # head :unprocessable_entity and return unless current_user.crowdsourcing_profile.prepared_credit < current_user.crowdsourcing_profile.credit
 
     @problem = Problem.create!(problem_params)
     respond_with @problem
   end
 
   def update
-    if @problem.status.solved?
+    # if @problem.status.solved?
       @problem.update!(problem_params)
-      @problem.comment
-    end
+      # @problem.comment
+    # end
     respond_with @problem
   end
 

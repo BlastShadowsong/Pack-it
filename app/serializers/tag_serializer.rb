@@ -1,5 +1,5 @@
 class TagSerializer < ActiveModel::Serializer
-  attributes :id, :name, :icon, :logo
+  attributes :id, :name
 
   has_one :category
 end

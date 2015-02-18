@@ -1,4 +1,4 @@
 class SolutionPreviewSerializer < ActiveModel::Serializer
-  attributes :id, :status, :result, :feedback
+  attributes :id, :status, :price, :description
 
 end
