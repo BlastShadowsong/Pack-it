@@ -7,6 +7,8 @@ class Problem
 
   extend Enumerize
 
+  mount_uploader :picture, PictureUploader
+
   field :credit, type: Integer, default: 0
   # amount表示分发的数量，figure表示实际完成的数量
   field :amount, type: Integer, default: 5

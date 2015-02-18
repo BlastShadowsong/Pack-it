@@ -104,3 +104,9 @@ gem 'figaro'
 
 # github: 'saberma/china_sms'
 gem 'china_sms'
+
+gem 'carrierwave'
+
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+
+gem 'mongoid-grid_fs'

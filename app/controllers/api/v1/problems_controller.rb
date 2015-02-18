@@ -2,6 +2,13 @@ class Api::V1::ProblemsController < Api::ApplicationController
   before_action :authorize_resource_owner!
   before_action :set_problem, only: [:show, :update, :destroy]
 
+  def avatar
+    content = @problem.picture.read
+    if stale?(etag: content, last_modified: @problem.updated_at.utc, public: true)
+      send_data content, type: @problem.picture.file.content_type, disposition: "inline"
+      expires_in 0, public: true
+    end
+  end
 
   def index
     @problems = current_user.seeker_profile.problems

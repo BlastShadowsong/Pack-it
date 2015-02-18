@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   }
 
+  get "/upload/grid/*path" => "gridfs#serve"
+
   root 'home#index'
 
   api_version(:module => "Api::V1", :header => {:name => "API-VERSION", :value => "v1"}) do
@@ -35,6 +37,7 @@ Rails.application.routes.draw do
     end
 
     resources :problems do
+      get :avatar, on: :member
       resources :solutions, only: [:index]
     end
 
