@@ -3,6 +3,14 @@ class Api::V1::SolutionsController < Api::ApplicationController
   before_action :set_problem, only: [:index, :create]
   before_action :set_solution, only: [:show, :update, :destroy]
 
+  def avatar
+    content = @solution.picture.read
+    if stale?(etag: content, last_modified: @solution.updated_at.utc, public: true)
+      send_data content, type: @solution.picture.file.content_type, disposition: "inline"
+      expires_in 0, public: true
+    end
+  end
+
   def index
     @solutions = @problem.solutions if @problem
     @solutions = current_user.solver_profile.solutions unless @solutions

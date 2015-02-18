@@ -2,8 +2,6 @@ class Tag
   include Mongoid::Document
 
   field :name, type: String
-  field :icon, type: String
-  field :logo, type: String
 
   belongs_to :category
 

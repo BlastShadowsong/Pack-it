@@ -4,30 +4,22 @@ class Problem
   include Mongoid::Document
   include Mongoid::Timestamps
   include Trackable
+  include Outdoor
 
   extend Enumerize
 
   mount_uploader :picture, PictureUploader
 
-  field :credit, type: Integer, default: 0
-  # amount表示分发的数量，figure表示实际完成的数量
-  field :amount, type: Integer, default: 5
-  field :figure, type: Integer, default: 0
   field :duration, type: Integer, default: 5
 
   field :status
   # commented: has got feedback from the solver
   # failed: no answer or has been closed by seeker
   enumerize :status,
-            in: [:unsolved, :solved, :commented, :failed],
-            default: :unsolved
+            in: [:waiting, :solved, :failed],
+            default: :waiting
 
-  field :picture, type: String
-
-  field :feedback
-  enumerize :feedback,
-            in: [:uncommented, :accepted, :denied],
-            default: :uncommented
+  field :description, type: String
 
   has_many :solutions
   belongs_to :tag
@@ -43,24 +35,24 @@ class Problem
     self.solutions.where(status: :solved)
   end
 
-  def increase_figure
-    self.inc(figure: 1)
-    if self.figure == self.amount
-      self.complete
-    end
-  end
+  # def increase_figure
+  #   self.inc(figure: 1)
+  #   if self.figure == self.amount
+  #     self.complete
+  #   end
+  # end
 
   def deadline
     self.startup + self.duration.minutes
   end
 
-  def credit_prepared
-    self.credit * self.amount
-  end
-
-  def credit_expend
-    self.credit * self.figure
-  end
+  # def credit_prepared
+  #   self.credit * self.amount
+  # end
+  #
+  # def credit_expend
+  #   self.credit * self.figure
+  # end
 
   # def complete
   #   # step 0: 对Solutions的结果做voting，并将最终结果存入Problem的result中

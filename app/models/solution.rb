@@ -7,19 +7,16 @@ class Solution
 
   # after_create :on_created
   # after_update :answer
-
+  mount_uploader :picture, PictureUploader
 
   field :status
   enumerize :status,
-            in: [:unsolved, :solved, :commented, :failed ],
-            default: :unsolved
+            in: [:waiting, :solved, :failed ],
+            default: :waiting
 
   field :price, type: String
 
-  field :feedback
-  enumerize :feedback,
-            in: [:uncommented, :accepted, :denied],
-            default: :uncommented
+  field :description, type: String
 
   belongs_to :problem
 
