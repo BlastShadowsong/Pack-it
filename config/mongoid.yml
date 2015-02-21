@@ -60,7 +60,7 @@ test:
     default:
       database: pack_test
       hosts:
-        - localhost:27017
+        - 120.24.163.76:27017
       options:
         read: primary
         # In the test environment we lower the retries and retry interval to
@@ -72,7 +72,7 @@ production:
     default:
       database: pack
       hosts:
-        - localhost:27017
+        - 120.24.163.76:27017
       options:
 #        read: primary
 #        max_retries: 20
