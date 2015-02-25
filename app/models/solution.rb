@@ -20,6 +20,8 @@ class Solution
 
   belongs_to :problem
 
+  belongs_to :shop_profile
+
   alias_method :solver, :creator
 
   default_scope ->{desc(:created_at)}
