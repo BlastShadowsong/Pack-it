@@ -24,7 +24,6 @@ Rails.application.routes.draw do
     resource :me, controller: :users, except: [:new, :edit]
 
     resources :profiles, param: :type, only: [:index, :show, :update] do
-      get :picture, on: :member
       post ':field', to: 'profiles#add'
       delete ':field', to: 'profiles#remove'
     end
@@ -38,13 +37,10 @@ Rails.application.routes.draw do
     end
 
     resources :problems do
-      get :picture, on: :member
       resources :solutions, only: [:index]
     end
 
-    resources :solutions do
-      get :picture, on: :member
-    end
+    resources :solutions
 
   end
   
