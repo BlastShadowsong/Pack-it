@@ -4,5 +4,5 @@ class ProblemSerializer < ActiveModel::Serializer
 
   has_one :picture
   has_one :tag
-  has_many :solved_solutions, serializer: SolutionPreviewSerializer
+  has_many :solutions, serializer: SolutionPreviewSerializer
 end
