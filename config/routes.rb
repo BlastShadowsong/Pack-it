@@ -1,5 +1,17 @@
 Rails.application.routes.draw do
 
+  namespace :api do
+  namespace :v1 do
+    get 'tags/index'
+    end
+  end
+
+  namespace :api do
+  namespace :v1 do
+    get 'tags/show'
+    end
+  end
+
   use_doorkeeper
   devise_for :users
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
@@ -42,6 +54,7 @@ Rails.application.routes.draw do
 
     resources :solutions
 
+    resources :tags
   end
   
 
