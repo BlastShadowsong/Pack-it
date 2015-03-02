@@ -5,7 +5,7 @@ class Solution
 
   extend Enumerize
 
-  # after_create :on_created
+  after_create :on_created
   # after_update :answer
   mount_uploader :picture, PictureUploader
 
@@ -47,12 +47,12 @@ class Solution
   #   self.creator.solver_profile.save
   # end
   #
-  # private
-  # def on_created
-  #   # add itself to solver's favorite solutions
-  #   self.creator.solver_profile.solutions.push(self)
-  #   self.creator.solver_profile.increase_total
-  #   self.creator.solver_profile.touch(:updated_at)
-  #   self.creator.solver_profile.save
-  # end
+  private
+  def on_created
+    # add itself to solver's favorite solutions
+    self.creator.solver_profile.solutions.push(self)
+    self.creator.solver_profile.increase_total
+    self.creator.solver_profile.touch(:updated_at)
+    self.creator.solver_profile.save
+  end
 end
