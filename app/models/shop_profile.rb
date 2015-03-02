@@ -6,6 +6,8 @@ class ShopProfile < Profile
 
   field :name, type: String
 
+  field :address, type: String
+
   field :description, type: String
 
   field :tel, type: String
