@@ -191,8 +191,8 @@ class Problem
   #   # schedule a job to close itself at deadline
   #   CloseProblemJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
   #
-  #   # distribution
-  #   DistributeProblemJob.perform_later(self.id.to_s)
+    # distribution
+    DistributeProblemJob.perform_later(self.id.to_s)
   end
 
 end
