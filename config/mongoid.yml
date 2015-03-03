@@ -72,7 +72,7 @@ production:
     default:
       database: pack
       hosts:
-        - 120.24.163.76:27017
+        - 58.96.178.70:27017
       options:
 #        read: primary
 #        max_retries: 20
