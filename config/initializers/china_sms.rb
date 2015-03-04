@@ -1,1 +1,1 @@
-ChinaSMS.use :yunpian, password: 'd3b6f09ccfd5cd2763908fda2caa2335'
+ChinaSMS.use :yunpian, password: '201183f0309b03377d79f6ce54610345'
