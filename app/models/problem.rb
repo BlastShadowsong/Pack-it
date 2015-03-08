@@ -23,6 +23,8 @@ class Problem
 
   field :description, type: String
 
+  field :figure, type: Integer, default: 0
+
   has_many :solutions
   belongs_to :tag
 
@@ -37,12 +39,9 @@ class Problem
     self.solutions.where(status: :solved)
   end
 
-  # def increase_figure
-  #   self.inc(figure: 1)
-  #   if self.figure == self.amount
-  #     self.complete
-  #   end
-  # end
+  def increase_figure
+    self.inc(figure: 1)
+  end
 
   def deadline
     self.startup + self.duration.minutes
@@ -56,16 +55,16 @@ class Problem
   #   self.credit * self.figure
   # end
 
-  # def complete
+  def complete
   #   # step 0: 对Solutions的结果做voting，并将最终结果存入Problem的result中
   #   ResultVotingJob.perform_later(self.id.to_s)
-  #   # step 1: 修改Problem的状态为solved，未完成的Solutions的状态为failed
-  #   self.set(status: :solved)
-  #   self.solutions.each { |solution|
-  #     if solution.status.unsolved?
-  #       solution.set(status: :failed)
-  #     end
-  #   }
+    # step 1: 修改Problem的状态为solved，未完成的Solutions的状态为failed
+    self.set(status: :solved)
+    self.solutions.each { |solution|
+      if solution.status.waiting?
+        solution.set(status: :failed)
+      end
+    }
   #   # step 2: 修改Seeker与Solvers的credit
   #   self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
   #   self.creator.crowdsourcing_profile.decrease_prepared_credit(self.credit_prepared)
@@ -78,26 +77,26 @@ class Problem
   #       solution.creator.crowdsourcing_profile.save
   #     end
   #   }
-  #   # step 3: 修改Seeker_Profile中的 finished + 1 以及积分变化
-  #   #         修改Solver_Profile：如果完成，finished + 1，积分变化；如果失败，failed + 1，积分不变
-  #   self.creator.seeker_profile.increase_finished
+    # step 3: 修改Seeker_Profile中的 finished + 1 以及积分变化
+    #         修改Solver_Profile：如果完成，finished + 1，积分变化；如果失败，failed + 1，积分不变
+    self.creator.seeker_profile.increase_finished
   #   self.creator.seeker_profile.increase_credit(self.credit_expend)
-  #   self.creator.seeker_profile.touch(:updated_at)
-  #   self.creator.seeker_profile.save
-  #   self.solutions.each { |solution|
-  #     if solution.status.solved?
-  #       solution.creator.solver_profile.increase_finished
+    self.creator.seeker_profile.touch(:updated_at)
+    self.creator.seeker_profile.save
+    self.solutions.each { |solution|
+      if solution.status.solved?
+        solution.creator.solver_profile.increase_finished
   #       solution.creator.solver_profile.increase_credit(solution.problem.credit)
-  #       solution.creator.solver_profile.touch(:updated_at)
-  #       solution.creator.solver_profile.save
-  #     else
-  #       solution.creator.solver_profile.increase_failed
-  #       solution.creator.solver_profile.touch(:updated_at)
-  #       solution.creator.solver_profile.save
-  #     end
-  #   }
-  # end
-  #
+        solution.creator.solver_profile.touch(:updated_at)
+        solution.creator.solver_profile.save
+      else
+        solution.creator.solver_profile.increase_failed
+        solution.creator.solver_profile.touch(:updated_at)
+        solution.creator.solver_profile.save
+      end
+    }
+  end
+
   def clean
     # 从seeker_profile中去掉这个problem
     self.creator.seeker_profile.problems.delete(self)
@@ -188,11 +187,10 @@ class Problem
   #   self.creator.crowdsourcing_profile.save
   #   # judge rank by the credit
   #   self.judge_rank
-  #   # schedule a job to close itself at deadline
-  #   CloseProblemJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
-  #
     # distribution
     DistributeProblemJob.perform_later(self.id.to_s)
+    # schedule a job to close itself at deadline
+    CloseProblemJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
   end
 
 end

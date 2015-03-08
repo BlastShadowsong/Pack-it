@@ -26,27 +26,29 @@ class Solution
 
   default_scope ->{desc(:created_at)}
 
-  # def answer
-  #   # 修改solution的状态
-  #   self.set(status: :solved)
-  #   self.problem.increase_figure
-  #   self.creator.solver_profile.touch(:updated_at)
-  #   self.creator.solver_profile.save
-  # end
-  #
-  # def clean
-  #   self.creator.solver_profile.solutions.delete(self)
-  #   self.creator.solver_profile.touch(:updated_at)
-  #   self.creator.solver_profile.save
-  # end
-  #
-  # def close
-  #   self.set(status: :failed)
-  #   self.creator.solver_profile.increase_failed
-  #   self.creator.solver_profile.touch(:updated_at)
-  #   self.creator.solver_profile.save
-  # end
-  #
+  def answer
+    # 修改solution的状态
+    self.set(status: :solved)
+    self.problem.increase_figure
+    self.creator.solver_profile.touch(:updated_at)
+    self.creator.solver_profile.save
+  end
+
+  def clean
+    self.creator.solver_profile.solutions.delete(self)
+    self.creator.solver_profile.touch(:updated_at)
+    self.creator.solver_profile.save
+  end
+
+  def close
+    if self.status.waiting?
+      self.set(status: :failed)
+      self.creator.solver_profile.increase_failed
+      self.creator.solver_profile.touch(:updated_at)
+      self.creator.solver_profile.save
+    end
+  end
+
   private
   def on_created
     # add itself to solver's favorite solutions

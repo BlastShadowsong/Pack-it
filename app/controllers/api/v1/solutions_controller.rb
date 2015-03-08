@@ -23,17 +23,17 @@ class Api::V1::SolutionsController < Api::ApplicationController
   end
 
   def create
-    # FIXME: 创建任务在DistributeProblemJob中完成，Solver不能自己创建任务
+    # 创建任务在DistributeProblemJob中完成，Solver不能自己创建任务
     @solution = @problem.solutions.build(solution_params)
     @solution.save!
     respond_with @solution
   end
 
   def update
-    # Solver可以进行的唯一修改是上传result
-    head :unprocessable_entity and return unless @solution.status.unsolved?
+    head :unprocessable_entity and return unless @solution.status.waiting?
 
     @solution.attributes = solution_params
+    @solution.answer
 
     render json: @solution.errors, status: :unprocessable_entity and return unless @solution.save
 
