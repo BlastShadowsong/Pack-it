@@ -36,6 +36,9 @@ class DistributeProblemJob < ActiveJob::Base
     #     solution.creator.notification_profile.notifications.push(solver_message)
     #   }
     # end
+
+    # schedule a job to close itself at deadline
+    CloseProblemJob.set(wait: problem.duration.minutes).perform_later(problem.id.to_s)
   end
 
   # private
