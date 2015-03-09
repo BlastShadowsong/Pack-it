@@ -185,8 +185,6 @@ class Problem
   #   # judge rank by the credit
   #   self.judge_rank
 
-    problem = Problem.find(self.id.to_s)
-    puts problem
     # distribution
     DistributeProblemJob.perform_later(self.id.to_s)
     # schedule a job to close itself at deadline
