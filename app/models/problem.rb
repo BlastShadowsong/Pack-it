@@ -8,8 +8,6 @@ class Problem
 
   extend Enumerize
 
-  after_create :on_created
-
   mount_uploader :picture, PictureUploader
 
   field :duration, type: Integer, default: 5
@@ -173,8 +171,7 @@ class Problem
   # end
   #
   #
-  private
-  def on_created
+  def after_created
     # add itself to seeker's favorite problems
     self.creator.seeker_profile.problems.push(self)
     # update the seeker_profile
@@ -189,7 +186,8 @@ class Problem
   #   self.judge_rank
     # distribution
     DistributeProblemJob.perform_later(self.id.to_s)
-
+    # schedule a job to close itself at deadline
+    CloseProblemJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
   end
 
 end
