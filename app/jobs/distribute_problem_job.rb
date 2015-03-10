@@ -18,9 +18,11 @@ class DistributeProblemJob < ActiveJob::Base
     if distribute_solvers.any?
       # distribute_solvers = distribute_solvers.take(problem.amount * 2)
       distribute_solvers.each { |solver|
-        solution = problem.solutions.build({shop_profile: solver})
-        solution.creator = solver.user
-        solution.save!
+        if solver.user.any?
+          solution = problem.solutions.build({shop_profile: solver})
+          solution.creator = solver.user
+          solution.save!
+        end
       }
     end
 
