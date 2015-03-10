@@ -1,5 +1,5 @@
 class ProblemSerializer < ActiveModel::Serializer
-  attributes :id, :duration, :status, :description,
+  attributes :id, :location, :duration, :status, :description,
              :startup, :deadline
 
   has_one :picture
