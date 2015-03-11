@@ -191,9 +191,7 @@ class Problem
     photo = File.new("photo.png", "r+")
     photo.syswrite(self.picture.read)
     photo.close
-    Thread.new {
-      result = exec("python RF_script.py ./photo.png")
-    }
+    result = `python RF_script.py ./photo.png`
 
     if result == 1
       self.set(tag: "54f6bbf5695a390e79110000")
