@@ -54,8 +54,8 @@ class Problem
   # end
 
   def complete
-  #   # step 0: 对Solutions的结果做voting，并将最终结果存入Problem的result中
-  #   PhotoRecognitionJob.perform_later(self.id.to_s)
+    #   # step 0: 对Solutions的结果做voting，并将最终结果存入Problem的result中
+    #   PhotoRecognitionJob.perform_later(self.id.to_s)
     # step 1: 修改Problem的状态为solved，未完成的Solutions的状态为failed
     self.set(status: :solved)
     self.solutions.each { |solution|
@@ -63,28 +63,28 @@ class Problem
         solution.set(status: :failed)
       end
     }
-  #   # step 2: 修改Seeker与Solvers的credit
-  #   self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
-  #   self.creator.crowdsourcing_profile.decrease_prepared_credit(self.credit_prepared)
-  #   self.creator.crowdsourcing_profile.touch(:updated_at)
-  #   self.creator.crowdsourcing_profile.save
-  #   self.solutions.each { |solution|
-  #     if solution.status.solved?
-  #       solution.creator.crowdsourcing_profile.increase_credit(solution.problem.credit)
-  #       solution.creator.crowdsourcing_profile.touch(:updated_at)
-  #       solution.creator.crowdsourcing_profile.save
-  #     end
-  #   }
+    #   # step 2: 修改Seeker与Solvers的credit
+    #   self.creator.crowdsourcing_profile.decrease_credit(self.credit_expend)
+    #   self.creator.crowdsourcing_profile.decrease_prepared_credit(self.credit_prepared)
+    #   self.creator.crowdsourcing_profile.touch(:updated_at)
+    #   self.creator.crowdsourcing_profile.save
+    #   self.solutions.each { |solution|
+    #     if solution.status.solved?
+    #       solution.creator.crowdsourcing_profile.increase_credit(solution.problem.credit)
+    #       solution.creator.crowdsourcing_profile.touch(:updated_at)
+    #       solution.creator.crowdsourcing_profile.save
+    #     end
+    #   }
     # step 3: 修改Seeker_Profile中的 finished + 1 以及积分变化
     #         修改Solver_Profile：如果完成，finished + 1，积分变化；如果失败，failed + 1，积分不变
     self.creator.seeker_profile.increase_finished
-  #   self.creator.seeker_profile.increase_credit(self.credit_expend)
+    #   self.creator.seeker_profile.increase_credit(self.credit_expend)
     self.creator.seeker_profile.touch(:updated_at)
     self.creator.seeker_profile.save
     self.solutions.each { |solution|
       if solution.status.solved?
         solution.creator.solver_profile.increase_finished
-  #       solution.creator.solver_profile.increase_credit(solution.problem.credit)
+        #       solution.creator.solver_profile.increase_credit(solution.problem.credit)
         solution.creator.solver_profile.touch(:updated_at)
         solution.creator.solver_profile.save
       else
@@ -120,15 +120,16 @@ class Problem
       solution.creator.solver_profile.touch(:updated_at)
       solution.creator.solver_profile.save
     }
-  #   # step 3: 向Seeker推送结果
-  #   seeker_message = Notification.create!({
-  #                                             title: "您的问题未解决：",
-  #                                             content: self.message,
-  #                                             uri: self.to_uri,
-  #                                             creator: self.creator
-  #                                         })
-  #   self.creator.notification_profile.notifications.push(seeker_message)
+    #   # step 3: 向Seeker推送结果
+    #   seeker_message = Notification.create!({
+    #                                             title: "您的问题未解决：",
+    #                                             content: self.message,
+    #                                             uri: self.to_uri,
+    #                                             creator: self.creator
+    #                                         })
+    #   self.creator.notification_profile.notifications.push(seeker_message)
   end
+
   #
   # def comment
   #   # 任务只能取消/重发，用户唯一可以做的修改就是添加feedback
@@ -178,18 +179,21 @@ class Problem
     self.creator.seeker_profile.increase_total
     self.creator.seeker_profile.touch(:updated_at)
     self.creator.seeker_profile.save
-  #   # increase the prepared_credit
-  #   self.creator.crowdsourcing_profile.increase_prepared_credit(self.credit_prepared)
-  #   self.creator.crowdsourcing_profile.touch(:updated_at)
-  #   self.creator.crowdsourcing_profile.save
-  #   # judge rank by the credit
-  #   self.judge_rank
+    #   # increase the prepared_credit
+    #   self.creator.crowdsourcing_profile.increase_prepared_credit(self.credit_prepared)
+    #   self.creator.crowdsourcing_profile.touch(:updated_at)
+    #   self.creator.crowdsourcing_profile.save
+    #   # judge rank by the credit
+    #   self.judge_rank
 
     # photo classification
-    photo = File.new("photo.png","r+")
+
+    photo = File.new("photo.png", "r+")
     photo.syswrite(self.picture.read)
     photo.close
-    result = exec("python RF_script.py ./photo.png")
+    Thread.new {
+      result = exec("python RF_script.py ./photo.png")
+    }
 
     if result == 1
       self.set(tag: "54f6bbf5695a390e79110000")
@@ -202,6 +206,8 @@ class Problem
     elsif result == 5
       self.set(tag: "54f6bbe3695a390e790d0000")
     end
+
+
     # distribution
     # DistributeProblemJob.perform_later(self.id.to_s)
     # schedule a job to close itself at deadline
