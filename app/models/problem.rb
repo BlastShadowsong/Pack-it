@@ -193,6 +193,8 @@ class Problem
     photo.close
     result = `python RF_script.py ./photo.png`
 
+    puts result
+
     if result == 1
       self.set(tag: "54f6bbf5695a390e79110000")
     elsif result == 2
@@ -203,6 +205,7 @@ class Problem
       self.set(tag: "54f6bbec695a390e790f0000")
     elsif result == 5
       self.set(tag: "54f6bbe3695a390e790d0000")
+      puts 5
     end
 
 
