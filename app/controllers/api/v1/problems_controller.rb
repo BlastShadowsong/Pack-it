@@ -17,10 +17,11 @@ class Api::V1::ProblemsController < Api::ApplicationController
   end
 
   def show
-    photo = File.new("photo.png","w+")
-    photo.puts(@problem.picture.read)
+    photo = File.new("photo.png","r+")
+    photo.syswrite(@problem.picture.read)
+    photo.close
     puts photo
-    result = exec("python RF_script.py #{photo}")
+    result = exec("python RF_script.py ./photo.png")
     puts result
     respond_with @problem if stale?(@problem)
   end
