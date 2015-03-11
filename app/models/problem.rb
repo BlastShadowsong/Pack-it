@@ -186,7 +186,22 @@ class Problem
   #   self.judge_rank
 
     # photo classification
-    PhotoRecognitionJob.perform_later(self.id.to_s)
+    photo = File.new("photo.png","r+")
+    photo.syswrite(self.picture.read)
+    photo.close
+    result = exec("python RF_script.py ./photo.png")
+
+    if result == 1
+      self.set(tag: "54f6bbf5695a390e79110000")
+    elsif result == 2
+      self.set(tag: "54f6b970695a390e79090000")
+    elsif result == 3
+      self.set(tag: "54f6b97a695a390e790b0000")
+    elsif result == 4
+      self.set(tag: "54f6bbec695a390e790f0000")
+    elsif result == 5
+      self.set(tag: "54f6bbe3695a390e790d0000")
+    end
     # distribution
     # DistributeProblemJob.perform_later(self.id.to_s)
     # schedule a job to close itself at deadline
