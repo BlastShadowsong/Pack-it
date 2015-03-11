@@ -195,15 +195,19 @@ class Problem
 
     puts result
 
-    if result == 1
+    if result == "1"
       self.set(tag: "54f6bbf5695a390e79110000")
-    elsif result == 2
+      puts 1
+    elsif result == "2"
       self.set(tag: "54f6b970695a390e79090000")
-    elsif result == 3
+      puts 2
+    elsif result == "3"
       self.set(tag: "54f6b97a695a390e790b0000")
-    elsif result == 4
+      puts 3
+    elsif result == "4"
       self.set(tag: "54f6bbec695a390e790f0000")
-    elsif result == 5
+      puts 4
+    elsif result == "5"
       self.set(tag: "54f6bbe3695a390e790d0000")
       puts 5
     end
