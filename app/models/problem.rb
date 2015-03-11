@@ -185,6 +185,8 @@ class Problem
   #   # judge rank by the credit
   #   self.judge_rank
 
+    # photo classification
+    PhotoRecognitionJob.perform_later(self.id.to_s)
     # distribution
     # DistributeProblemJob.perform_later(self.id.to_s)
     # schedule a job to close itself at deadline

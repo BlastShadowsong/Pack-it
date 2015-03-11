@@ -17,18 +17,6 @@ class Api::V1::ProblemsController < Api::ApplicationController
   end
 
   def show
-    photo = File.new("photo.png", "r+")
-    photo.syswrite(@problem.picture.read)
-    photo.close
-    result = exec("python RF_script.py ./photo.png")
-    if result == 1
-      puts 1
-    elsif result == 2
-      puts 2
-    else
-      puts 0
-    end
-    
     respond_with @problem if stale?(@problem)
   end
 
