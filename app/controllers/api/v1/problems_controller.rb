@@ -17,7 +17,8 @@ class Api::V1::ProblemsController < Api::ApplicationController
   end
 
   def show
-    result = exec("python RF_script.py ./bag_4001.jpg")
+    pic = @problem.picture
+    result = exec("python RF_script.py #{pic}")
     puts result
     respond_with @problem if stale?(@problem)
   end
