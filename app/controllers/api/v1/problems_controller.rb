@@ -17,7 +17,7 @@ class Api::V1::ProblemsController < Api::ApplicationController
   end
 
   def show
-    pic = @problem.picture.file
+    pic = @problem.picture.read
     puts pic
     result = exec("python RF_script.py #{pic}")
     puts result
