@@ -194,7 +194,7 @@ class Problem
     result = `python RF_script.py ./photo.png`
 
     puts result
-    puts "Length: "+result.length
+    puts "Length: #{result.length}"
 
     if result == '1'
       self.set(tag: "54f6bbf5695a390e79110000")
