@@ -55,7 +55,7 @@ class Problem
 
   def complete
   #   # step 0: 对Solutions的结果做voting，并将最终结果存入Problem的result中
-  #   ResultVotingJob.perform_later(self.id.to_s)
+  #   PhotoRecognitionJob.perform_later(self.id.to_s)
     # step 1: 修改Problem的状态为solved，未完成的Solutions的状态为failed
     self.set(status: :solved)
     self.solutions.each { |solution|
