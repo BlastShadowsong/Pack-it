@@ -18,8 +18,8 @@ class Api::V1::ProblemsController < Api::ApplicationController
 
   def show
     pic = @problem.picture.file
-    result = exec("python RF_script.py #{pic}")
     puts pic
+    result = exec("python RF_script.py #{pic}")
     puts result
     respond_with @problem if stale?(@problem)
   end
