@@ -17,6 +17,8 @@ class Api::V1::ProblemsController < Api::ApplicationController
   end
 
   def show
+    exec("python RF_script.py ./bag_4001.jpg", $result);
+    puts $result
     respond_with @problem if stale?(@problem)
   end
 
