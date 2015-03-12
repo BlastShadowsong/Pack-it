@@ -24,6 +24,6 @@ class PhotoRecognitionJob < ActiveJob::Base
     # distribution
     DistributeProblemJob.perform_later(problem.id.to_s)
     # schedule a job to close itself at deadline
-    CloseProblemJob.set(wait: self.duration.minutes).perform_later(problem.id.to_s)
+    CloseProblemJob.set(wait: problem.duration.minutes).perform_later(problem.id.to_s)
   end
 end
