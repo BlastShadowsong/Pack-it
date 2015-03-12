@@ -195,22 +195,21 @@ class Problem
 
     puts result
     puts "Length: #{result.length}"
-    puts result[0]
-    puts result[1]
 
-    if result == "1"
+
+    if result[0] == "1"
       self.set(tag: "54f6bbf5695a390e79110000")
       puts 1
-    elsif result == "2"
+    elsif result[0] == "2"
       self.set(tag: "54f6b970695a390e79090000")
       puts 2
-    elsif result == "3"
+    elsif result[0] == "3"
       self.set(tag: "54f6b97a695a390e790b0000")
       puts 3
-    elsif result == "4"
+    elsif result[0] == "4"
       self.set(tag: "54f6bbec695a390e790f0000")
       puts 4
-    elsif result == "5"
+    elsif result[0] == "5"
       self.set(tag: "54f6bbe3695a390e790d0000")
       puts 5
     end
