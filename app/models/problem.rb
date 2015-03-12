@@ -196,19 +196,19 @@ class Problem
     puts result
     puts "Length: #{result.length}"
 
-    if result == '1\n\n'
+    if result == '1\n'
       self.set(tag: "54f6bbf5695a390e79110000")
       puts 1
-    elsif result == '2\n\n'
+    elsif result == '2\n'
       self.set(tag: "54f6b970695a390e79090000")
       puts 2
-    elsif result == '3\n\n'
+    elsif result == '3\n'
       self.set(tag: "54f6b97a695a390e790b0000")
       puts 3
-    elsif result == '4\n\n'
+    elsif result == '4\n'
       self.set(tag: "54f6bbec695a390e790f0000")
       puts 4
-    elsif result == '5\n\n'
+    elsif result == '5\n'
       self.set(tag: "54f6bbe3695a390e790d0000")
       puts 5
     end
