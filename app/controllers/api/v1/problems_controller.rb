@@ -24,17 +24,13 @@ class Api::V1::ProblemsController < Api::ApplicationController
     # head :unprocessable_entity and return unless current_user.crowdsourcing_profile.prepared_credit < current_user.crowdsourcing_profile.credit
 
     @problem = Problem.create!(problem_params)
-    @problem.after_created
 
     respond_with @problem
   end
 
   def update
     @problem.update!(problem_params)
-
-    # # Store this photo
-    # StorePhotosJob.perform_later(@problem.id.to_s)
-
+    
     respond_with @problem
   end
 
