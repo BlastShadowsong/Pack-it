@@ -17,7 +17,7 @@ class StorePhotosJob < ActiveJob::Base
       filename = "photos/trousers/#{problem.id}.png"
     end
 
-    photo = File.new(filename, "r+")
+    photo = File.new(filename, "w")
     photo.syswrite(problem.picture.read)
     photo.close
   end
