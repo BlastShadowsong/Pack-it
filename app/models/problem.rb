@@ -9,7 +9,7 @@ class Problem
   extend Enumerize
 
   after_create :on_created
-  after_update :on_updated
+  # after_update :on_updated
 
   mount_uploader :picture, PictureUploader
 

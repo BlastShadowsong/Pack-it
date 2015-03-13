@@ -30,7 +30,7 @@ class Api::V1::ProblemsController < Api::ApplicationController
 
   def update
     @problem.update!(problem_params)
-    
+
     respond_with @problem
   end
 
