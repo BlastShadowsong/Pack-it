@@ -35,8 +35,9 @@ class Api::V1::ProblemsController < Api::ApplicationController
     # @problem.comment
     # end
     respond_with @problem
-
-    @problem.store_suggestion
+    
+    # Store this photo
+    StorePhotosJob.perform_later(@problem.id.to_s)
   end
 
   def destroy
