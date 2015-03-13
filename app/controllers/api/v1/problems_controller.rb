@@ -30,14 +30,12 @@ class Api::V1::ProblemsController < Api::ApplicationController
   end
 
   def update
-    # if @problem.status.solved?
-    @problem.update!(problem_params)
-    # @problem.comment
-    # end
-    respond_with @problem
-    
     # Store this photo
     StorePhotosJob.perform_later(@problem.id.to_s)
+
+    @problem.update!(problem_params)
+
+    respond_with @problem
   end
 
   def destroy
