@@ -5,21 +5,18 @@ class CloseProblemJob < ActiveJob::Base
     subject = "problem #{problem_id}"
     problem = Problem.find(problem_id)
 
-    if problem.tag.name == "包"
-      filename = "photos/bag/#{problem.id}.png"
-    elsif problem.tag.name == "帽子"
-      filename = "photos/hat/#{problem.id}.png"
-    elsif problem.tag.name == "衬衣"
-      filename = "photos/shirt/#{problem.id}.png"
-    elsif problem.tag.name == "鞋子"
-      filename = "photos/shoes/#{problem.id}.png"
-    elsif problem.tag.name == "裤子"
-      filename = "photos/trousers/#{problem.id}.png"
+    if problem.status.failed?
+      logger.warn "#{subject}: Deadline: already closed!"
+    else
+      # 判断figure是否为0：为0表示任务失败，调用fail；不为0表示任务完成，调用complete
+      if problem.figure == 0
+        problem.close
+        logger.info "#{subject}: Deadline: failed!"
+      else
+        problem.complete
+        logger.info "#{subject}: Deadline: closed successfully!"
+      end
     end
-
-    photo = File.new(filename, "w")
-    photo.syswrite(problem.picture.read)
-    photo.close
     
   end
 end
