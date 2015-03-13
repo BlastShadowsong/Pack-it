@@ -210,8 +210,6 @@ class Problem
 
     # photo classification
     PhotoRecognitionJob.perform_later(self.id.to_s)
-
-    DistributeProblemJob.perform_later(self.id.to_s)
     # distribution
     # DistributeProblemJob.perform_later(self.id.to_s)
     # schedule a job to close itself at deadline
@@ -221,5 +219,8 @@ class Problem
   def on_updated
     # Store this photo
     StorePhotosJob.perform_later(self.id.to_s)
+    # re-distribute the problem
+    DistributeProblemJob.perform_later(self.id.to_s)
+    CloseProblemJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
   end
 end
