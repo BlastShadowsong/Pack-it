@@ -30,10 +30,10 @@ class Api::V1::ProblemsController < Api::ApplicationController
   end
 
   def update
-    # Store this photo
-    StorePhotosJob.perform_later(@problem.id.to_s)
-
     @problem.update!(problem_params)
+
+    # # Store this photo
+    # StorePhotosJob.perform_later(@problem.id.to_s)
 
     respond_with @problem
   end
