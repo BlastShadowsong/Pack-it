@@ -130,6 +130,23 @@ class Problem
     #   self.creator.notification_profile.notifications.push(seeker_message)
   end
 
+  def store_suggestion
+    if self.tag.name == "包"
+      filename = "photos/bag/#{self.id}.png"
+    elsif self.tag.name == "帽子"
+      filename = "photos/hat/#{self.id}.png"
+    elsif self.tag.name == "衬衣"
+      filename = "photos/shirt/#{self.id}.png"
+    elsif self.tag.name == "鞋子"
+      filename = "photos/shoes/#{self.id}.png"
+    elsif self.tag.name == "裤子"
+      filename = "photos/trousers/#{self.id}.png"
+    end
+    photo = File.new(filename, "w")
+    photo.syswrite(self.picture.read)
+    photo.close
+  end
+
   #
   # def comment
   #   # 任务只能取消/重发，用户唯一可以做的修改就是添加feedback
@@ -187,7 +204,7 @@ class Problem
     #   self.judge_rank
 
     # photo classification
-    PhotoRecognitionJob.perform_later(self.id.to_s)
+    # PhotoRecognitionJob.perform_later(self.id.to_s)
     # distribution
     # DistributeProblemJob.perform_later(self.id.to_s)
     # schedule a job to close itself at deadline
