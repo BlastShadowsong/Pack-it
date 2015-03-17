@@ -3,7 +3,7 @@ class Notification
   include Mongoid::Timestamps
   include Trackable
 
-  after_create :on_created
+  # after_create :on_created
 
   field :title, type: String, default: "您有新的消息："
   field :content, type: String

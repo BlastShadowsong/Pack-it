@@ -17,7 +17,7 @@ class NotificationProfile < Profile
       content = "请使用新设备"
       device_type = self.device_type_changed? ? self.changes["device_type"][0] : self.device_type
       device_token = self.changes["device_token"][0]
-      PushNotificationJob.perform_later(title, content, nil, device_type, [device_token])
+      # PushNotificationJob.perform_later(title, content, nil, device_type, [device_token])
     end
   end
 
