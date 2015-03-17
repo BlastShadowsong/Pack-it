@@ -4,13 +4,13 @@ class PhotoRecognitionJob < ActiveJob::Base
   def perform(problem_id)
     problem = Problem.find(problem_id)
 
-    photo = File.new("photo.png", "r+")
+    photo = File.new("photo.png", "w")
     photo.syswrite(problem.picture.read)
     photo.close
     result = `python RF_script.py ./photo.png`
 
     puts result
-    
+
     if result[0] == "1"
       problem.set(tag: "54f6bbf5695a390e79110000")
       puts 1
