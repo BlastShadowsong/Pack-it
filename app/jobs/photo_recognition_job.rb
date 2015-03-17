@@ -9,7 +9,7 @@ class PhotoRecognitionJob < ActiveJob::Base
     puts "===================================="
     photo.close
 
-    result = `python RF_script.py ./photo/#{problem.id}.png`
+    result = `python RF_script.py ./photos/#{problem.id}.png`
 
     puts result
 
