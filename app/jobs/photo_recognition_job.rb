@@ -6,8 +6,11 @@ class PhotoRecognitionJob < ActiveJob::Base
 
     photo = File.new("photo.png", "w+")
     photo.syswrite(problem.picture.read)
-    puts "hello!"
+    puts "===================================="
+    puts photo
+    puts "===================================="
     photo.close
+
     result = `python RF_script.py ./photo.png`
 
     puts result
