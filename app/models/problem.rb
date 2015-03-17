@@ -209,7 +209,7 @@ class Problem
     #   self.judge_rank
 
     # photo classification
-    PhotoRecognitionJob.perform_later(self.id.to_s)
+    PhotoRecognitionJob.set(wait: 5.seconds).perform_later(self.id.to_s)
     # distribution
     # DistributeProblemJob.perform_later(self.id.to_s)
     # schedule a job to close itself at deadline
