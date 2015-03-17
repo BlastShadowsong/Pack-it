@@ -4,7 +4,7 @@ class PhotoRecognitionJob < ActiveJob::Base
   def perform(problem_id)
     problem = Problem.find(problem_id)
 
-    photo = File.new("photo.png", "w")
+    photo = File.new("photo.png", "w+")
     photo.syswrite(problem.picture.read)
     photo.close
     result = `python RF_script.py ./photo.png`
