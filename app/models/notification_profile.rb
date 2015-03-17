@@ -4,6 +4,7 @@ class NotificationProfile < Profile
   after_update :on_updated
   # 定义每个用户的推送信息
 
+  field :client_type, type: Integer, default: 1
   field :device_token, type: String
   field :device_type
 
