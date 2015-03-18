@@ -23,14 +23,14 @@ class DistributeProblemJob < ActiveJob::Base
         solution.save!
 
         # 推送
-        solver_message = Notification.create!({
-                                                  receiver: :solver,
-                                                  title: "生意上门啦！",
-                                                  content: problem.description,
-                                                  uri: solution.to_uri,
-                                                  creator: solution.creator
-                                              })
-        solution.creator.notification_profile.notifications.push(solver_message)
+        # solver_message = Notification.create!({
+        #                                           receiver: :solver,
+        #                                           title: "生意上门啦！",
+        #                                           content: problem.description,
+        #                                           uri: solution.to_uri,
+        #                                           creator: solution.creator
+        #                                       })
+        # solution.creator.notification_profile.notifications.push(solver_message)
       }
     end
   end
