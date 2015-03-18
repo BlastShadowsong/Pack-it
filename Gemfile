@@ -110,3 +110,5 @@ gem 'carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 
 gem 'mongoid-grid_fs'
+
+gem 'apns'

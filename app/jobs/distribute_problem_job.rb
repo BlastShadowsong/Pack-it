@@ -24,6 +24,7 @@ class DistributeProblemJob < ActiveJob::Base
 
         # 推送
         solver_message = Notification.create!({
+                                                  receiver: :solver,
                                                   title: "生意上门啦！",
                                                   content: problem.description,
                                                   uri: solution.to_uri,
