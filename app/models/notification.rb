@@ -5,7 +5,7 @@ class Notification
 
   extend Enumerize
 
-  # after_create :on_created
+  after_create :on_created
 
   field :receiver
   enumerize :receiver, in: [:seeker, :solver]
