@@ -7,9 +7,9 @@ class PushNotificationJob < ActiveJob::Base
     APNS.host='gateway.sandbox.push.apple.com'
     APNS.pem='ck.pem'
     APNS.port=2195
+    APNS.pass=0987
 
-    token = '02503c5b 09b9acc9 9ab42dfa a1c72c77 fcee5027 25b8dd8f 1dc91a17 ce63caa3'
-    APNS.send_notification(token, :alert => title, :badge => 1, :sound => 'default',
+    APNS.send_notification(device_token, :alert => title, :badge => 1, :sound => 'default',
                            :other => {:sent => uri})
 
     # m = {
