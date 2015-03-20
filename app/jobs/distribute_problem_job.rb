@@ -23,11 +23,11 @@ class DistributeProblemJob < ActiveJob::Base
         solution.save!
 
         # 推送
-        if solver.user.notification_profile.seeker_token.to_s.empty?
+        if solver.user.notification_profile.solver_token.to_s.empty?
         else
           solver_message = Notification.create!({
                                                     receiver: :solver,
-                                                    title: "生意上门啦！",
+                                                    title: "老板，生意上门啦！",
                                                     content: problem.description,
                                                     uri: solution.to_uri,
                                                     creator: solution.creator

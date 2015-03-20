@@ -6,7 +6,8 @@ class Solution
   extend Enumerize
 
   after_create :on_created
-  # after_update :answer
+  after_update :on_updated
+
   mount_uploader :picture, PictureUploader
 
   field :status
@@ -56,5 +57,20 @@ class Solution
     self.creator.solver_profile.increase_total
     self.creator.solver_profile.touch(:updated_at)
     self.creator.solver_profile.save
+  end
+
+  def on_updated
+    # 新消息推送
+    if self.problem.user.notification_profile.seeker_token.to_s.empty?
+    else
+      seeker_message = Notification.create!({
+                                                receiver: :seeker,
+                                                title: "主人，商品找着啦！",
+                                                content: self.description,
+                                                uri: self.problem.to_uri,
+                                                creator: self.problem.creator
+                                            })
+      self.problem.creator.notification_profile.notifications.push(seeker_message)
+    end
   end
 end
