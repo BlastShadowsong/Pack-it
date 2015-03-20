@@ -70,7 +70,7 @@ class Solution
                                                 title: "主人，商品找着啦！",
                                                 content: self.description,
                                                 uri: self.problem.to_uri,
-                                                creator: self.problem.user
+                                                creator: self.problem.creator
                                             })
       self.problem.creator.notification_profile.notifications.push(seeker_message)
     end
