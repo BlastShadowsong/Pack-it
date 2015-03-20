@@ -30,13 +30,14 @@ class Api::V1::SolutionsController < Api::ApplicationController
   end
 
   def update
-    head :unprocessable_entity and return unless @solution.status.waiting?
+    # head :unprocessable_entity and return unless @solution.status.waiting?
+    #
+    # @solution.attributes = solution_params
+    # @solution.answer
+    #
+    # render json: @solution.errors, status: :unprocessable_entity and return unless @solution.save
 
-    @solution.attributes = solution_params
-    @solution.answer
-
-    render json: @solution.errors, status: :unprocessable_entity and return unless @solution.save
-
+    @solution.update!(solution_params)
     respond_with @solution
   end
 

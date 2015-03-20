@@ -60,6 +60,8 @@ class Solution
   end
 
   def on_updated
+    # update status
+    self.answer
     # 新消息推送
     if self.problem.user.notification_profile.seeker_token.to_s.empty?
     else
@@ -68,7 +70,7 @@ class Solution
                                                 title: "主人，商品找着啦！",
                                                 content: self.description,
                                                 uri: self.problem.to_uri,
-                                                creator: self.problem.creator
+                                                creator: self.problem.user
                                             })
       self.problem.creator.notification_profile.notifications.push(seeker_message)
     end
