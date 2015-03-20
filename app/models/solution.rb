@@ -63,7 +63,7 @@ class Solution
     # update status
     self.answer
     # 新消息推送
-    if self.problem.user.notification_profile.seeker_token.to_s.empty?
+    if self.problem.creator.notification_profile.seeker_token.to_s.empty?
     else
       seeker_message = Notification.create!({
                                                 receiver: :seeker,
