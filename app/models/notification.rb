@@ -18,21 +18,29 @@ class Notification
   private
   def on_created
     if self.receiver.seeker?
-      PushNotificationJob.perform_later(
-          self.title,
-          self.content,
-          self.uri,
-          self.creator.notification_profile.seeker_type,
-          self.creator.notification_profile.seeker_token
-      )
+      if self.creator.notification_profile.seeker_token.to_s.empty?
+      else
+        PushNotificationJob.perform_later(
+            self.title,
+            self.content,
+            self.uri,
+            self.creator.notification_profile.seeker_type,
+            self.creator.notification_profile.seeker_token
+        )
+      end
+
+
     elsif self.receiver.solver?
-      PushNotificationJob.perform_later(
-          self.title,
-          self.content,
-          self.uri,
-          self.creator.notification_profile.solver_type,
-          self.creator.notification_profile.solver_token
-      )
+      if self.creator.notification_profile.solver_token.to_s.empty?
+      else
+        PushNotificationJob.perform_later(
+            self.title,
+            self.content,
+            self.uri,
+            self.creator.notification_profile.solver_type,
+            self.creator.notification_profile.solver_token
+        )
+      end
     end
 
   end
