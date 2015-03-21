@@ -42,6 +42,7 @@ class Problem
 
   def increase_figure
     self.inc(figure: 1)
+    self.touch(:updated_at)
   end
 
   def deadline
