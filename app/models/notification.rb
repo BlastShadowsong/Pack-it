@@ -18,20 +18,18 @@ class Notification
   private
   def on_created
     if self.receiver.seeker?
-      PushNotificationJob.perform_later(
+      SeekerNotificationJob.perform_later(
           self.title,
           self.content,
           self.uri,
-          self.receiver,
           self.creator.notification_profile.seeker_type,
           self.creator.notification_profile.seeker_token
       )
     elsif self.receiver.solver?
-      PushNotificationJob.perform_later(
+      SolverNotificationJob.perform_later(
           self.title,
           self.content,
           self.uri,
-          self.receiver,
           self.creator.notification_profile.solver_type,
           self.creator.notification_profile.solver_token
       )

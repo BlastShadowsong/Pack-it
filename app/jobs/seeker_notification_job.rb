@@ -1,15 +1,11 @@
 require 'apns'
-class PushNotificationJob < ActiveJob::Base
+class SeekerNotificationJob < ActiveJob::Base
   queue_as :mailers
 
-  def perform(title, content, uri, receiver, device_type, device_token)
+  def perform(title, content, uri, device_type, device_token)
 
     APNS.host='gateway.sandbox.push.apple.com'
-    if receiver.equal?('seeker')
-      APNS.pem='ckForSeeker.pem'
-    elsif receiver.equal?('solver')
-      APNS.pem='ckForSolver.pem'
-    end
+    APNS.pem='ckForSeeker.pem'
     APNS.port=2195
     APNS.pass='0987'
 
