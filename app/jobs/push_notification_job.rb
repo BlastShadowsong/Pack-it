@@ -5,9 +5,9 @@ class PushNotificationJob < ActiveJob::Base
   def perform(title, content, uri, receiver, device_type, device_token)
 
     APNS.host='gateway.sandbox.push.apple.com'
-    if receiver.seeker?
+    if receiver.equal?('seeker')
       APNS.pem='ckForSeeker.pem'
-    elsif receiver.solver?
+    elsif receiver.equal?('solver')
       APNS.pem='ckForSolver.pem'
     end
     APNS.port=2195
