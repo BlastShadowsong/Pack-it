@@ -1,5 +1,5 @@
 require 'apns'
-class SeekerNotificationJob < ActiveJob::Base
+class SolverNotificationJob < ActiveJob::Base
   queue_as :mailers
 
   def perform(title, content, uri, device_type, device_token)
