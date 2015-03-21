@@ -34,9 +34,11 @@ class DistributeProblemJob < ActiveJob::Base
                                                 })
           solution.creator.notification_profile.notifications.push(solver_message)
         end
-
       }
     end
+
+    # 更新Problem的updated_at
+    problem.touch(:updated_at)
   end
 
   # private
