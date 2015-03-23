@@ -7,13 +7,7 @@ class DistributeProblemJob < ActiveJob::Base
     # Step 1: 查询user
     # 支持的最晚时间：前5分钟内（活跃的用户）
     # latest_time = Time.now - 5 * 60
-    distribute_solvers = ShopProfile.where({tag: problem.tag})
-                             #.geo_near(problem.location).max_distance(0.1)
-
-    # distribute_solvers = []
-    # 如果places为空，改为向整个mall查询；
-    # 如果places不为空，查询location_profile中满足条件的user，取amount个
-
+    distribute_solvers = ShopProfile.where({tag: problem.tag}).geo_near([:location]).max_distance(0.1)
 
     # Step 2: 分发Solutions
     if distribute_solvers.any?
