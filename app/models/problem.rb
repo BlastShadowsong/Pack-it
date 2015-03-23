@@ -220,6 +220,16 @@ class Problem
   def on_updated
     # Store this photo
     StorePhotosJob.perform_later(self.id.to_s)
+
+    # remove wrong solutions
+    self.solutions.each{|solution|
+      solution.set(status: :failed)
+      solution.creator.solver_profile.solutions.delete(solution)
+      self.delete(solution)
+    }
+    self.touch(:updated_at)
+    self.creator.seeker_profile.touch(:updated_at)
+
     # re-distribute the problem
     DistributeProblemJob.perform_later(self.id.to_s)
     CloseProblemJob.set(wait: self.duration.minutes).perform_later(self.id.to_s)
