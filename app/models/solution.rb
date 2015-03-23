@@ -25,7 +25,7 @@ class Solution
 
   alias_method :solver, :creator
 
-  default_scope ->{desc(:created_at)}
+  default_scope ->{desc(:updated_at)}
 
   def answer
     # 修改solution的状态
