@@ -10,6 +10,8 @@ class DistributeProblemJob < ActiveJob::Base
     center = :location
     puts center
     distribute_solvers = ShopProfile.where({tag: problem.tag}).geo_near([center]).max_distance(0.1)
+    puts "hello"
+    puts center
 
     # Step 2: 分发Solutions
     if distribute_solvers.any?
