@@ -8,8 +8,8 @@ class DistributeProblemJob < ActiveJob::Base
     # 支持的最晚时间：前5分钟内（活跃的用户）
     # latest_time = Time.now - 5 * 60
     center = :location
+    puts center
     distribute_solvers = ShopProfile.where({tag: problem.tag}).geo_near([center]).max_distance(0.1)
-    puts problem.location
 
     # Step 2: 分发Solutions
     if distribute_solvers.any?
